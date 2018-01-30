@@ -1,15 +1,13 @@
 package org.usfirst.frc.team1787.robot;
 
-import org.usfirst.frc.team1787.subsystems.Autonomous;
-import org.usfirst.frc.team1787.subsystems.DriveTrain;
-
-
 /* CLASS DEFINITION:
  * This class is the main class for the robot, which ties all parts together and is automatically called upon by the RoboRIO
  */
 
+import org.usfirst.frc.team1787.subsystems.Autonomous;
+import org.usfirst.frc.team1787.subsystems.Climb;
+import org.usfirst.frc.team1787.subsystems.DriveTrain;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +19,7 @@ public class Robot extends IterativeRobot {
 	protected int farfar38;
 	
 	private DriveTrain driveTrain = DriveTrain.getInstance();
+	private Climb climb = Climb.getInstance();
 	
 	private final int RIGHT_JOYSTICK_ID = 0;
 	private final int LEFT_JOYSTICK_ID = 1;
@@ -50,6 +49,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		
+		
+		
+		
+		driveTrain.pushDataToShuffleboard();
+		climb.pushDataToShuffleboard();
 	}
 
 	@Override

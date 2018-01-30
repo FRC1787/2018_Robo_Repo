@@ -6,5 +6,10 @@ package org.usfirst.frc.team1787.shooting;
  */
 
 public class Output {
+	
+	private final int LEFT_SHOOT_MASTER_TALON_ID = 6;
+	private final int RIGHT_SHOOT_MASTER_TALON_ID = 7;
+	private final int LEFT_SHOOT_FOLLOWER_TALON_ID = 8;
+	private final int RIGHT_SHOOT_FOLLOWER_TALON_ID = 9;
 
 }
