@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake {
 	
-	private final int INTAKE_MASTER_TALON_ID = 4;
-	private final int INTAKE_FOLLOWER_VICTOR_ID = 5;
+	private final int INTAKE_Right_TALON_ID = 4;
+	private final int INTAKE_Left_VICTOR_ID = 5;
 	private final int INTAKE_SOLENOID_ID = 2;
 	
-	private WPI_TalonSRX intakeMaster = new WPI_TalonSRX(INTAKE_MASTER_TALON_ID);
-	private WPI_VictorSPX intakeFollower = new WPI_VictorSPX(INTAKE_FOLLOWER_VICTOR_ID);
+	private WPI_TalonSRX intakeRight = new WPI_TalonSRX(INTAKE_Right_TALON_ID);
+	private WPI_VictorSPX intakeLeft = new WPI_VictorSPX(INTAKE_Left_VICTOR_ID);
 	
 	private Solenoid intakeSolenoid = new Solenoid(INTAKE_SOLENOID_ID);
 	
@@ -25,26 +25,26 @@ public class Intake {
 	private Intake() {
 		
 		//Configuring motor controllers
-		intakeFollower.follow(intakeMaster);
+		intakeLeft.follow(intakeRight);
 		
-		intakeMaster.setInverted(false);
-		intakeFollower.setInverted(false);
+		intakeRight.setInverted(false);
+		intakeLeft.setInverted(false);
 		
 		//Making every talon light up green when forwards
-		intakeMaster.configVoltageCompSaturation(12, 10);
-		intakeFollower.configVoltageCompSaturation(12, 10);
-		intakeMaster.enableVoltageCompensation(true);
-		intakeFollower.enableVoltageCompensation(true);
+		intakeRight.configVoltageCompSaturation(12, 10);
+		intakeLeft.configVoltageCompSaturation(12, 10);
+		intakeRight.enableVoltageCompensation(true);
+		intakeLeft.enableVoltageCompensation(true);
 	}
 	
 	
 	
 	public void turnOnWheels(double INTAKE_VOLTAGE) {
-		intakeMaster.set(INTAKE_VOLTAGE);
+		intakeRight.set(INTAKE_VOLTAGE);
 	}
 	
 	public void turnOffWheels() {
-		intakeMaster.stopMotor();
+		intakeRight.stopMotor();
 	}
 	
 	
@@ -59,9 +59,22 @@ public class Intake {
 	
 	
 	
+	public void spinCubeLeft(double INTAKE_VOLTAGE) {
+		intakeLeft.set(-INTAKE_VOLTAGE);
+		intakeRight.set(INTAKE_VOLTAGE);
+	}
+	
+	public void spinCubeRight(double INTAKE_VOLTAGE) {
+		intakeLeft.set(INTAKE_VOLTAGE);
+		intakeRight.set(-INTAKE_VOLTAGE);
+	}
+	
+	
+	
+	
 	public void pushDataToShuffleboard() {
 		SmartDashboard.putBoolean("Gripped: ", intakeSolenoid.get());
-		SmartDashboard.putNumber("Intake Motor Speed: ", intakeMaster.get());
+		SmartDashboard.putNumber("Intake Motor Speed: ", intakeRight.get());
 	}
 	
 	public static Intake getInstance() {
