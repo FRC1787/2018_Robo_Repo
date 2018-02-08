@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake {
 	
-	private final int INTAKE_Right_TALON_ID = 4;
-	private final int INTAKE_Left_VICTOR_ID = 5;
+	private final int INTAKE_RIGHT_TALON_ID = 3;
+	private final int INTAKE_LEFT_VICTOR_ID = 7;
 	private final int INTAKE_SOLENOID_ID = 2;
 	
-	private WPI_TalonSRX intakeRight = new WPI_TalonSRX(INTAKE_Right_TALON_ID);
-	private WPI_VictorSPX intakeLeft = new WPI_VictorSPX(INTAKE_Left_VICTOR_ID);
+	private WPI_TalonSRX intakeRight = new WPI_TalonSRX(INTAKE_RIGHT_TALON_ID);
+	private WPI_VictorSPX intakeLeft = new WPI_VictorSPX(INTAKE_LEFT_VICTOR_ID);
 	
 	private Solenoid intakeSolenoid = new Solenoid(INTAKE_SOLENOID_ID);
 	

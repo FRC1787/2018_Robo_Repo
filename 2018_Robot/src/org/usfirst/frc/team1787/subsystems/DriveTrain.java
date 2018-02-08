@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain {
 	
 	
-	private final int LEFT_DRIVE_MASTER_TALON_ID = 0;
-	private final int LEFT_DRIVE_FOLLOWER_VICTOR_ID = 2;
-	private final int RIGHT_DRIVE_MASTER_TALON_ID = 1;
-	private final int RIGHT_DRIVE_FOLLOWER_VICTOR_ID = 3;
+	private final int LEFT_DRIVE_MASTER_TALON_ID = 10;
+	private final int LEFT_DRIVE_FOLLOWER_VICTOR_ID = 11;
+	private final int RIGHT_DRIVE_MASTER_TALON_ID = 9;
+	private final int RIGHT_DRIVE_FOLLOWER_VICTOR_ID = 8;
 
 	private WPI_TalonSRX leftMaster = new WPI_TalonSRX(LEFT_DRIVE_MASTER_TALON_ID);
 	private WPI_VictorSPX leftFollower = new WPI_VictorSPX(LEFT_DRIVE_FOLLOWER_VICTOR_ID);
@@ -34,11 +34,11 @@ public class DriveTrain {
 	private DriveTrain() {
 		
 		//Pairing each master Talon with it's follower Victor
-		leftFollower.follow(leftMaster);
-		rightFollower.follow(rightMaster);
+		//leftFollower.follow(leftMaster);
+		//rightFollower.follow(rightMaster);
 		
 		//Inverting all of the talons so that they all light up green when the robot goes forward 
-		leftMaster.setInverted(false);
+		leftMaster.setInverted(true);
 		leftFollower.setInverted(false);
 		rightMaster.setInverted(false);
 		rightFollower.setInverted(false);
@@ -115,7 +115,9 @@ public class DriveTrain {
 	    
 	    
 	    leftMaster.set(leftMotorOutput);
+	    leftFollower.set(leftMotorOutput);
 	    rightMaster.set(rightMotorOutput);
+	    rightFollower.set(rightMotorOutput);
 	    
 	    System.out.println("Left: " + leftMotorOutput);
 	    System.out.println("Right: " + rightMotorOutput);

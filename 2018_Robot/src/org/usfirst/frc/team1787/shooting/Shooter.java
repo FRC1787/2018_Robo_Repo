@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1787.shooting;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -27,8 +29,12 @@ public class Shooter {
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
 	private double SHOOTER_TIMER = 0;
-	private double SHOOTING_VOLTAGE = 0.5;
-	private double INTAKE_VOLTAGE = 0.5;
+	private double SHOOTING_VOLTAGE = 0.1;
+	private double INTAKE_VOLTAGE = 0.1;
+	
+	//Extra talon
+	private final int EXTRA_TALON_ID = 4;
+	private WPI_TalonSRX extraTalon = new WPI_TalonSRX(EXTRA_TALON_ID);
 	
 	
 	

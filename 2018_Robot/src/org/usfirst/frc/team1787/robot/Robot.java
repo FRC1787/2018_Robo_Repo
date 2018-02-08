@@ -9,6 +9,8 @@ import org.usfirst.frc.team1787.shooting.Shooter;
 import org.usfirst.frc.team1787.subsystems.Autonomous;
 import org.usfirst.frc.team1787.subsystems.Climb;
 import org.usfirst.frc.team1787.subsystems.DriveTrain;
+import org.usfirst.frc.team1787.subsystems.Testing;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,6 +26,7 @@ public class Robot extends TimedRobot {
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private Climb climb = Climb.getInstance();
 	private Shooter shooter = Shooter.getInstance();
+	private Testing testing = Testing.getInstance();
 	
 	private final int RIGHT_JOYSTICK_ID = 0;
 	private final int LEFT_JOYSTICK_ID = 1;
@@ -36,6 +39,8 @@ public class Robot extends TimedRobot {
 	private int SHOOT_CUBES_BUTTON = 1;
 	private int CLIMB_EXTEND_BUTTON = 10;
 	private int CLIMB_RETRACT_BUTTON = 5;
+	
+	private int TEST_MOTOR_BUTTON = 1;
 	
 	//Timer runs some of the below methods every 20ms
 
@@ -62,6 +67,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		
 		
 		
 		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
@@ -93,6 +99,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		
+		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
+			testing.testMotorControllerID();
+		}
 	}
 }

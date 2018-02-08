@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Output {
 	
-	private final int TOP_SHOOT_MASTER_TALON_ID = 6;
-	private final int BOTTOM_SHOOT_MASTER_TALON_ID = 7;
-	private final int TOP_SHOOT_FOLLOWER_VICTOR_ID = 8;
-	private final int BOTTOM_SHOOT_FOLLOWER_VICTOR_ID = 9;
+	private final int TOP_SHOOT_MASTER_TALON_ID = 1;
+	private final int BOTTOM_SHOOT_MASTER_TALON_ID = 2;
+	private final int TOP_SHOOT_FOLLOWER_VICTOR_ID = 5;
+	private final int BOTTOM_SHOOT_FOLLOWER_VICTOR_ID = 6;
 	private final int OUTPUT_SOLENOID_ID = 3;
 	
 	private WPI_TalonSRX topMaster = new WPI_TalonSRX(TOP_SHOOT_MASTER_TALON_ID);
