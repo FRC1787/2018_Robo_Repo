@@ -44,7 +44,12 @@ public class Robot extends TimedRobot {
 	private int CLIMB_EXTEND_BUTTON = 10;
 	private int CLIMB_RETRACT_BUTTON = 5;
 	
-	private int TEST_MOTOR_BUTTON = 1;
+	private int TEST_MOTOR_BUTTON_1 = 1;
+	private int TEST_MOTOR_BUTTON_2 = 2;
+	
+	private double TOP_OUTPUT_SPEED = 1.0;
+	private double BOTTOM_OUTPUT_SPEED = 1.0;
+	private double REVERSE_OUTPUT_SPEED = -0.3;
 	
 	//Timer runs some of the below methods every 20ms
 
@@ -75,6 +80,33 @@ public class Robot extends TimedRobot {
 		driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
 		
+		
+		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
+			output.turnOnWheels(TOP_OUTPUT_SPEED, BOTTOM_OUTPUT_SPEED);
+		}
+		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON_1)) {
+			output.turnOffWheels();
+		}
+		
+		
+		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON_2)) {
+			output.turnOnWheels(REVERSE_OUTPUT_SPEED, REVERSE_OUTPUT_SPEED);
+		}
+		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON_2)) {
+			output.turnOffWheels();
+		}
+		
+		
+		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
+			output.testSolenoid(true);
+		}
+		else if (rightStick.getRawButtonReleased(TEST_MOTOR_BUTTON_1)) {
+			output.testSolenoid(false);
+		}
+		
+		
+		
+		/*
 		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
 			shooter.shootThoseDankCubes();
 		}
@@ -90,7 +122,7 @@ public class Robot extends TimedRobot {
 		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
 			climb.retractPiston();
 		}
-		
+		*/
 		
 		//Putting everything on shuffleboard
 		driveTrain.pushDataToShuffleboard();
@@ -98,6 +130,9 @@ public class Robot extends TimedRobot {
 		intake.pushDataToShuffleboard();
 		output.pushDataToShuffleboard();
 		shooter.pushDataToShuffleboard();
+		SmartDashboard.putNumber("Top Shooter Speed:", TOP_OUTPUT_SPEED);
+		SmartDashboard.putNumber("Bottom Shooter Speed:", BOTTOM_OUTPUT_SPEED);
+		SmartDashboard.putNumber("Reverse Shooter Speed:", REVERSE_OUTPUT_SPEED);
 		
 	}
 	
@@ -109,12 +144,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 				
-		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
-			output.turnOnWheels(1, 1);
-		}
-		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON)) {
-			output.turnOffWheels();
-		}
 	}
 	
 	public void disabledInit() {

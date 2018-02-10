@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climb {
 	
-	private final int CLIMB_EXTEND_SOLENOID_ID = 0;
-	private final int CLIMB_RETRACT_SOLENOID_ID = 1;
+	private final int CLIMB_EXTEND_SOLENOID_ID = 1;
+	private final int CLIMB_RETRACT_SOLENOID_ID = 2;
 	
 	private DoubleSolenoid climbingSolenoid = new DoubleSolenoid(CLIMB_EXTEND_SOLENOID_ID, CLIMB_RETRACT_SOLENOID_ID);
 	

@@ -13,7 +13,7 @@ public class Intake {
 	
 	private final int INTAKE_RIGHT_TALON_ID = 3;
 	private final int INTAKE_LEFT_VICTOR_ID = 7;
-	private final int INTAKE_SOLENOID_ID = 2;
+	private final int INTAKE_SOLENOID_ID = 6;
 	
 	private WPI_TalonSRX intakeRight = new WPI_TalonSRX(INTAKE_RIGHT_TALON_ID);
 	private WPI_VictorSPX intakeLeft = new WPI_VictorSPX(INTAKE_LEFT_VICTOR_ID);
@@ -37,6 +37,10 @@ public class Intake {
 		intakeLeft.enableVoltageCompensation(true);
 	}
 	
+	
+	public void testSolenoid(boolean boolInput) {
+		intakeSolenoid.set(boolInput);
+	}
 	
 	
 	public void turnOnWheels(double INTAKE_VOLTAGE) {

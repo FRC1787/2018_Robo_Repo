@@ -21,7 +21,7 @@ public class Output {
 	private final int BOTTOM_SHOOT_MASTER_TALON_ID = 2;
 	private final int TOP_SHOOT_FOLLOWER_VICTOR_ID = 5;
 	private final int BOTTOM_SHOOT_FOLLOWER_VICTOR_ID = 6;
-	private final int OUTPUT_SOLENOID_ID = 3;
+	private final int OUTPUT_SOLENOID_ID = 5;
 	
 	private WPI_TalonSRX topMaster = new WPI_TalonSRX(TOP_SHOOT_MASTER_TALON_ID);
 	private WPI_VictorSPX topFollower = new WPI_VictorSPX(TOP_SHOOT_FOLLOWER_VICTOR_ID);
@@ -38,8 +38,8 @@ public class Output {
 	
 	
 	private Output() {
-		topFollower.follow(topMaster);
-		bottomFollower.follow(bottomMaster);
+		//topFollower.follow(topMaster);
+		//bottomFollower.follow(bottomMaster);
 				
 		//Making every talon light up green when forwards
 		topMaster.setInverted(false);
@@ -60,6 +60,10 @@ public class Output {
 	}
 	
 
+	public void testSolenoid(boolean boolInput) {
+		outputSolenoid.set(boolInput);
+	}
+	
 	
 	public void turnOnWheels(double TOP_SHOOTER_VOLTAGE, double BOTTOM_SHOOTER_VOLTAGE) {
 		topMaster.set(TOP_SHOOTER_VOLTAGE);

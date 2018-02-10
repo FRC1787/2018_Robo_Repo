@@ -64,6 +64,12 @@ public class Shooter {
 	
 	private static final Shooter instance = new Shooter();
 	
+	
+	public void testSolenoid(boolean boolInput) {
+		shooterMoveSolenoid.set(boolInput);
+	}
+	
+	
 	public void shootThoseDankCubes() {
 		
 		if (SHOOTER_TIMER > SHOOTING_STAGE_1_START_TIME && SHOOTER_TIMER < SHOOTING_STAGE_1_END_TIME) {
