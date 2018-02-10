@@ -38,10 +38,10 @@ public class DriveTrain {
 		//rightFollower.follow(rightMaster);
 		
 		//Inverting all of the talons so that they all light up green when the robot goes forward 
-		leftMaster.setInverted(true);
+		leftMaster.setInverted(false);
 		leftFollower.setInverted(false);
-		rightMaster.setInverted(false);
-		rightFollower.setInverted(false);
+		rightMaster.setInverted(true);
+		rightFollower.setInverted(true);
 		
 		//Voltage Compensation for the talons
 		leftMaster.configVoltageCompSaturation(12, 10);
@@ -67,60 +67,47 @@ public class DriveTrain {
 	}
 	
 	
-	@SuppressWarnings("ParameterName")
-	public void arcadeDrive(double xSpeed, double zRotation) {
-		//Basic drive class, makes the robot move forwards or backwards with a rotation
-	    double leftMotorOutput;
-	    double rightMotorOutput;
-
-	    
-	    double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
-	    
-	    
-	    //This gets the joystick being put to a side to work correctly by putting the two sides in opposite directions
-	    if (xSpeed <= 0.1 && xSpeed >= -0.1) {
-	    	if (zRotation >= 0) {
-	    		leftMotorOutput = maxInput;
-	    		rightMotorOutput = -maxInput;
-	    	}
-	    	else {
-	    		leftMotorOutput = -maxInput;
-	    		rightMotorOutput = maxInput;
-	    	}
+	public void tankDrive(double leftInput, double rightInput) {
+		leftMaster.set(leftInput);
+		leftFollower.set(leftInput);
+		rightMaster.set(rightInput);
+		rightFollower.set(rightInput);
+	}
+	
+	private double truncateMotorOutput(double motorOutput) {
+		if (motorOutput > 1) {
+	    	return 1;
 	    }
-	    
-	    
-	    if (xSpeed >= 0.0) {
-	      // First quadrant, else second quadrant
-	      if (zRotation >= 0.0) {
-	        leftMotorOutput = maxInput;
-	        rightMotorOutput = xSpeed - zRotation;
-	      } else {
-	        leftMotorOutput = xSpeed + zRotation;
-	        rightMotorOutput = maxInput;
-	      }
-	    } 
-	    
+	    else if (motorOutput < -1) {
+	    	return -1;
+	    }
 	    else {
-	      // Third quadrant, else fourth quadrant
-	      if (zRotation >= 0.0) {
-	        leftMotorOutput = maxInput;
-	        rightMotorOutput = xSpeed + zRotation;
-	      } else {
-	        leftMotorOutput = xSpeed - zRotation;
-	        rightMotorOutput = maxInput;
-	      }
+	    	return motorOutput;
 	    }
+	}
+	
+	@SuppressWarnings("ParameterName")
+	public void arcadeDrive(double yInput, double xInput) {
+		//Basic drive class, makes the robot move forwards or backwards with a rotation
+		
+		
+		//Makes driving input feel less sensitive, better control
+		yInput = yInput * Math.abs(yInput);
+		xInput = xInput * Math.abs(xInput);
+		
+				
+		//Simons algorithm
+	    double leftMotorOutput = yInput + xInput;
+	    double rightMotorOutput = yInput - xInput;
 	    
-	    
+	    leftMotorOutput = truncateMotorOutput(leftMotorOutput);
+	    rightMotorOutput = truncateMotorOutput(rightMotorOutput);
 	    
 	    leftMaster.set(leftMotorOutput);
-	    leftFollower.set(leftMotorOutput);
 	    rightMaster.set(rightMotorOutput);
+	    leftFollower.set(leftMotorOutput);
 	    rightFollower.set(rightMotorOutput);
 	    
-	    System.out.println("Left: " + leftMotorOutput);
-	    System.out.println("Right: " + rightMotorOutput);
 	  }
 	
 	

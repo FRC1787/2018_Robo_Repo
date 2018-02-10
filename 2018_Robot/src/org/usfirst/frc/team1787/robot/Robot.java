@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1787.robot;
 
+import org.usfirst.frc.team1787.shooting.Intake;
+import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
 
 /* CLASS DEFINITION:
@@ -27,6 +29,8 @@ public class Robot extends TimedRobot {
 	private Climb climb = Climb.getInstance();
 	private Shooter shooter = Shooter.getInstance();
 	private Testing testing = Testing.getInstance();
+	private Output output = Output.getInstance();
+	private Intake intake = Intake.getInstance();
 	
 	private final int RIGHT_JOYSTICK_ID = 0;
 	private final int LEFT_JOYSTICK_ID = 1;
@@ -66,8 +70,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		
+		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
 		
 		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
@@ -88,6 +93,10 @@ public class Robot extends TimedRobot {
 		
 		
 		
+		
+		
+		
+		
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();
 	}
@@ -99,8 +108,12 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
-			testing.testMotorControllerID();
+				
+		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
+			output.turnOnWheels(0.1);
+		}
+		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON)) {
+			output.turnOffWheels();
 		}
 	}
 }
