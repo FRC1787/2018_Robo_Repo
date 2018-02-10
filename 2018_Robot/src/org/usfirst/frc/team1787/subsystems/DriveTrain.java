@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1787.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -38,10 +39,10 @@ public class DriveTrain {
 		//rightFollower.follow(rightMaster);
 		
 		//Inverting all of the talons so that they all light up green when the robot goes forward 
-		leftMaster.setInverted(false);
-		leftFollower.setInverted(false);
-		rightMaster.setInverted(true);
-		rightFollower.setInverted(true);
+		leftMaster.setInverted(true);
+		leftFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
 		
 		//Voltage Compensation for the talons
 		leftMaster.configVoltageCompSaturation(12, 10);
@@ -53,6 +54,13 @@ public class DriveTrain {
 		leftFollower.enableVoltageCompensation(true);
 		rightMaster.enableVoltageCompensation(true);
 		rightFollower.enableVoltageCompensation(true);
+		
+		
+		//testing stuff
+		leftMaster.setNeutralMode(NeutralMode.Coast);
+		rightMaster.setNeutralMode(NeutralMode.Coast);
+		leftFollower.setNeutralMode(NeutralMode.Coast);
+		rightFollower.setNeutralMode(NeutralMode.Coast);
 	}
 	
 	
@@ -68,7 +76,7 @@ public class DriveTrain {
 	
 	
 	public void tankDrive(double leftInput, double rightInput) {
-		leftMaster.set(leftInput);
+		//leftMaster.set(leftInput);
 		leftFollower.set(leftInput);
 		rightMaster.set(rightInput);
 		rightFollower.set(rightInput);
@@ -103,8 +111,8 @@ public class DriveTrain {
 	    leftMotorOutput = truncateMotorOutput(leftMotorOutput);
 	    rightMotorOutput = truncateMotorOutput(rightMotorOutput);
 	    
-	    leftMaster.set(leftMotorOutput);
-	    rightMaster.set(rightMotorOutput);
+	    //leftMaster.set(leftMotorOutput);
+	    //rightMaster.set(rightMotorOutput);
 	    leftFollower.set(leftMotorOutput);
 	    rightFollower.set(rightMotorOutput);
 	    

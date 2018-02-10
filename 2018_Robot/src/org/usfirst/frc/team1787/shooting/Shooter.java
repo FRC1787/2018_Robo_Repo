@@ -29,7 +29,8 @@ public class Shooter {
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
 	private double SHOOTER_TIMER = 0;
-	private double SHOOTING_VOLTAGE = 0.1;
+	private double TOP_SHOOTING_VOLTAGE = 0.1;
+	private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
 	private double INTAKE_VOLTAGE = 0.1;
 	
 	//Extra talon
@@ -65,7 +66,7 @@ public class Shooter {
 		
 		if (SHOOTER_TIMER > SHOOTING_STAGE_1_START_TIME && SHOOTER_TIMER < SHOOTING_STAGE_1_END_TIME) {
 			//Start shooting motors (Stage 1 and 2 motors) and briefly turn on intake
-			output.turnOnWheels(SHOOTING_VOLTAGE); //hello my name is nora and I like programming I learned how to type by playing minecraft
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE); //hello my name is nora and I like programming I learned how to type by playing minecraft
 			intake.turnOnWheels(INTAKE_VOLTAGE);
 		}
 		else if (SHOOTER_TIMER > SHOOTING_STAGE_2_START_TIME && SHOOTER_TIMER < SHOOTING_STAGE_2_END_TIME) {

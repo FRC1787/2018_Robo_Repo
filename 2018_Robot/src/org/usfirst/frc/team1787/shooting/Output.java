@@ -43,9 +43,9 @@ public class Output {
 				
 		//Making every talon light up green when forwards
 		topMaster.setInverted(false);
-		topFollower.setInverted(false);
+		topFollower.setInverted(true);
 		bottomMaster.setInverted(false);
-		bottomFollower.setInverted(false);
+		bottomFollower.setInverted(true);
 		
 		//Voltage Compensation for the talons
 		topMaster.configVoltageCompSaturation(12, 10);
@@ -61,14 +61,18 @@ public class Output {
 	
 
 	
-	public void turnOnWheels(double SHOOTER_VOLTAGE) {
-		topMaster.set(SHOOTER_VOLTAGE);
-		bottomMaster.set(SHOOTER_VOLTAGE);
+	public void turnOnWheels(double TOP_SHOOTER_VOLTAGE, double BOTTOM_SHOOTER_VOLTAGE) {
+		topMaster.set(TOP_SHOOTER_VOLTAGE);
+		bottomMaster.set(BOTTOM_SHOOTER_VOLTAGE);
+		topFollower.set(TOP_SHOOTER_VOLTAGE);
+		bottomFollower.set(BOTTOM_SHOOTER_VOLTAGE);
 	}
 	
 	public void turnOffWheels() {
 		topMaster.stopMotor();
 		bottomMaster.stopMotor();
+		topFollower.stopMotor();
+		bottomFollower.stopMotor();
 	}
 	
 	

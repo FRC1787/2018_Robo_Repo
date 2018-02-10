@@ -71,8 +71,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
-		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
+		//driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
 		
 		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
@@ -93,12 +93,9 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		
-		
-		
-		
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();
+		
 	}
 	
 	@Override
@@ -110,10 +107,18 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {
 				
 		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
-			output.turnOnWheels(0.1);
+			output.turnOnWheels(1, 0.6);
 		}
 		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON)) {
 			output.turnOffWheels();
 		}
+	}
+	
+	public void disabledInit() {
+		output.turnOffWheels();
+	}
+	
+	public void disabledPeriodic() {
+		output.turnOffWheels();
 	}
 }
