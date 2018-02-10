@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopInit() {
-		
+		output.turnOffWheels();
 	}
 
 	@Override
@@ -92,9 +92,12 @@ public class Robot extends TimedRobot {
 		}
 		
 		
-		
+		//Putting everything on shuffleboard
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();
+		intake.pushDataToShuffleboard();
+		output.pushDataToShuffleboard();
+		shooter.pushDataToShuffleboard();
 		
 	}
 	

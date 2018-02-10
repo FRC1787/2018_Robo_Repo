@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* CLASS DEFINITION:
  * This is the class that ties the intake and the output together for the purpose of coordinating their movement. Both of those sub-systems are defined in
@@ -28,6 +29,7 @@ public class Shooter {
 	
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
+	
 	private double SHOOTER_TIMER = 0;
 	private double TOP_SHOOTING_VOLTAGE = 0.1;
 	private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
@@ -97,6 +99,17 @@ public class Shooter {
 	
 	public void pushDataToShuffleboard() {
 		//shuffleboard data here
+		SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER);
+		SmartDashboard.putNumber("Shooting S1 Start", SHOOTING_STAGE_1_START_TIME);
+		SmartDashboard.putNumber("Shooting S1 END", SHOOTING_STAGE_1_END_TIME);
+		SmartDashboard.putNumber("Shooting S2 Start", SHOOTING_STAGE_2_START_TIME);
+		SmartDashboard.putNumber("Shooting S2 END", SHOOTING_STAGE_2_END_TIME);
+		SmartDashboard.putNumber("Shooting S3 Start", SHOOTING_STAGE_3_START_TIME);
+		SmartDashboard.putNumber("Shooting S3 END", SHOOTING_STAGE_3_END_TIME);
+		SmartDashboard.putNumber("Shooting S4 Start", SHOOTING_STAGE_4_START_TIME);
+		SmartDashboard.putNumber("Shooting S4 END", SHOOTING_STAGE_4_END_TIME);
+		SmartDashboard.putNumber("Shooting S5 Start", SHOOTING_STAGE_5_START_TIME);
+		SmartDashboard.putNumber("Shooting S5 END", SHOOTING_STAGE_5_END_TIME);
 	}
 	
 	public static Shooter getInstance() {

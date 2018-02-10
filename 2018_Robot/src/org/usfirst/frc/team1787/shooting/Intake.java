@@ -25,7 +25,7 @@ public class Intake {
 	private Intake() {
 		
 		//Configuring motor controllers
-		intakeLeft.follow(intakeRight);
+		//intakeLeft.follow(intakeRight);
 		
 		intakeRight.setInverted(false);
 		intakeLeft.setInverted(false);
@@ -41,10 +41,12 @@ public class Intake {
 	
 	public void turnOnWheels(double INTAKE_VOLTAGE) {
 		intakeRight.set(INTAKE_VOLTAGE);
+		intakeLeft.set(INTAKE_VOLTAGE);
 	}
 	
 	public void turnOffWheels() {
 		intakeRight.stopMotor();
+		intakeLeft.stopMotor();
 	}
 	
 	
