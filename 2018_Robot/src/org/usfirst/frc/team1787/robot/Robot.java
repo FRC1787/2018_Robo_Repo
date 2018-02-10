@@ -100,14 +100,14 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void testInit() {
-		
+		output.turnOffWheels();
 	}
 
 	@Override
 	public void testPeriodic() {
 				
 		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON)) {
-			output.turnOnWheels(1, 0.6);
+			output.turnOnWheels(1, 1);
 		}
 		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON)) {
 			output.turnOffWheels();
