@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 	private double TOP_OUTPUT_SPEED = 1.0;
 	private double BOTTOM_OUTPUT_SPEED = 0.9;
 	private double REVERSE_OUTPUT_SPEED = -0.2;
+	private double INTAKE_SPEED = 0.25;
 	int time = 0;
 	
 	
@@ -88,6 +89,21 @@ public class Robot extends TimedRobot {
 		
 		//leftMaster is commented out and so the left side is only run by leftFollower
 		driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
+		
+		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
+			shooter.shootThoseDankCubes(TOP_OUTPUT_SPEED, BOTTOM_OUTPUT_SPEED, INTAKE_SPEED);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
