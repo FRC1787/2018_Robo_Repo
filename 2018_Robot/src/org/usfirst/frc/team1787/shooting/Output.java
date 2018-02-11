@@ -92,8 +92,8 @@ public class Output {
 	
 	
 	public void pushDataToShuffleboard() {
-		SmartDashboard.putNumber("Top Shooter Speed: ", topMaster.get());
-		SmartDashboard.putNumber("Bottom Shooter Speed: ", bottomMaster.get());
+		SmartDashboard.putData("Top Shooter Speed: ", topMaster);
+		SmartDashboard.putData("Bottom Shooter Speed: ", bottomMaster);
 	}
 	
 	public static Output getInstance() {

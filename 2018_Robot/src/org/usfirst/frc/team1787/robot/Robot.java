@@ -14,9 +14,12 @@ import org.usfirst.frc.team1787.subsystems.DriveTrain;
 import org.usfirst.frc.team1787.subsystems.Testing;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -47,9 +50,12 @@ public class Robot extends TimedRobot {
 	private int TEST_MOTOR_BUTTON_1 = 1;
 	private int TEST_MOTOR_BUTTON_2 = 2;
 	
+	
 	private double TOP_OUTPUT_SPEED = 1.0;
-	private double BOTTOM_OUTPUT_SPEED = 1.0;
-	private double REVERSE_OUTPUT_SPEED = -0.3;
+	private double BOTTOM_OUTPUT_SPEED = 0.9;
+	private double REVERSE_OUTPUT_SPEED = -0.2;
+	int time = 0;
+	
 	
 	//Timer runs some of the below methods every 20ms
 
@@ -76,7 +82,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
+		
+		 
 		//driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		
+		//leftMaster is commented out and so the left side is only run by leftFollower
 		driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
 		
@@ -97,12 +107,36 @@ public class Robot extends TimedRobot {
 		}
 		
 		
-		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
-			output.testSolenoid(true);
+		
+		if (climb.climbingSolenoid.get() == DoubleSolenoid.Value.kReverse) {
+			
 		}
-		else if (rightStick.getRawButtonReleased(TEST_MOTOR_BUTTON_1)) {
+		shooter.testSolenoid(true);
+		
+		
+		if (time > 6) {
 			output.testSolenoid(false);
 		}
+		
+		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
+			//intake.testSolenoid(true); not hooked up
+			output.testSolenoid(true);
+			//driveTrain.testSolenoid(true);
+			//shooter.testSolenoid(true);
+			//climb.extendPiston();
+			time = 0;
+			
+		}
+		time++;
+		
+		 if (rightStick.getRawButtonReleased(TEST_MOTOR_BUTTON_2)) {
+			//intake.testSolenoid(false); not hooked up
+			output.testSolenoid(false);
+			//driveTrain.testSolenoid(false);
+			//shooter.testSolenoid(false);
+			//climb.retractPiston();
+		}
+		
 		
 		
 		
@@ -152,5 +186,6 @@ public class Robot extends TimedRobot {
 	
 	public void disabledPeriodic() {
 		output.turnOffWheels();
+		shooter.testSolenoid(true);
 	}
 }

@@ -81,12 +81,8 @@ public class DriveTrain {
 	
 	
 	public void pushDataToShuffleboard() {
-		SmartDashboard.putNumber("Left Output: ", leftMaster.get());
-		SmartDashboard.putNumber("Right Output: ", rightMaster.get());
-		SmartDashboard.putBoolean("L-M Drive Inverted:", LEFT_DRIVE_MASTER_INVERTED);
-		SmartDashboard.putBoolean("L-F Drive Inverted:", LEFT_DRIVE_FOLLOWER_INVERTED);
-		SmartDashboard.putBoolean("R-M Drive Inverted:", RIGHT_DRIVE_MASTER_INVERTED);
-		SmartDashboard.putBoolean("R-F Drive Inverted:", RIGHT_DRIVE_FOLLOWER_INVERTED);
+		SmartDashboard.putData("Left Drive: ", leftMaster);
+		SmartDashboard.putData("Right Drive: ", rightMaster);
 	}
 	
 	

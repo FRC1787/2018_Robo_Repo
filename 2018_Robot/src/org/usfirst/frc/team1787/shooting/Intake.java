@@ -80,7 +80,7 @@ public class Intake {
 	
 	public void pushDataToShuffleboard() {
 		SmartDashboard.putBoolean("Gripped: ", intakeSolenoid.get());
-		SmartDashboard.putNumber("Intake Motor Speed: ", intakeRight.get());
+		SmartDashboard.putData("Intake Motor Speed: ", intakeRight);
 	}
 	
 	public static Intake getInstance() {
