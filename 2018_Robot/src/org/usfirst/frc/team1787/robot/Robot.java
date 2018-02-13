@@ -45,53 +45,26 @@ public class Robot extends TimedRobot {
 	private int JOYSTICK_SLIDER_AXIS = 3;
 	
 	//Input options
-	private int SHOOT_CUBES_BUTTON = 1;
-	private int CLIMB_EXTEND_BUTTON = 10;
-	private int CLIMB_RETRACT_BUTTON = 5;
-	private int START_INTAKE_BUTTON = 1;
+	private int INTAKE_FORWARD_BUTTON = 1;
+	private int INTAKE_REVERSE_BUTTON = 2;
+	private int LOW_OUTPUT_BUTTON_ID = 8;
+	private int MED_OUTPUT_BUTTON_ID = 9;
+	private int HIGH_OUTPUT_BUTTON_ID = 10;
+	private int CLIMB_EXTEND_BUTTON = 13;
+	private int CLIMB_RETRACT_BUTTON = 14;
+		
+	private double LOW_TOP_OUTPUT_SPEED = 1.0;
+	private double LOW_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	private double MED_TOP_OUTPUT_SPEED = 1.0;
+	private double MED_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	private double HIGH_TOP_OUTPUT_SPEED = 1.0;
+	private double HIGH_BOTTOM_OUTPUT_SPEED = 0.9;
 	
 	private double REVERSE_OUTPUT_SPEED = -0.2;
 	private double INTAKE_SPEED = 0.4;
 	private int SHOOTER_RAMP_UP_TIME = 25;
-	
-	
-	
-	
-	
-	//Top and bottom output speed selection between the four groups below
-	private int OUTPUT_SPEED_SELECTION = 1;
-	
-	
-	/*
-	* 1 = Switch power level
-	* 2 = 4' Scale position power level
-	* 3 = 5' Scale position power level
-	* 4 = 6' Scale position power level
-	* 
-	* All current values except the high scale output speeds are fillers
-	* 
-	* */
-	
-	//Selection ID 1
-	private int SWITCH_OUTPUT_BUTTON_ID = 6;
-	private double SWITCH_TOP_OUTPUT_SPEED = 1.0;
-	private double SWITCH_BOTTOM_OUTPUT_SPEED = 0.9;
-	
-	//Selection ID 2
-	private int LOW_SCALE_OUTPUT_BUTTON_ID = 7;
-	private double LOW_SCALE_TOP_OUTPUT_SPEED = 1.0;
-	private double LOW_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
-	
-	//Selection ID 3
-	private int MED_SCALE_OUTPUT_BUTTON_ID = 8;
-	private double MED_SCALE_TOP_OUTPUT_SPEED = 1.0;
-	private double MED_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
-	
-	//Selection ID 4
-	private int HIGH_SCALE_OUTPUT_BUTTON_ID = 9;
-	private double HIGH_SCALE_TOP_OUTPUT_SPEED = 1.0;
-	private double HIGH_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
-	
 	
 	
 	
@@ -125,12 +98,15 @@ public class Robot extends TimedRobot {
 		 * Be the best, like no one ever was
 		 */
 		
-		 
+		/************************
+		 *                      *
+		 * RIGHT STICK CONTROLS *
+		 *                      *
+		 ************************
+		 */
+		
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
-		
-		
-		
 		
 		//Set the gear based on the right slider
 		if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) > 0) {
@@ -144,10 +120,10 @@ public class Robot extends TimedRobot {
 		
 		
 		//Start intake
-		if (leftStick.getRawButtonPressed(START_INTAKE_BUTTON)) {
+		if (leftStick.getRawButtonPressed(INTAKE_FORWARD_BUTTON)) {
 			intake.turnOnWheels(INTAKE_SPEED);
 		}
-		else if (leftStick.getRawButtonReleased(START_INTAKE_BUTTON)) {
+		else if (leftStick.getRawButtonReleased(INTAKE_FORWARD_BUTTON)) {
 			intake.turnOffWheels();
 		}
 
@@ -155,10 +131,10 @@ public class Robot extends TimedRobot {
 		
 		
 		//Turn the cubes in the intake
-		if (leftStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.1) {
+		if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.1) {
 			intake.spinCubeRight(INTAKE_SPEED);
 		}
-		else if (leftStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.1) {
+		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.1) {
 			intake.spinCubeLeft(INTAKE_SPEED);
 		}
 		else {
@@ -168,63 +144,17 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		//Move shooter assembly
-		if (leftStick.getRawButton(5)) {
-			shooter.moveSolenoid(true);
+		//Choosing shooting speeds based on buttons, shoots the cubes
+		if (rightStick.getRawButtonPressed(LOW_OUTPUT_BUTTON_ID)) {
+			shooter.shootThoseDankCubes(LOW_TOP_OUTPUT_SPEED, LOW_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
 		}
-		else if (leftStick.getRawButton(10)) {
-			shooter.moveSolenoid(false);
+		else if (rightStick.getRawButtonPressed(MED_OUTPUT_BUTTON_ID)) {
+			shooter.shootThoseDankCubes(MED_TOP_OUTPUT_SPEED, MED_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
 		}
-		
-		
-		
-		
-		//Choosing shooting speeds based on buttons, corresponds to list above in the code
-		if (rightStick.getRawButtonPressed(SWITCH_OUTPUT_BUTTON_ID)) {
-			OUTPUT_SPEED_SELECTION = 1;
+		else if (rightStick.getRawButtonPressed(HIGH_OUTPUT_BUTTON_ID)) {
+			shooter.shootThoseDankCubes(HIGH_TOP_OUTPUT_SPEED, HIGH_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
 		}
-		else if (rightStick.getRawButtonPressed(LOW_SCALE_OUTPUT_BUTTON_ID)) {
-			OUTPUT_SPEED_SELECTION = 2;
-		}
-		else if (rightStick.getRawButtonPressed(MED_SCALE_OUTPUT_BUTTON_ID)) {
-			OUTPUT_SPEED_SELECTION = 3;
-		}
-		else if (rightStick.getRawButtonPressed(HIGH_SCALE_OUTPUT_BUTTON_ID)) {
-			OUTPUT_SPEED_SELECTION = 4;
-		}
-		
-		
-		
-		
-		//Shooting cubes
-		if (rightStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
-			
-			
-			
-			/*
-			 * Choosing shooting speeds based on speed selection. ID's are listed at the top
-			 */
-			
-			if (OUTPUT_SPEED_SELECTION == 1) {
-				shooter.shootThoseDankCubes(SWITCH_TOP_OUTPUT_SPEED, SWITCH_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-			}
-			
-			else if (OUTPUT_SPEED_SELECTION == 2) {
-				shooter.shootThoseDankCubes(LOW_SCALE_TOP_OUTPUT_SPEED, LOW_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-			}
-			
-			else if (OUTPUT_SPEED_SELECTION == 3) {
-				shooter.shootThoseDankCubes(MED_SCALE_TOP_OUTPUT_SPEED, MED_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-			}
-			
-			else if (OUTPUT_SPEED_SELECTION == 4) {
-				shooter.shootThoseDankCubes(HIGH_SCALE_TOP_OUTPUT_SPEED, HIGH_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-			}
-			
-			
-			
-		}
-		else if (rightStick.getRawButtonReleased(SHOOT_CUBES_BUTTON)) {
+		else if (rightStick.getRawButtonReleased(LOW_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(MED_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(HIGH_OUTPUT_BUTTON_ID)) {
 			shooter.resetForThoseDankCubes();
 		}
 		
@@ -235,9 +165,29 @@ public class Robot extends TimedRobot {
 		//Climbing code
 		if (rightStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
 			climb.extendPiston();
+			shooter.moveSolenoid(false);
 		}
 		else if (rightStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
 			climb.retractPiston();
+		}
+		
+		
+		
+		
+		/*******************
+		 *                 *
+		 * LEFT STICK CODE *
+		 *                 *
+		 *******************
+		 */
+		
+		
+		//Move shooter assembly
+		if (leftStick.getRawButton(5)) {
+			shooter.moveSolenoid(true);
+		}
+		else if (leftStick.getRawButton(10)) {
+			shooter.moveSolenoid(false);
 		}
 		
 		
