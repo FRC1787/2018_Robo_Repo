@@ -119,22 +119,14 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		//Start intake
+		//Start intake and turn the cubes in the intake
 		if (leftStick.getRawButtonPressed(INTAKE_FORWARD_BUTTON)) {
 			intake.turnOnWheels(INTAKE_SPEED);
 		}
-		else if (leftStick.getRawButtonReleased(INTAKE_FORWARD_BUTTON)) {
-			intake.turnOffWheels();
-		}
-
-		
-		
-		
-		//Turn the cubes in the intake
-		if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.1) {
+		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.25) {
 			intake.spinCubeRight(INTAKE_SPEED);
 		}
-		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.1) {
+		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.25) {
 			intake.spinCubeLeft(INTAKE_SPEED);
 		}
 		else {
