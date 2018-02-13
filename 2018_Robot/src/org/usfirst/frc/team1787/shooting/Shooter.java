@@ -32,7 +32,8 @@ public class Shooter {
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
 	
-	private Timer SHOOTER_TIMER;
+	public int SHOOTER_TIMER = 0;
+	
 	//private double TOP_SHOOTING_VOLTAGE = 0.1;
 	//private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
 	//private double INTAKE_VOLTAGE = 0.1;
@@ -43,23 +44,6 @@ public class Shooter {
 	
 	
 	
-	//Shooting stage times
-	private double SHOOTING_STAGE_1_START_TIME = 0;
-	private double SHOOTING_STAGE_1_END_TIME = 0.04;
-	
-	private double SHOOTING_STAGE_2_START_TIME = 0.06;
-	private double SHOOTING_STAGE_2_END_TIME = 0.08;
-	
-	private double SHOOTING_STAGE_3_START_TIME = 0.08;
-	private double SHOOTING_STAGE_3_END_TIME = 0.10;
-	
-	private double SHOOTING_STAGE_4_START_TIME = 0.12;
-	private double SHOOTING_STAGE_4_END_TIME = 0.14;
-	
-	private double SHOOTING_STAGE_5_START_TIME = 0.16;
-	private double SHOOTING_STAGE_5_END_TIME = 0.18;
-	
-	
 	
 	private Intake intake = Intake.getInstance();
 	private Output output = Output.getInstance();
@@ -68,69 +52,50 @@ public class Shooter {
 	
 	
 	private Shooter() {
-		Timer.SetImplementation(new HardwareTimer());
-		SHOOTER_TIMER = new Timer();
+
 	}
 	
 	
 	
-	public void testSolenoid(boolean boolInput) {
+	public void moveSolenoid(boolean boolInput) {
 		shooterMoveSolenoid.set(boolInput);
 	}
 	
 	
-	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double INTAKE_VOLTAGE) {
+	public void shootThoseDankCubes(double TOP_SHOOTING_POWER, double BOTTOM_SHOOTING_POWER, double INTAKE_POWER, int SHOOTING_RAMP_UP_TIME) {
 		
-		if (SHOOTER_TIMER.get() == 0) {
-			SHOOTER_TIMER.start();
+		
+		output.turnOnWheels(TOP_SHOOTING_POWER, BOTTOM_SHOOTING_POWER);
+		
+		 //hello my name is nora and I like programming I learned how to type by playing minecraft
+		
+		if (SHOOTER_TIMER == 0) {
+			intake.turnOnWheels(INTAKE_POWER);
 		}
-		
-		
-		if (SHOOTER_TIMER.get() > SHOOTING_STAGE_1_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_1_END_TIME) {
-			//Start shooting motors (Stage 1 and 2 motors) and briefly turn on intake
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE); //hello my name is nora and I like programming I learned how to type by playing minecraft
-			intake.turnOnWheels(INTAKE_VOLTAGE);
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_2_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_2_END_TIME) {
-			//Stop intake motors
+		else if (SHOOTER_TIMER == 5) {
 			intake.turnOffWheels();
 		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_3_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_3_END_TIME) {
-			//Open intake
-			intake.releaseCube();
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_4_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_4_END_TIME) {
-			//Engage Stage 1 shooting motors
+		else if (SHOOTER_TIMER == SHOOTING_RAMP_UP_TIME) {
 			output.squeezeCube();
 		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_5_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_5_END_TIME) {
-			//Reset everything
-			output.turnOffWheels();
+		else if (SHOOTER_TIMER == (SHOOTING_RAMP_UP_TIME + 8)) {
 			output.releaseCube();
 		}
 		
-		//SHOOTER_TIMER = SHOOTER_TIMER + 0.02;
+		SHOOTER_TIMER++;
+		
 	}
 	
 	public void resetForThoseDankCubes() {
 		//Reset everything to default positions upon button release
-		SHOOTER_TIMER.stop();
-		SHOOTER_TIMER.reset();
+		output.turnOffWheels();
+		SHOOTER_TIMER = 0;
 	}
 	
 	public void pushDataToShuffleboard() {
 		//shuffleboard data here
-		SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());
-		SmartDashboard.putNumber("Shooting S1 Start", SHOOTING_STAGE_1_START_TIME);
-		SmartDashboard.putNumber("Shooting S1 END", SHOOTING_STAGE_1_END_TIME);
-		SmartDashboard.putNumber("Shooting S2 Start", SHOOTING_STAGE_2_START_TIME);
-		SmartDashboard.putNumber("Shooting S2 END", SHOOTING_STAGE_2_END_TIME);
-		SmartDashboard.putNumber("Shooting S3 Start", SHOOTING_STAGE_3_START_TIME);
-		SmartDashboard.putNumber("Shooting S3 END", SHOOTING_STAGE_3_END_TIME);
-		SmartDashboard.putNumber("Shooting S4 Start", SHOOTING_STAGE_4_START_TIME);
-		SmartDashboard.putNumber("Shooting S4 END", SHOOTING_STAGE_4_END_TIME);
-		SmartDashboard.putNumber("Shooting S5 Start", SHOOTING_STAGE_5_START_TIME);
-		SmartDashboard.putNumber("Shooting S5 END", SHOOTING_STAGE_5_END_TIME);
+		SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER);
+
 	}
 	
 	public static Shooter getInstance() {

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1787.robot;
 
+import java.sql.Time;
+
 import org.usfirst.frc.team1787.shooting.Intake;
 import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
@@ -46,16 +48,51 @@ public class Robot extends TimedRobot {
 	private int SHOOT_CUBES_BUTTON = 1;
 	private int CLIMB_EXTEND_BUTTON = 10;
 	private int CLIMB_RETRACT_BUTTON = 5;
+	private int START_INTAKE_BUTTON = 1;
 	
-	private int TEST_MOTOR_BUTTON_1 = 1;
-	private int TEST_MOTOR_BUTTON_2 = 2;
-	
-	
-	private double TOP_OUTPUT_SPEED = 1.0;
-	private double BOTTOM_OUTPUT_SPEED = 0.9;
 	private double REVERSE_OUTPUT_SPEED = -0.2;
-	private double INTAKE_SPEED = 0.25;
-	int time = 0;
+	private double INTAKE_SPEED = 0.4;
+	private int SHOOTER_RAMP_UP_TIME = 25;
+	
+	
+	
+	
+	
+	//Top and bottom output speed selection between the four groups below
+	private int OUTPUT_SPEED_SELECTION = 1;
+	
+	
+	/*
+	* 1 = Switch power level
+	* 2 = 4' Scale position power level
+	* 3 = 5' Scale position power level
+	* 4 = 6' Scale position power level
+	* 
+	* All current values except the high scale output speeds are fillers
+	* 
+	* */
+	
+	//Selection ID 1
+	private int SWITCH_OUTPUT_BUTTON_ID = 6;
+	private double SWITCH_TOP_OUTPUT_SPEED = 1.0;
+	private double SWITCH_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	//Selection ID 2
+	private int LOW_SCALE_OUTPUT_BUTTON_ID = 7;
+	private double LOW_SCALE_TOP_OUTPUT_SPEED = 1.0;
+	private double LOW_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	//Selection ID 3
+	private int MED_SCALE_OUTPUT_BUTTON_ID = 8;
+	private double MED_SCALE_TOP_OUTPUT_SPEED = 1.0;
+	private double MED_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	//Selection ID 4
+	private int HIGH_SCALE_OUTPUT_BUTTON_ID = 9;
+	private double HIGH_SCALE_TOP_OUTPUT_SPEED = 1.0;
+	private double HIGH_SCALE_BOTTOM_OUTPUT_SPEED = 0.9;
+	
+	
 	
 	
 	//Timer runs some of the below methods every 20ms
@@ -83,96 +120,128 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
+		/* 
+		 * To Do list
+		 * Be the best, like no one ever was
+		 */
 		
 		 
-		//driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
-		//leftMaster is commented out and so the left side is only run by leftFollower
-		driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
-		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
-			shooter.shootThoseDankCubes(TOP_OUTPUT_SPEED, BOTTOM_OUTPUT_SPEED, INTAKE_SPEED);
+		
+		
+		//Set the gear based on the right slider
+		if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) > 0) {
+			driveTrain.highGear();
+		}
+		else if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) < 0) {
+			driveTrain.lowGear();
 		}
 		
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
-			output.turnOnWheels(TOP_OUTPUT_SPEED, BOTTOM_OUTPUT_SPEED);
+		//Start intake
+		if (leftStick.getRawButtonPressed(START_INTAKE_BUTTON)) {
+			intake.turnOnWheels(INTAKE_SPEED);
 		}
-		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON_1)) {
-			output.turnOffWheels();
+		else if (leftStick.getRawButtonReleased(START_INTAKE_BUTTON)) {
+			intake.turnOffWheels();
 		}
+
 		
 		
-		if (leftStick.getRawButtonPressed(TEST_MOTOR_BUTTON_2)) {
-			output.turnOnWheels(REVERSE_OUTPUT_SPEED, REVERSE_OUTPUT_SPEED);
+		
+		//Turn the cubes in the intake
+		if (leftStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.1) {
+			intake.spinCubeRight(INTAKE_SPEED);
 		}
-		else if (leftStick.getRawButtonReleased(TEST_MOTOR_BUTTON_2)) {
-			output.turnOffWheels();
+		else if (leftStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.1) {
+			intake.spinCubeLeft(INTAKE_SPEED);
+		}
+		else {
+			intake.turnOffWheels();
 		}
 		
 		
 		
-		if (climb.climbingSolenoid.get() == DoubleSolenoid.Value.kReverse) {
+		
+		//Move shooter assembly
+		if (leftStick.getRawButton(5)) {
+			shooter.moveSolenoid(true);
+		}
+		else if (leftStick.getRawButton(10)) {
+			shooter.moveSolenoid(false);
+		}
+		
+		
+		
+		
+		//Choosing shooting speeds based on buttons, corresponds to list above in the code
+		if (rightStick.getRawButtonPressed(SWITCH_OUTPUT_BUTTON_ID)) {
+			OUTPUT_SPEED_SELECTION = 1;
+		}
+		else if (rightStick.getRawButtonPressed(LOW_SCALE_OUTPUT_BUTTON_ID)) {
+			OUTPUT_SPEED_SELECTION = 2;
+		}
+		else if (rightStick.getRawButtonPressed(MED_SCALE_OUTPUT_BUTTON_ID)) {
+			OUTPUT_SPEED_SELECTION = 3;
+		}
+		else if (rightStick.getRawButtonPressed(HIGH_SCALE_OUTPUT_BUTTON_ID)) {
+			OUTPUT_SPEED_SELECTION = 4;
+		}
+		
+		
+		
+		
+		//Shooting cubes
+		if (rightStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
+			
+			
+			
+			/*
+			 * Choosing shooting speeds based on speed selection. ID's are listed at the top
+			 */
+			
+			if (OUTPUT_SPEED_SELECTION == 1) {
+				shooter.shootThoseDankCubes(SWITCH_TOP_OUTPUT_SPEED, SWITCH_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
+			}
+			
+			else if (OUTPUT_SPEED_SELECTION == 2) {
+				shooter.shootThoseDankCubes(LOW_SCALE_TOP_OUTPUT_SPEED, LOW_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
+			}
+			
+			else if (OUTPUT_SPEED_SELECTION == 3) {
+				shooter.shootThoseDankCubes(MED_SCALE_TOP_OUTPUT_SPEED, MED_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
+			}
+			
+			else if (OUTPUT_SPEED_SELECTION == 4) {
+				shooter.shootThoseDankCubes(HIGH_SCALE_TOP_OUTPUT_SPEED, HIGH_SCALE_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
+			}
+			
+			
 			
 		}
-		shooter.testSolenoid(true);
-		
-		
-		if (time > 6) {
-			output.testSolenoid(false);
-		}
-		
-		if (rightStick.getRawButtonPressed(TEST_MOTOR_BUTTON_1)) {
-			//intake.testSolenoid(true); not hooked up
-			output.testSolenoid(true);
-			//driveTrain.testSolenoid(true);
-			//shooter.testSolenoid(true);
-			//climb.extendPiston();
-			time = 0;
-			
-		}
-		time++;
-		
-		 if (rightStick.getRawButtonReleased(TEST_MOTOR_BUTTON_2)) {
-			//intake.testSolenoid(false); not hooked up
-			output.testSolenoid(false);
-			//driveTrain.testSolenoid(false);
-			//shooter.testSolenoid(false);
-			//climb.retractPiston();
-		}
-		
-		
-		
-		
-		/*
-		if (leftStick.getRawButtonPressed(SHOOT_CUBES_BUTTON)) {
-			shooter.shootThoseDankCubes();
-		}
-		else if (leftStick.getRawButtonReleased(SHOOT_CUBES_BUTTON)) {
+		else if (rightStick.getRawButtonReleased(SHOOT_CUBES_BUTTON)) {
 			shooter.resetForThoseDankCubes();
 		}
 		
 		
 		
-		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
+		
+		
+		//Climbing code
+		if (rightStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
 			climb.extendPiston();
 		}
-		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
+		else if (rightStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
 			climb.retractPiston();
 		}
-		*/
+		
+		
+		
 		
 		//Putting everything on shuffleboard
 		driveTrain.pushDataToShuffleboard();
@@ -180,9 +249,6 @@ public class Robot extends TimedRobot {
 		intake.pushDataToShuffleboard();
 		output.pushDataToShuffleboard();
 		shooter.pushDataToShuffleboard();
-		SmartDashboard.putNumber("Top Shooter Speed:", TOP_OUTPUT_SPEED);
-		SmartDashboard.putNumber("Bottom Shooter Speed:", BOTTOM_OUTPUT_SPEED);
-		SmartDashboard.putNumber("Reverse Shooter Speed:", REVERSE_OUTPUT_SPEED);
 		
 	}
 	
@@ -202,6 +268,6 @@ public class Robot extends TimedRobot {
 	
 	public void disabledPeriodic() {
 		output.turnOffWheels();
-		shooter.testSolenoid(true);
+		shooter.moveSolenoid(true);
 	}
 }
