@@ -124,8 +124,8 @@ public class DriveTrain {
 	    leftMotorOutput = truncateMotorOutput(leftMotorOutput);
 	    rightMotorOutput = truncateMotorOutput(rightMotorOutput);
 	    
-	    //leftMaster.set(leftMotorOutput);
-	    //rightMaster.set(rightMotorOutput);
+	    leftMaster.set(leftMotorOutput);
+	    rightMaster.set(rightMotorOutput);
 	    leftFollower.set(leftMotorOutput);
 	    rightFollower.set(rightMotorOutput);
 	    
