@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1787.subsystems;
 
+import org.omg.CORBA.ORBPackage.InconsistentTypeCode;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -126,10 +128,17 @@ public class DriveTrain {
 	    
 	    leftMaster.set(leftMotorOutput);
 	    rightMaster.set(rightMotorOutput);
-	    leftFollower.set(leftMotorOutput);
+	    leftFollower.set(-leftMotorOutput);
 	    rightFollower.set(rightMotorOutput);
 	    
 	  }
+	
+	public void testDrive (double x) {
+		leftMaster.set(x);
+		leftFollower.set(-x);
+		rightMaster.set(x);
+		rightFollower.set(x);
+	}
 	
 	
 	public void highGear() 

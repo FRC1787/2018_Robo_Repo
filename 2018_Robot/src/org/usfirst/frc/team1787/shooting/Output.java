@@ -96,6 +96,7 @@ public class Output {
 		SmartDashboard.putData("Bottom Shooter Speed: ", bottomMaster);
 	}
 	
+	
 	public static Output getInstance() {
 	    return instance;
 	  }
