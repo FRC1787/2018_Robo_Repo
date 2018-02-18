@@ -43,9 +43,9 @@ public class Intake {
 	}
 	
 	
-	public void turnOnWheels(double INTAKE_VOLTAGE) {
-		intakeRight.set(INTAKE_VOLTAGE);
-		intakeLeft.set(INTAKE_VOLTAGE);
+	public void turnOnWheels(double rightIntakeVoltage, double leftIntakeVoltage ) {
+		intakeRight.set(rightIntakeVoltage);
+		intakeLeft.set(leftIntakeVoltage);
 	}
 	
 	public void turnOffWheels() {
@@ -71,10 +71,21 @@ public class Intake {
 	}
 	
 	public void spinCubeRight(double INTAKE_VOLTAGE) {
-		intakeLeft.set(INTAKE_VOLTAGE);
+		intakeLeft.set(-INTAKE_VOLTAGE);
 		intakeRight.set(-INTAKE_VOLTAGE);
 	}
 	
+	public void pullCubeIn (double rightIntakeVoltage, double leftIntakeVoltage) {
+		intakeSolenoid.set(false);
+		intakeRight.set( rightIntakeVoltage );
+		intakeLeft.set(leftIntakeVoltage);
+	}
+	
+	public void pushCubeOut(double intakeOutVoltage) {
+		intakeSolenoid.set(false);
+		intakeRight.set(intakeOutVoltage);
+		intakeLeft.set(intakeOutVoltage);
+	}
 	
 	
 	

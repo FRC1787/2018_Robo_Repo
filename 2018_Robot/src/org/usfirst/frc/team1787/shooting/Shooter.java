@@ -141,7 +141,7 @@ public class Shooter {
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
 	
-	private Timer SHOOTER_TIMER;
+	
 	//private double TOP_SHOOTING_VOLTAGE = 0.1;
 	//private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
 	//private double INTAKE_VOLTAGE = 0.1;
@@ -176,18 +176,83 @@ public class Shooter {
 	private static final Shooter instance = new Shooter();
 	
 	
-	private Shooter() {
-		Timer.SetImplementation(new HardwareTimer());
-		SHOOTER_TIMER = new Timer();
-	}
+	
 	
 	
 	
 	public void testSolenoid(boolean boolInput) {
 		shooterMoveSolenoid.set(boolInput);
 	}
+//  shoot into high scale 
+	public void shootHighScale (double scaleVoltageTopHigh, double scaleVoltageBottomHigh, boolean buttonPressedHigh, boolean shootingTime, int rampUpTime, int disengageTime )
+		 {
+			buttonPressedHigh = true;
+			shootingTime = true;
+			
+		if (buttonPressedHigh == true) {
+			output.turnOnWheels(scaleVoltageTopHigh, scaleVoltageBottomHigh);
+			rampUpTime++;
+			if (rampUpTime >20 && rampUpTime < 22) {
+				output.testSolenoid(true);
+			}
+		if (rampUpTime > disengageTime) {
+				output.turnOffWheels();
+				output.testSolenoid(false);
+				buttonPressedHigh = false;
+				shootingTime = false;
+				rampUpTime =0;
+			}
+			
+		}
+	}
+		// shoot into medium scale
+	public void shootMediumScale (double scaleVoltageTopMed, double scaleVoltageBottomMed, boolean buttonPressedMed, boolean shootingTime, int rampUpTime, int disengageTime ) {
+			
+		
+		 
+			buttonPressedMed = true;
+			shootingTime = true;
+		
+		if (buttonPressedMed == true) {
+			output.turnOnWheels(scaleVoltageTopMed, scaleVoltageBottomMed);
+			rampUpTime++;
+			
+			if (rampUpTime > 20 && rampUpTime < 22) {
+				output.testSolenoid(true);
+			}
+			if (rampUpTime > disengageTime) {
+				output.turnOffWheels();
+				output.testSolenoid(false);
+				buttonPressedMed = false;
+				shootingTime = false;
+				rampUpTime =0;
+			}
+		
+		}
+	}
+		// shoot into switch
+		public void shootSwitch (double switchVoltageTop, double switchVoltageBottom, boolean buttonPressedswitch, boolean shootingTime, int rampUpTime, int disengageTime ) {
+			buttonPressedswitch = true;
+			shootingTime = true;
+		
+		if (buttonPressedswitch == true) {
+			output.turnOnWheels(switchVoltageTop, switchVoltageBottom);
+			rampUpTime++;
+			
+			if (rampUpTime > 20 && rampUpTime < 22) {
+				output.testSolenoid(true);
+			}
+			if (rampUpTime > disengageTime) {
+				output.turnOffWheels();
+				output.testSolenoid(false);
+				buttonPressedswitch = false;
+				shootingTime = false;
+				rampUpTime =0;
+			}
+		}
+		}
 	
-	
+	/*
 	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double INTAKE_VOLTAGE) {
 		
 		if (SHOOTER_TIMER.get() == 0) {
@@ -198,7 +263,7 @@ public class Shooter {
 		if (SHOOTER_TIMER.get() > SHOOTING_STAGE_1_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_1_END_TIME) {
 			//Start shooting motors (Stage 1 and 2 motors) and briefly turn on intake
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE); //hello my name is nora and I like programming I learned how to type by playing minecraft
-			intake.turnOnWheels(INTAKE_VOLTAGE);
+			intake.turnOnWheels(INTAKE_VOLTAGE, INTAKE_VOLTAGE);
 		}
 		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_2_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_2_END_TIME) {
 			//Stop intake motors
@@ -226,10 +291,10 @@ public class Shooter {
 		SHOOTER_TIMER.stop();
 		SHOOTER_TIMER.reset();
 	}
-	
+	*/
 	public void pushDataToShuffleboard() {
 		//shuffleboard data here
-		SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());
+		//SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());
 		SmartDashboard.putNumber("Shooting S1 Start", SHOOTING_STAGE_1_START_TIME);
 		SmartDashboard.putNumber("Shooting S1 END", SHOOTING_STAGE_1_END_TIME);
 		SmartDashboard.putNumber("Shooting S2 Start", SHOOTING_STAGE_2_START_TIME);

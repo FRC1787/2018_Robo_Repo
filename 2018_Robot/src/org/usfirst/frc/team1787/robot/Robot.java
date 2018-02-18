@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -38,7 +39,7 @@ public class Robot extends TimedRobot {
 	private Testing testing = Testing.getInstance();
 	private Output output = Output.getInstance();
 	private Intake intake = Intake.getInstance();
-	
+	Preferences prefs = Preferences.getInstance();
 	private final int RIGHT_JOYSTICK_ID = 0;
 	private final int LEFT_JOYSTICK_ID = 1;
 	private Joystick rightStick = new Joystick(RIGHT_JOYSTICK_ID);
@@ -47,41 +48,43 @@ public class Robot extends TimedRobot {
 	private int JOYSTICK_SLIDER_AXIS = 3;
 	
 	//Input options
-	private int INTAKE_FORWARD_BUTTON = 1;
-	private int INTAKE_REVERSE_BUTTON = 2;
+	private int intakeButton = 1;
+	private int dispenseButton = 2;
 	private int LOW_OUTPUT_BUTTON_ID = 8;
 	private int MED_OUTPUT_BUTTON_ID = 9;
 	private int HIGH_OUTPUT_BUTTON_ID = 10;
 	private int CLIMB_EXTEND_BUTTON = 13;
 	private int CLIMB_RETRACT_BUTTON = 14;
+	private int shootInHighScaleButton = 10;
+	private int shootInMediumScaleButton = 9;
+	private int shootInSwitchButton = 8;
 		
-	private double switchVoltageTop = 0.68;
-	private double switchVoltageBottom = 0.5;
+	private double switchVoltageTop = 0.45;
+	private double switchVoltageBottom = 0.6;
 	
-	private double highScaleVoltageTopMed = 0.8;
-	private double highScaleVoltageBottomMed = 0.7;
+	private double scaleVoltageTopMed = 0.8;
+	private double scaleVoltageBottomMed = 0.7;
 	
-	private double highScaleVoltageTopHigh = 0.98;
-	private double highScaleVoltageBottomHigh = 0.88;
+	private double scaleVoltageTopHigh = 0.98;
+	private double scaleVoltageBottomHigh = 0.88;
 	
-	private double REVERSE_OUTPUT_SPEED = -0.2;
-	private double intakeVoltage = 0.4;
-	private double intakeOutVoltage = 0.2;
-	private int SHOOTER_RAMP_UP_TIME = 25;
+	private double rightIntakeVoltage = 0.35;
+	private double leftIntakeVoltage = 0.2;
+	private double intakeOutVoltage = -0.2;
 	
-	private double outputspeedTop = 0.97;
-	private double outputspeedBottom = 0.88;
 	
-	private boolean timerStart = false ;
+
+	
 	private int disengageTime = 50;
-	private int turnUpTime = 0;
+	private int rampUpTime = 0;
 	
+	private boolean shootingTime = false;
 	private boolean buttonPressedHigh = false;
 	private boolean buttonPressedMed = false;
 	private boolean buttonPressedswitch = false;
 	
-	private final int rightEncoderChannelA = 1;
-	private final int rightEncoderChannelB = 0;
+	private final int rightEncoderChannelA = 0;
+	private final int rightEncoderChannelB = 1;
 	private final int leftEncoderChannelA = 2;
 	private final int leftEncoderChannelB = 3;
 	private int leftEncoderCount = 0;
@@ -89,7 +92,8 @@ public class Robot extends TimedRobot {
 	
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB , true);
 	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
-	 private boolean encoderReset = true;
+	private boolean encoderReset = true;
+	private int encodeResetCount = 0;
 	
 	
 	
@@ -114,11 +118,14 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		output.turnOffWheels();
 		intake.testSolenoid(true);
+		shooter.testSolenoid(false);
+		
+		
 	}
 
 	@Override
 	public void teleopPeriodic() {
-		
+
 		/* 
 		 * To Do list
 		 * Be the best, like no one ever was
@@ -130,7 +137,42 @@ public class Robot extends TimedRobot {
 		 *                      *
 		 ************************
 		 */
+		// Getting values from outline view
+			// intake voltage
+				rightIntakeVoltage = prefs.getDouble("rightIntakeVoltage", 0.35);
+				leftIntakeVoltage = prefs.getDouble("leftIntakeVoltage", 0.2);
+				intakeOutVoltage  = prefs.getDouble("dispenseVoltage", -0.2);
+			//timer values
+				disengageTime = prefs.getInt("disengageTime", 50);
+			//shooting voltages
+				// scale in high position voltage 
+					scaleVoltageTopHigh = prefs.getDouble("topMotorVoltageHighscale", 0.98);
+					scaleVoltageBottomHigh = prefs.getDouble("bottomMotorVoltageHighScale", 0.88);
+				//scale in balance position voltage
+					scaleVoltageTopMed = prefs.getDouble("topMotorVoltageBalancescale", 0.8);
+					scaleVoltageBottomMed = prefs.getDouble("bottomMotorVoltageBalancescale", 0.7);
+				//switch voltage
+					switchVoltageTop = prefs.getDouble("topMotorVoltageSwitch", 0.45);
+					switchVoltageBottom = prefs.getDouble("bottomMotorVoltageSwitch", 0.6);
+					
+		//reset encoder value
+		if (encoderReset == true) {
+			leftEncoder.reset();
+			rightEncoder.reset();
+			encoderReset = false;
+		}  
+					
+					
+		// engage intake when not shooting 
+		if (shootingTime == false) {
+		intake.testSolenoid(false);
+		}
+		// disengage intake when shooting
+		else if (shootingTime == true) {
+			intake.testSolenoid(true);
+		}
 		
+	 // drive the robot
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
@@ -142,29 +184,109 @@ public class Robot extends TimedRobot {
 			driveTrain.lowGear();
 		}
 		
-		
-		if (encoderReset == true) {
-			leftEncoder.reset();
-			rightEncoder.reset();
-			encoderReset = false;
-		}
-		
-		leftEncoderCount = leftEncoder.get();
-		rightEncoderCount = rightEncoder.get();
 		/*
-		if (leftEncoderCount > 1 ) {
-		driveTrain.testDrive(0.5);
+		// shoot into scale in high position
+		if (rightStick.getRawButtonPressed(shootInHighScaleButton) && buttonPressedHigh == false) {
+			shooter.shootHighScale(scaleVoltageTopHigh, scaleVoltageBottomHigh, buttonPressedHigh, shootingTime, rampUpTime, disengageTime);
+		}
+
+		// shoot into scale in balance position
+		if(rightStick.getRawButtonPressed(shootInMediumScaleButton) && buttonPressedMed ==  false) {
+			shooter.shootMediumScale(scaleVoltageTopMed, scaleVoltageBottomMed, buttonPressedMed, shootingTime, rampUpTime, disengageTime);
+		}
+
+		// shoot into switch
+		if (rightStick.getRawButtonPressed(shootInSwitchButton) && buttonPressedswitch == false ) {
+			shooter.shootSwitch(switchVoltageTop, switchVoltageBottom, buttonPressedswitch, shootingTime, rampUpTime, disengageTime);
+		}
+		*/
+
+		// pull cube in
+		if(rightStick.getRawButtonPressed(intakeButton)) {
+			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
+		}
+		else if (rightStick.getRawButtonReleased(intakeButton)) {
+			intake.testSolenoid(true);
+			intake.turnOffWheels();
+		// dispense cube
+		}
+		if (rightStick.getRawButtonPressed(dispenseButton)) {
+			intake.pushCubeOut(intakeOutVoltage);
+		}
+		else if(rightStick.getRawButtonReleased(dispenseButton)) {
+			intake.testSolenoid(true);
+			intake.turnOffWheels();
+		}
+			
+		// engage intake
+		if (rightStick.getRawButtonPressed(4)) {
+			intake.testSolenoid(false);
+		}
+		else if (rightStick.getRawButtonPressed(3)) {
+			intake.testSolenoid(true);
 		}
 		
-		//if (leftEncoderCount > 1 || rightEncoderCount > 1) {
-			//driveTrain.arcadeDrive(0, 0);
+		// hold cube in place for driving
+		if (rightStick.getRawButtonPressed(11)) {
+			output.squeezeCube();
+		}
+		else if (rightStick.getRawButtonPressed(16)) {
+			output.releaseCube();
+		}
+
+		///////// temporary////////////
+		if (leftStick.getRawButtonPressed(3)) {
+			shooter.testSolenoid(true);
+		}
+		if (leftStick.getRawButtonPressed(4)) {
+			shooter.testSolenoid(false);
+		} 
+		///////////////////
+		
+		//Climbing 
+		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
+			climb.extendPiston();
+			shooter.testSolenoid(true);
 			
-		//}
-		*/
-		 
+		}
+		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
+			climb.retractPiston();
+			shooter.testSolenoid(true);
+		}
+		
+	
 		
 		
 		
+
+		
+		
+		/*******************
+		 *                 *
+		 * LEFT STICK CODE *
+		 *                 *
+		 *******************
+		 */
+		
+		
+		
+		
+		SmartDashboard.putNumber("leftEncoderValue", leftEncoder.get());
+		SmartDashboard.putNumber("rightEncoderValue", rightEncoder.get());
+		SmartDashboard.putNumber("topMotorVoltageHighScale", scaleVoltageTopHigh);
+		SmartDashboard.putNumber("bottomMotorVoltageHighScale", scaleVoltageBottomHigh);
+		SmartDashboard.putNumber("topMotorVoltageMedscale", scaleVoltageTopMed);
+		SmartDashboard.putNumber("bottomMotorVoltageMedScale", scaleVoltageBottomMed);
+		SmartDashboard.putNumber("topMotorVoltageSwitch", switchVoltageTop);
+		SmartDashboard.putNumber("bottomMotorVoltageSwitch", switchVoltageBottom);
+		
+		//Putting everything on shuffleboard 
+		driveTrain.pushDataToShuffleboard();
+		climb.pushDataToShuffleboard();
+		intake.pushDataToShuffleboard();
+		output.pushDataToShuffleboard();
+		shooter.pushDataToShuffleboard();
+		//#########################################################################
 		   
 		 /*
 		//Start intake and turn the cubes in the intake
@@ -181,96 +303,82 @@ public class Robot extends TimedRobot {
 			intake.turnOffWheels();
 		}
 		*/
+		//  shoot into high scale 
+		
+		
+		
+		
+		
 		
 		if (rightStick.getRawButtonPressed(10) && buttonPressedHigh == false) {
 			buttonPressedHigh = true;
+			shootingTime = true;
 			}
 		if (buttonPressedHigh == true) {
-			output.turnOnWheels(highScaleVoltageTopHigh, highScaleVoltageBottomHigh);
-			turnUpTime++;
-			if (turnUpTime >20 && turnUpTime < 22) {
+			output.turnOnWheels(scaleVoltageTopHigh, scaleVoltageBottomHigh);
+			rampUpTime++;
+			
+			
+			
+			if (rampUpTime >20 && rampUpTime < 22) {
 				output.testSolenoid(true);
 			}
-			if (turnUpTime > disengageTime) {
+			if (rampUpTime > disengageTime) {
 				output.turnOffWheels();
 				output.testSolenoid(false);
 				buttonPressedHigh = false;
-				turnUpTime =0;
+				shootingTime = false;
+				rampUpTime =0;
 			}
 			
 		}
+		/*
+		// shoot into medium scale
 		if (rightStick.getRawButtonPressed(9) && buttonPressedMed == false) {
 			buttonPressedMed = true;
+			shootingTime = true;
 		}
 		if (buttonPressedMed == true) {
 			output.turnOnWheels(highScaleVoltageTopMed, highScaleVoltageBottomMed);
-			turnUpTime++;
-			if (turnUpTime > 20 && turnUpTime < 22) {
+			rampUpTime++;
+			
+	
+			if (rampUpTime > 20 && rampUpTime < 22) {
 				output.testSolenoid(true);
 			}
-			if (turnUpTime > disengageTime) {
+			if (rampUpTime > disengageTime) {
 				output.turnOffWheels();
 				output.testSolenoid(false);
 				buttonPressedMed = false;
-				turnUpTime =0;
+				shootingTime = false;
+				rampUpTime =0;
 			}
 		
 		}
+		*/
+		
+		/*
+		// shoot into switch
 		if (rightStick.getRawButtonPressed(8) && buttonPressedswitch == false) {
 			buttonPressedswitch = true;
-		
+			shootingTime = true;
 		}
 		if (buttonPressedswitch == true) {
 			output.turnOnWheels(switchVoltageTop, switchVoltageBottom);
-			turnUpTime++;
-			if (turnUpTime > 20 && turnUpTime < 22) {
+			rampUpTime++;
+			
+			if (rampUpTime > 20 && rampUpTime < 22) {
 				output.testSolenoid(true);
 			}
-			if (turnUpTime > disengageTime) {
+			if (rampUpTime > disengageTime) {
 				output.turnOffWheels();
 				output.testSolenoid(false);
 				buttonPressedswitch = false;
-				turnUpTime =0;
+				shootingTime = false;
+				rampUpTime =0;
 			}
 		}
-		
-		if(rightStick.getRawButtonPressed(1)) {
-			intake.testSolenoid(false);
-			intake.turnOnWheels(intakeVoltage);
-		}
-		else if(rightStick.getRawButtonReleased(1)) {
-			intake.testSolenoid(true);
-			intake.turnOffWheels();
-		}
-		
-		if (rightStick.getRawButtonPressed(2)) {
-			intake.testSolenoid(false);
-			intake.turnOnWheels(-intakeOutVoltage);
-		}
-		else if(rightStick.getRawButtonReleased(2)) {
-			intake.testSolenoid(true);
-			intake.turnOffWheels();
-		}
-		
-			
-		
-		if (rightStick.getRawButtonPressed(4)) {
-			intake.testSolenoid(false);
-		}
-		else if (rightStick.getRawButtonPressed(3)) {
-			intake.testSolenoid(true);
-		}
-		
-		
-		if (rightStick.getRawButtonPressed(11)) {
-			output.squeezeCube();
-		}
-		else if (rightStick.getRawButtonPressed(16)) {
-			output.releaseCube();
-		}
-		
-		
-		
+	*/
 		/*
 		//Choosing shooting speeds based on buttons, shoots the cubes
 		if (rightStick.getRawButtonPressed(LOW_OUTPUT_BUTTON_ID)) {
@@ -285,51 +393,26 @@ public class Robot extends TimedRobot {
 		else if (rightStick.getRawButtonReleased(LOW_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(MED_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(HIGH_OUTPUT_BUTTON_ID)) {
 			shooter.resetForThoseDankCubes();
 		}
+		
+		if(rightStick.getRawButtonPressed(1)) {
+			intake.testSolenoid(false);
+			intake.turnOnWheels( 0.3 , 0.15  );
+		}
+		else if(rightStick.getRawButtonReleased(1)) {
+			intake.testSolenoid(true);
+			intake.turnOffWheels();
+		}
+		
+		// dispense the cube
+		if (rightStick.getRawButtonPressed(2)) {
+			intake.testSolenoid(false);
+			intake.turnOnWheels(-0.26, -0.26);
+		}
+		else if(rightStick.getRawButtonReleased(2)) {
+			intake.testSolenoid(true);
+			intake.turnOffWheels();
+		}
 		*/
-		
-		
-		
-		
-		
-		//Climbing code
-		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
-			climb.extendPiston();
-			shooter.testSolenoid(true);
-			
-		}
-		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
-			climb.retractPiston();
-			shooter.testSolenoid(false);
-		}
-		
-		// Intake test Code
-		
-		
-		
-
-		
-		
-		/*******************
-		 *                 *
-		 * LEFT STICK CODE *
-		 *                 *
-		 *******************
-		 */
-		
-		
-		//Move shooter assembly
-		
-		
-		
-		SmartDashboard.putNumber("leftEncoderValue", leftEncoder.get());
-		SmartDashboard.putNumber("rightEncoderValue", rightEncoder.get());
-		
-		//Putting everything on shuffleboard
-		driveTrain.pushDataToShuffleboard();
-		climb.pushDataToShuffleboard();
-		intake.pushDataToShuffleboard();
-		output.pushDataToShuffleboard();
-		shooter.pushDataToShuffleboard();
 		
 	}
 	
@@ -350,5 +433,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		output.turnOffWheels();
 		shooter.testSolenoid(true);
+		encoderReset = true;
 	}
 }

@@ -26,12 +26,12 @@ public class Climb {
 	
 	
 	public void extendPiston() {
-		climbingSolenoid.set(EXTEND);
+		climbingSolenoid.set(RETRACT);
 	}
 	
 	
 	public void retractPiston() {
-		climbingSolenoid.set(RETRACT);
+		climbingSolenoid.set(EXTEND);
 	}
 	
 	
