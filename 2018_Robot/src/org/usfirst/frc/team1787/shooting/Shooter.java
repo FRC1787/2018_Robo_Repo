@@ -168,6 +168,7 @@ public class Shooter {
 	private double SHOOTING_STAGE_5_START_TIME = 0.16;
 	private double SHOOTING_STAGE_5_END_TIME = 0.18;
 	
+	private int rampUpTime = 0;
 	
 	
 	private Intake intake = Intake.getInstance();
@@ -254,9 +255,22 @@ public class Shooter {
 		}
 	*/
 	
-	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double INTAKE_VOLTAGE) {
+	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int DISENGAGE_TIME) {
 		
+		if (rampUpTime > 0 && rampUpTime < 2) {
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+		}
 		
+		else if (rampUpTime > 20 && rampUpTime < 22) {
+			output.squeezeCube();
+		}
+		
+		else if (rampUpTime > DISENGAGE_TIME) {
+			output.releaseCube();
+			output.turnOffWheels();
+		}
+		
+		rampUpTime++;
 		
 	}
 	
@@ -265,8 +279,8 @@ public class Shooter {
 	
 	public void resetForThoseDankCubes() {
 		//Reset everything to default positions upon button release
-		SHOOTER_TIMER.stop();
-		SHOOTER_TIMER.reset();
+		output.turnOffWheels();
+		output.releaseCube();
 	}
 	
 	public void pushDataToShuffleboard() {

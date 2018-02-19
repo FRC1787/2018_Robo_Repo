@@ -167,7 +167,6 @@ public class Robot extends TimedRobot {
 		
 	 // drive the robot
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
-		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
 		//Set the gear based on the right slider
 		if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) > 0) {
@@ -177,45 +176,39 @@ public class Robot extends TimedRobot {
 			driveTrain.lowGear();
 		}
 		
-		/*
-		// shoot into scale in high position
-		if (rightStick.getRawButtonPressed(shootInHighScaleButton) && buttonPressedHigh == false) {
-			shooter.shootHighScale(scaleVoltageTopHigh, scaleVoltageBottomHigh, buttonPressedHigh, shootingTime, rampUpTime, disengageTime);
-		}
-
-		// shoot into scale in balance position
-		if(rightStick.getRawButtonPressed(shootInMediumScaleButton) && buttonPressedMed ==  false) {
-			shooter.shootMediumScale(scaleVoltageTopMed, scaleVoltageBottomMed, buttonPressedMed, shootingTime, rampUpTime, disengageTime);
-		}
-
-		// shoot into switch
-		if (rightStick.getRawButtonPressed(shootInSwitchButton) && buttonPressedswitch == false ) {
-			shooter.shootSwitch(switchVoltageTop, switchVoltageBottom, buttonPressedswitch, shootingTime, rampUpTime, disengageTime);
-		}
-		*/
-		/*
+		
+		
 		// pull cube in
 		if(rightStick.getRawButtonPressed(intakeButton)) {
 			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
+			intake.testSolenoid(true);
 		}
 		else if (rightStick.getRawButtonReleased(intakeButton)) {
-			intake.testSolenoid(true);
 			intake.turnOffWheels();
-		// dispense cube
 		}
+		
+		
+		
+		
+		
+		// dispense cube
 		if (rightStick.getRawButtonPressed(dispenseButton)) {
 			intake.pushCubeOut(intakeOutVoltage);
-		}
-		else if(rightStick.getRawButtonReleased(dispenseButton)) {
 			intake.testSolenoid(true);
+		}
+		else if (rightStick.getRawButtonReleased(dispenseButton)) {
 			intake.turnOffWheels();
 		}
 			
+		
+		
+		
+		
 		// engage intake
-		if (rightStick.getRawButtonPressed(4)) {
+		if (leftStick.getRawButtonPressed(4)) {
 			intake.testSolenoid(false);
 		}
-		else if (rightStick.getRawButtonPressed(3)) {
+		else if (leftStick.getRawButtonPressed(3)) {
 			intake.testSolenoid(true);
 		}
 		
@@ -227,14 +220,14 @@ public class Robot extends TimedRobot {
 			output.releaseCube();
 		}
 
-		///////// temporary////////////
+		//Move shooter assembly
 		if (leftStick.getRawButtonPressed(3)) {
 			shooter.testSolenoid(true);
 		}
 		if (leftStick.getRawButtonPressed(4)) {
 			shooter.testSolenoid(false);
 		} 
-		///////////////////
+		
 		
 		//Climbing 
 		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
@@ -284,6 +277,32 @@ public class Robot extends TimedRobot {
 		shooter.pushDataToShuffleboard();
 		autonomous.pushDataToShuffleboard();
 		//#########################################################################
+		
+		
+		/*
+		// shoot into scale in high position
+		if (rightStick.getRawButtonPressed(shootInHighScaleButton) && buttonPressedHigh == false) {
+			shooter.shootHighScale(scaleVoltageTopHigh, scaleVoltageBottomHigh, buttonPressedHigh, shootingTime, rampUpTime, disengageTime);
+		}
+
+		// shoot into scale in balance position
+		if(rightStick.getRawButtonPressed(shootInMediumScaleButton) && buttonPressedMed ==  false) {
+			shooter.shootMediumScale(scaleVoltageTopMed, scaleVoltageBottomMed, buttonPressedMed, shootingTime, rampUpTime, disengageTime);
+		}
+
+		// shoot into switch
+		if (rightStick.getRawButtonPressed(shootInSwitchButton) && buttonPressedswitch == false ) {
+			shooter.shootSwitch(switchVoltageTop, switchVoltageBottom, buttonPressedswitch, shootingTime, rampUpTime, disengageTime);
+		}
+		*/
+		
+		
+		
+		
+		
+		
+		
+		
 		   
 		 /*
 		//Start intake and turn the cubes in the intake
