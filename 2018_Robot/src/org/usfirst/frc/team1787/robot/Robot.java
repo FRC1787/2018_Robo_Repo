@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 
 
 public class Robot extends TimedRobot {
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
 	private Testing testing = Testing.getInstance();
 	private Output output = Output.getInstance();
 	private Intake intake = Intake.getInstance();
+	private Autonomous autonomous = Autonomous.getInstance();
 	Preferences prefs = Preferences.getInstance();
 	private final int RIGHT_JOYSTICK_ID = 0;
 	private final int LEFT_JOYSTICK_ID = 1;
@@ -83,20 +85,8 @@ public class Robot extends TimedRobot {
 	private boolean buttonPressedMed = false;
 	private boolean buttonPressedswitch = false;
 	
-	
-	private final int rightEncoderChannelA = 0;
-	private final int rightEncoderChannelB = 1;
-	private final int leftEncoderChannelA = 2;
-	private final int leftEncoderChannelB = 3;
-	
-	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB , true);
-	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
 	private boolean encoderReset = true;
-	
-	private double wheelRadius = 0.0254*(6.25/2);
-	private double wheelCircumfrence = (2*Math.PI*wheelRadius);
-	private double pulsesPerRotation = 2532;
-	private double distancePerPulse = wheelCircumfrence/pulsesPerRotation;
+
 	
 	
 	
@@ -104,7 +94,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	@Override
@@ -112,24 +102,12 @@ public class Robot extends TimedRobot {
 		output.turnOffWheels();
 		intake.testSolenoid(true);
 		shooter.testSolenoid(false);
-		leftEncoder.reset();
-		rightEncoder.reset();
-		rightEncoder.setDistancePerPulse(distancePerPulse);
-		leftEncoder.setDistancePerPulse(distancePerPulse);
-		
+		driveTrain.resetAuto();
 	}
 
 	@Override
-	public void autonomousPeriodic() {
-		if (Math.abs(leftEncoder.get()) > 4830 || Math.abs(rightEncoder.get()) > 4830)
-		driveTrain.tankDrive(0.375, -0.375);
-		
-		//if (leftStick.getRawButtonPressed(3) && (rightEncoder.get() - leftEncoder.get() != 0)) {
-				
-			
-		//}
-			
-
+	public void autonomousPeriodic() { 
+		autonomous.autonomousPeriodic01();
 	}
 	
 	@Override
@@ -284,23 +262,27 @@ public class Robot extends TimedRobot {
 		 */
 		
 		
-	
+		/*
 		SmartDashboard.putNumber("leftEncoderValue", leftEncoder.get());
 		SmartDashboard.putNumber("rightEncoderValue", rightEncoder.get());
+		SmartDashboard.putNumber("rightEncoderDistance", 3.2* leftEncoder.getDistance() );
+		SmartDashboard.putNumber("leftEncoderDistance", 3.2*leftEncoder.getDistance());
+		*/
 		SmartDashboard.putNumber("topMotorVoltageHighScale", scaleVoltageTopHigh);
 		SmartDashboard.putNumber("bottomMotorVoltageHighScale", scaleVoltageBottomHigh);
 		SmartDashboard.putNumber("topMotorVoltageMedscale", scaleVoltageTopMed);
 		SmartDashboard.putNumber("bottomMotorVoltageMedScale", scaleVoltageBottomMed);
 		SmartDashboard.putNumber("topMotorVoltageSwitch", switchVoltageTop);
 		SmartDashboard.putNumber("bottomMotorVoltageSwitch", switchVoltageBottom);
-		SmartDashboard.putNumber("rightEncoderDistance", 3.2* leftEncoder.getDistance() );
-		SmartDashboard.putNumber("leftEncoderDistance", 3.2*leftEncoder.getDistance());
+		
+		
 		//Putting everything on shuffleboard 
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();
 		intake.pushDataToShuffleboard();
 		output.pushDataToShuffleboard();
 		shooter.pushDataToShuffleboard();
+		autonomous.pushDataToShuffleboard();
 		//#########################################################################
 		   
 		 /*
@@ -448,6 +430,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		output.turnOffWheels();
 		shooter.testSolenoid(true);
-		encoderReset = true;
+		driveTrain.resetAuto();
 	}
 }

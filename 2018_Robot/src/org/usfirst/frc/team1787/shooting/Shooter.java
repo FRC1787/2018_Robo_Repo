@@ -175,14 +175,15 @@ public class Shooter {
 	
 	private static final Shooter instance = new Shooter();
 	
-	
-	
-	
-	
-	
 	public void testSolenoid(boolean boolInput) {
 		shooterMoveSolenoid.set(boolInput);
 	}
+	
+	
+	
+	
+	
+	/*
 //  shoot into high scale 
 	public void shootHighScale (double scaleVoltageTopHigh, double scaleVoltageBottomHigh, boolean buttonPressedHigh, boolean shootingTime, int rampUpTime, int disengageTime )
 		 {
@@ -251,47 +252,23 @@ public class Shooter {
 			}
 		}
 		}
+	*/
 	
-	/*
 	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double INTAKE_VOLTAGE) {
 		
-		if (SHOOTER_TIMER.get() == 0) {
-			SHOOTER_TIMER.start();
-		}
 		
 		
-		if (SHOOTER_TIMER.get() > SHOOTING_STAGE_1_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_1_END_TIME) {
-			//Start shooting motors (Stage 1 and 2 motors) and briefly turn on intake
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE); //hello my name is nora and I like programming I learned how to type by playing minecraft
-			intake.turnOnWheels(INTAKE_VOLTAGE, INTAKE_VOLTAGE);
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_2_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_2_END_TIME) {
-			//Stop intake motors
-			intake.turnOffWheels();
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_3_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_3_END_TIME) {
-			//Open intake
-			intake.releaseCube();
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_4_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_4_END_TIME) {
-			//Engage Stage 1 shooting motors
-			output.squeezeCube();
-		}
-		else if (SHOOTER_TIMER.get() > SHOOTING_STAGE_5_START_TIME && SHOOTER_TIMER.get() < SHOOTING_STAGE_5_END_TIME) {
-			//Reset everything
-			output.turnOffWheels();
-			output.releaseCube();
-		}
-		
-		//SHOOTER_TIMER = SHOOTER_TIMER + 0.02;
 	}
+	
+	
+	
 	
 	public void resetForThoseDankCubes() {
 		//Reset everything to default positions upon button release
 		SHOOTER_TIMER.stop();
 		SHOOTER_TIMER.reset();
 	}
-	*/
+	
 	public void pushDataToShuffleboard() {
 		//shuffleboard data here
 		//SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());

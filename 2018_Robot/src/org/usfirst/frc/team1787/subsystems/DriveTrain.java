@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -36,7 +37,22 @@ public class DriveTrain {
 	public boolean RIGHT_DRIVE_MASTER_INVERTED = false;
 	public boolean RIGHT_DRIVE_FOLLOWER_INVERTED = false;
 	
+	public final int AUTO_RIGHT_TURN_VALUE = 4830;
+	public final int AUTO_LEFT_TURN_VALUE = 4830;
 	
+	
+	private final int rightEncoderChannelA = 0;
+	private final int rightEncoderChannelB = 1;
+	private final int leftEncoderChannelA = 2;
+	private final int leftEncoderChannelB = 3;
+	
+	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB , true);
+	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
+	
+	private final double WHEEL_RADIUS = 0.0254*(6.25/2);
+	private final double WHEEL_CIRCUMFERENCE = (2*Math.PI*WHEEL_RADIUS);
+	private final double PULSES_PER_ROTATION = 2532;
+	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE/PULSES_PER_ROTATION;
 	
 	private static final DriveTrain instance = new DriveTrain();
 	
@@ -70,6 +86,13 @@ public class DriveTrain {
 		rightMaster.setNeutralMode(NeutralMode.Coast);
 		leftFollower.setNeutralMode(NeutralMode.Coast);
 		rightFollower.setNeutralMode(NeutralMode.Coast);
+		
+		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+		
+		
+		
+		
 	}
 	
 	
@@ -80,6 +103,7 @@ public class DriveTrain {
 	public static DriveTrain getInstance() {
 	    return instance;
 	  }
+	
 	
 	
 	public void pushDataToShuffleboard() {
@@ -133,12 +157,7 @@ public class DriveTrain {
 	    
 	  }
 	
-	public void moveForward (double distance) {
-		leftMaster.set(distance);
-		leftFollower.set(-distance);
-		rightMaster.set(distance);
-		rightFollower.set(distance);
-	}
+	
 	
 	
 	public void highGear() 
@@ -151,5 +170,58 @@ public class DriveTrain {
 	{
 		gearboxSolenoid.set(false);
 	}
+	
+
+	
+	
+	
+	
+	//Autonomous methods
+	
+	
+	public void moveStraight (double moveDistance, double moveSpeed) {
+		
+		if (leftEncoder.getDistance() * 3.280839 <= moveDistance && rightEncoder.getDistance() * 3.280839 <= moveDistance) {
+			leftMaster.set(moveSpeed);
+			leftFollower.set(-moveSpeed);
+			rightMaster.set(moveSpeed);
+			rightFollower.set(moveSpeed);
+		}		
+	}
+	
+	public void turnRight(double turnSpeed) {
+		
+		if (leftEncoder.get() - rightEncoder.get() < AUTO_RIGHT_TURN_VALUE) {
+			this.tankDrive(turnSpeed, -turnSpeed);
+		}
+		else {
+			this.tankDrive(0, 0);
+		}
+	}
+	
+	public void turnLeft(double turnSpeed) {
+		
+		if (rightEncoder.get() - leftEncoder.get() < AUTO_LEFT_TURN_VALUE) {
+			this.tankDrive(-turnSpeed, turnSpeed);
+		}
+		else {
+			this.tankDrive(0, 0);
+		}
+	}
+	
+	public void resetAuto() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+		this.tankDrive(0, 0);
+	}
+	
+	public double getLeftEncoder() {
+		return (leftEncoder.getDistance() * 3.280839);
+	}
+	
+	public double getRightEncoder() {
+		return (rightEncoder.getDistance() * 3.280839);
+	}
+
 }
 
