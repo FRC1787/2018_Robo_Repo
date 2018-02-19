@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
 	
 	protected int farfar38;
 	
+	
+	// Create single instances of objects for use in the program
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private Climb climb = Climb.getInstance();
 	private Shooter shooter = Shooter.getInstance();
@@ -50,15 +52,13 @@ public class Robot extends TimedRobot {
 	//Input options
 	private int intakeButton = 1;
 	private int dispenseButton = 2;
-	private int LOW_OUTPUT_BUTTON_ID = 8;
-	private int MED_OUTPUT_BUTTON_ID = 9;
-	private int HIGH_OUTPUT_BUTTON_ID = 10;
 	private int CLIMB_EXTEND_BUTTON = 13;
 	private int CLIMB_RETRACT_BUTTON = 14;
 	private int shootInHighScaleButton = 10;
 	private int shootInMediumScaleButton = 9;
 	private int shootInSwitchButton = 8;
-		
+	
+	// Shooting motor voltages
 	private double switchVoltageTop = 0.45;
 	private double switchVoltageBottom = 0.6;
 	
@@ -83,17 +83,20 @@ public class Robot extends TimedRobot {
 	private boolean buttonPressedMed = false;
 	private boolean buttonPressedswitch = false;
 	
+	
 	private final int rightEncoderChannelA = 0;
 	private final int rightEncoderChannelB = 1;
 	private final int leftEncoderChannelA = 2;
 	private final int leftEncoderChannelB = 3;
-	private int leftEncoderCount = 0;
-	private int rightEncoderCount = 0;
 	
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB , true);
 	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
 	private boolean encoderReset = true;
-	private int encodeResetCount = 0;
+	
+	private double wheelRadius = 0.0254*(6.25/2);
+	private double wheelCircumfrence = (2*Math.PI*wheelRadius);
+	private double pulsesPerRotation = 2532;
+	private double distancePerPulse = wheelCircumfrence/pulsesPerRotation;
 	
 	
 	
@@ -106,11 +109,26 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-
+		output.turnOffWheels();
+		intake.testSolenoid(true);
+		shooter.testSolenoid(false);
+		leftEncoder.reset();
+		rightEncoder.reset();
+		rightEncoder.setDistancePerPulse(distancePerPulse);
+		leftEncoder.setDistancePerPulse(distancePerPulse);
+		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
+		if (Math.abs(leftEncoder.get()) > 4830 || Math.abs(rightEncoder.get()) > 4830)
+		driveTrain.tankDrive(0.375, -0.375);
+		
+		//if (leftStick.getRawButtonPressed(3) && (rightEncoder.get() - leftEncoder.get() != 0)) {
+				
+			
+		//}
+			
 
 	}
 	
@@ -126,10 +144,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		/* 
-		 * To Do list
-		 * Be the best, like no one ever was
-		 */
+		
 		
 		/************************
 		 *                      *
@@ -137,6 +152,10 @@ public class Robot extends TimedRobot {
 		 *                      *
 		 ************************
 		 */
+		
+		
+		
+		/*
 		// Getting values from outline view
 			// intake voltage
 				rightIntakeVoltage = prefs.getDouble("rightIntakeVoltage", 0.35);
@@ -154,15 +173,10 @@ public class Robot extends TimedRobot {
 				//switch voltage
 					switchVoltageTop = prefs.getDouble("topMotorVoltageSwitch", 0.45);
 					switchVoltageBottom = prefs.getDouble("bottomMotorVoltageSwitch", 0.6);
-					
+				*/	
 		//reset encoder value
-		if (encoderReset == true) {
-			leftEncoder.reset();
-			rightEncoder.reset();
-			encoderReset = false;
-		}  
-					
-					
+				
+			/*		
 		// engage intake when not shooting 
 		if (shootingTime == false) {
 		intake.testSolenoid(false);
@@ -171,6 +185,7 @@ public class Robot extends TimedRobot {
 		else if (shootingTime == true) {
 			intake.testSolenoid(true);
 		}
+		*/
 		
 	 // drive the robot
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
@@ -200,7 +215,7 @@ public class Robot extends TimedRobot {
 			shooter.shootSwitch(switchVoltageTop, switchVoltageBottom, buttonPressedswitch, shootingTime, rampUpTime, disengageTime);
 		}
 		*/
-
+		/*
 		// pull cube in
 		if(rightStick.getRawButtonPressed(intakeButton)) {
 			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
@@ -269,8 +284,7 @@ public class Robot extends TimedRobot {
 		 */
 		
 		
-		
-		
+	
 		SmartDashboard.putNumber("leftEncoderValue", leftEncoder.get());
 		SmartDashboard.putNumber("rightEncoderValue", rightEncoder.get());
 		SmartDashboard.putNumber("topMotorVoltageHighScale", scaleVoltageTopHigh);
@@ -279,7 +293,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("bottomMotorVoltageMedScale", scaleVoltageBottomMed);
 		SmartDashboard.putNumber("topMotorVoltageSwitch", switchVoltageTop);
 		SmartDashboard.putNumber("bottomMotorVoltageSwitch", switchVoltageBottom);
-		
+		SmartDashboard.putNumber("rightEncoderDistance", 3.2* leftEncoder.getDistance() );
+		SmartDashboard.putNumber("leftEncoderDistance", 3.2*leftEncoder.getDistance());
 		//Putting everything on shuffleboard 
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();
@@ -309,7 +324,7 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		
+		/*
 		if (rightStick.getRawButtonPressed(10) && buttonPressedHigh == false) {
 			buttonPressedHigh = true;
 			shootingTime = true;
@@ -423,7 +438,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-				
+		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());	
 	}
 	
 	public void disabledInit() {

@@ -89,8 +89,8 @@ public class DriveTrain {
 	
 	
 	public void tankDrive(double leftInput, double rightInput) {
-		//leftMaster.set(leftInput);
-		leftFollower.set(leftInput);
+		leftMaster.set(leftInput);
+		leftFollower.set(-leftInput);
 		rightMaster.set(rightInput);
 		rightFollower.set(rightInput);
 	}
@@ -133,11 +133,11 @@ public class DriveTrain {
 	    
 	  }
 	
-	public void testDrive (double x) {
-		leftMaster.set(x);
-		leftFollower.set(-x);
-		rightMaster.set(x);
-		rightFollower.set(x);
+	public void moveForward (double distance) {
+		leftMaster.set(distance);
+		leftFollower.set(-distance);
+		rightMaster.set(distance);
+		rightFollower.set(distance);
 	}
 	
 	

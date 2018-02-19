@@ -5,23 +5,23 @@ import java.awt.RenderingHints;
 import edu.wpi.first.wpilibj.Encoder;
 	
 public class Autonomous {
-	private final int rightEncoderChannelA = 2;
-	private final int rightEncoderChannelB = 3;
-	private final int lefhtEncoderChannelA = 1;
-	private final int lefhtEncoderChannelB = 0;
-	private int leftEncoderCount = 0;
-	private int rightEncoderCount = 0;
-	//Oh boy	
-	
+	private final int rightEncoderChannelA = 0;
+	private final int rightEncoderChannelB = 1;
+	private final int leftEncoderChannelA = 2;
+	private final int leftEncoderChannelB = 3;
+	private double wheelRadius = (6.25/2);
+	private double wheelCircumfrence = (2*Math.PI*wheelRadius);
+	private double pulsesPerRotation = 2532;
+	private double distancePerPulse = wheelCircumfrence/pulsesPerRotation;
 	
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB);
-	private Encoder leftEncoder = new Encoder(lefhtEncoderChannelA, lefhtEncoderChannelB);
+	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB);
+	
 	
    public void Distance () {
-	   leftEncoderCount = leftEncoder.get();
-	   rightEncoderCount = rightEncoder.get();
-	   System.out.print(leftEncoderCount);
-	   System.out.print(rightEncoderCount);
+	   
+	   rightEncoder.setDistancePerPulse(distancePerPulse);
+	   
    }
 	
 	
