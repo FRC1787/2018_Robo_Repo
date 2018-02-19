@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
 		
 		
 		// pull cube in
-		if(rightStick.getRawButtonPressed(intakeButton)) {
+		if (rightStick.getRawButtonPressed(intakeButton)) {
 			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
 			intake.testSolenoid(true);
 		}
@@ -188,6 +188,13 @@ public class Robot extends TimedRobot {
 		}
 		
 		
+		if (leftStick.getRawButtonPressed(1)) {
+			intake.testSolenoid(false);
+			shooter.shootThoseDankCubes(switchVoltageTop, switchVoltageBottom, disengageTime);
+		}
+		else if (leftStick.getRawButtonReleased(1)) {
+			shooter.resetForThoseDankCubes();
+		}
 		
 		
 		
