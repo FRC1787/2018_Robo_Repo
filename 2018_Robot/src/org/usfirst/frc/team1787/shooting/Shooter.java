@@ -52,11 +52,11 @@ public class Shooter {
 	
 	
 	public void extendShooter() {
-		shooterMoveSolenoid.set(false);
+		shooterMoveSolenoid.set(true);
 	}
 	
 	public void retractShooter() {
-		shooterMoveSolenoid.set(true);
+		shooterMoveSolenoid.set(false);
 	}
 	
 	
