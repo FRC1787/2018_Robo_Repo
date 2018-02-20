@@ -284,63 +284,7 @@ public class Robot extends TimedRobot {
 		shooter.pushDataToShuffleboard();
 		autonomous.pushDataToShuffleboard();
 		//#########################################################################
-		
-		
-		/*
-		// shoot into scale in high position
-		if (rightStick.getRawButtonPressed(shootInHighScaleButton) && buttonPressedHigh == false) {
-			shooter.shootHighScale(scaleVoltageTopHigh, scaleVoltageBottomHigh, buttonPressedHigh, shootingTime, rampUpTime, disengageTime);
-		}
-
-		// shoot into scale in balance position
-		if(rightStick.getRawButtonPressed(shootInMediumScaleButton) && buttonPressedMed ==  false) {
-			shooter.shootMediumScale(scaleVoltageTopMed, scaleVoltageBottomMed, buttonPressedMed, shootingTime, rampUpTime, disengageTime);
-		}
-
-		// shoot into switch
-		if (rightStick.getRawButtonPressed(shootInSwitchButton) && buttonPressedswitch == false ) {
-			shooter.shootSwitch(switchVoltageTop, switchVoltageBottom, buttonPressedswitch, shootingTime, rampUpTime, disengageTime);
-		}
-		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		   
-		 /*
-		//Start intake and turn the cubes in the intake
-		if (leftStick.getRawButtonPressed(INTAKE_FORWARD_BUTTON)) {
-			intake.turnOnWheels(INTAKE_SPEED);
-		}
-		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) > 0.25) {
-			intake.spinCubeRight(INTAKE_SPEED);
-		}
-		else if (rightStick.getRawAxis(JOYSTICK_ROTATION_AXIS) < -0.25) {
-			intake.spinCubeLeft(INTAKE_SPEED);
-		}
-		else {
-			intake.turnOffWheels();
-		}
-		*/
-		//  shoot into high scale 
-		
-		
-		
-		
-		
-		/*
-		if (rightStick.getRawButtonPressed(10) && buttonPressedHigh == false) {
-			buttonPressedHigh = true;
-			shootingTime = true;
-			}
-		if (buttonPressedHigh == true) {
-			output.turnOnWheels(scaleVoltageTopHigh, scaleVoltageBottomHigh);
-			rampUpTime++;
-			
+					
 			
 			
 			if (rampUpTime >20 && rampUpTime < 22) {
@@ -355,89 +299,10 @@ public class Robot extends TimedRobot {
 			}
 			
 		}
-		/*
-		// shoot into medium scale
-		if (rightStick.getRawButtonPressed(9) && buttonPressedMed == false) {
-			buttonPressedMed = true;
-			shootingTime = true;
-		}
-		if (buttonPressedMed == true) {
-			output.turnOnWheels(highScaleVoltageTopMed, highScaleVoltageBottomMed);
-			rampUpTime++;
-			
 	
-			if (rampUpTime > 20 && rampUpTime < 22) {
-				output.testSolenoid(true);
-			}
-			if (rampUpTime > disengageTime) {
-				output.turnOffWheels();
-				output.testSolenoid(false);
-				buttonPressedMed = false;
-				shootingTime = false;
-				rampUpTime =0;
-			}
 		
-		}
-		*/
 		
-		/*
-		// shoot into switch
-		if (rightStick.getRawButtonPressed(8) && buttonPressedswitch == false) {
-			buttonPressedswitch = true;
-			shootingTime = true;
-		}
-		if (buttonPressedswitch == true) {
-			output.turnOnWheels(switchVoltageTop, switchVoltageBottom);
-			rampUpTime++;
-			
-			if (rampUpTime > 20 && rampUpTime < 22) {
-				output.testSolenoid(true);
-			}
-			if (rampUpTime > disengageTime) {
-				output.turnOffWheels();
-				output.testSolenoid(false);
-				buttonPressedswitch = false;
-				shootingTime = false;
-				rampUpTime =0;
-			}
-		}
-	*/
-		/*
-		//Choosing shooting speeds based on buttons, shoots the cubes
-		if (rightStick.getRawButtonPressed(LOW_OUTPUT_BUTTON_ID)) {
-			shooter.shootThoseDankCubes(LOW_TOP_OUTPUT_SPEED, LOW_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-		}
-		else if (rightStick.getRawButtonPressed(MED_OUTPUT_BUTTON_ID)) {
-			shooter.shootThoseDankCubes(MED_TOP_OUTPUT_SPEED, MED_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-		}
-		else if (rightStick.getRawButtonPressed(HIGH_OUTPUT_BUTTON_ID)) {
-			shooter.shootThoseDankCubes(HIGH_TOP_OUTPUT_SPEED, HIGH_BOTTOM_OUTPUT_SPEED, INTAKE_SPEED, SHOOTER_RAMP_UP_TIME);
-		}
-		else if (rightStick.getRawButtonReleased(LOW_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(MED_OUTPUT_BUTTON_ID) || rightStick.getRawButtonReleased(HIGH_OUTPUT_BUTTON_ID)) {
-			shooter.resetForThoseDankCubes();
-		}
-		
-		if(rightStick.getRawButtonPressed(1)) {
-			intake.testSolenoid(false);
-			intake.turnOnWheels( 0.3 , 0.15  );
-		}
-		else if(rightStick.getRawButtonReleased(1)) {
-			intake.testSolenoid(true);
-			intake.turnOffWheels();
-		}
-		
-		// dispense the cube
-		if (rightStick.getRawButtonPressed(2)) {
-			intake.testSolenoid(false);
-			intake.turnOnWheels(-0.26, -0.26);
-		}
-		else if(rightStick.getRawButtonReleased(2)) {
-			intake.testSolenoid(true);
-			intake.turnOffWheels();
-		}
-		*/
-		
-	}
+	
 	
 	@Override
 	public void testInit() {
