@@ -100,8 +100,8 @@ public class WorkingRobot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		output.turnOffWheels();
-		intake.testSolenoid(true);
-		shooter.testSolenoid(false);
+		//intake.testSolenoid(true);
+		//shooter.testSolenoid(false);
 		driveTrain.resetAuto();
 	}
 
@@ -113,8 +113,8 @@ public class WorkingRobot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		output.turnOffWheels();
-		intake.testSolenoid(true);
-		shooter.testSolenoid(false);
+		//intake.testSolenoid(true);
+		//shooter.testSolenoid(false);
 		
 		
 	}
@@ -158,10 +158,10 @@ public class WorkingRobot extends TimedRobot {
 		// engage intake when not shooting 		}
 		// disengage intake when shooting
 		 if (shootingTime == true) {
-			intake.testSolenoid(true);
+			//intake.testSolenoid(true);
 		}
 		 else if (shootingTime == false) {
-			 intake.testSolenoid(false);
+			 //intake.testSolenoid(false);
 		 }
 		
 		
@@ -181,8 +181,8 @@ public class WorkingRobot extends TimedRobot {
 		
 		// pull cube in
 		if (rightStick.getRawButtonPressed(intakeButton)) {
-			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
-			intake.testSolenoid(true);
+			//intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
+			//intake.testSolenoid(true);
 		}
 		else if (rightStick.getRawButtonReleased(intakeButton)) {
 			intake.turnOffWheels();
@@ -272,8 +272,8 @@ public class WorkingRobot extends TimedRobot {
 		
 		// dispense cube
 		if (rightStick.getRawButtonPressed(dispenseButton)) {
-			intake.pushCubeOut(intakeOutVoltage);
-			intake.testSolenoid(true);
+			////intake.pushCubeOut(intakeOutVoltage);
+			//intake.testSolenoid(true);
 		}
 		else if (rightStick.getRawButtonReleased(dispenseButton)) {
 			intake.turnOffWheels();
@@ -305,10 +305,10 @@ public class WorkingRobot extends TimedRobot {
 		
 		// engage intake
 		if (leftStick.getRawButtonPressed(4)) {
-			intake.testSolenoid(false);
+			//intake.testSolenoid(false);
 		}
 		else if (leftStick.getRawButtonPressed(3)) {
-			intake.testSolenoid(true);
+			//intake.testSolenoid(true);
 		}
 		
 		// hold cube in place for driving
@@ -356,7 +356,7 @@ public class WorkingRobot extends TimedRobot {
 	
 	public void disabledPeriodic() {
 		output.turnOffWheels();
-		shooter.testSolenoid(true);
+		//shooter.testSolenoid(true);
 		driveTrain.resetAuto();
 	}
 }

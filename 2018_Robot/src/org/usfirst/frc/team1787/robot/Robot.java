@@ -147,7 +147,6 @@ public class Robot extends TimedRobot {
 		
 		//Shoot cubes
 		if (leftStick.getRawButtonPressed(1)) {
-			intake.releaseCube();
 			shootingTimer = 0;
 		}
 		else if (leftStick.getRawButton(1)) {
@@ -155,7 +154,6 @@ public class Robot extends TimedRobot {
 			shooter.shootThoseDankCubes(LOW_POWER_TOP_WHEELS, LOW_POWER_BOT_WHEELS, shootingTimer, disengageTime);
 		}
 		else if (leftStick.getRawButtonReleased(1)) {
-			intake.squeezeCube();
 			shooter.resetForThoseDankCubes();
 		}
 		
@@ -172,10 +170,10 @@ public class Robot extends TimedRobot {
 			
 			intakeTimer++;
 			
-			if (intakeTimer % 18 == 0) {
+			if (intakeTimer % 50 == 0) {
 				intake.turnOffWheels();
 			}
-			else if ((intakeTimer % 18) == 2) {
+			else if ((intakeTimer % 50) == 10) {
 				intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
 			}
 			
@@ -294,10 +292,10 @@ public class Robot extends TimedRobot {
 		
 		
 		if (rightStick.getRawButtonPressed(1)) {
-			intake.squeezeCube();
+			//output.squeezeCube();
 		}
 		else if (rightStick.getRawButtonReleased(1)) {
-			intake.releaseCube();
+			//output.releaseCube();
 		}
 	}
 	

@@ -52,11 +52,11 @@ public class Shooter {
 	
 	
 	public void extendShooter() {
-		shooterMoveSolenoid.set(true);
+		shooterMoveSolenoid.set(false);
 	}
 	
 	public void retractShooter() {
-		shooterMoveSolenoid.set(false);
+		shooterMoveSolenoid.set(true);
 	}
 	
 	
@@ -67,12 +67,20 @@ public class Shooter {
 		if (SHOOTER_TIMER == 1) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
 		}
+		else if (SHOOTER_TIMER > 10 && SHOOTER_TIMER < 20) {
+			intake.turnOnWheels(0.1, 0.1);
+		}
+		else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22 ) {
+			intake.releaseCube();
+			intake.turnOffWheels();
+		}
 		else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
 			output.squeezeCube();
 		}
 		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
 			output.turnOffWheels();
 			output.releaseCube();
+			intake.squeezeCube();
 			
 		}
 		

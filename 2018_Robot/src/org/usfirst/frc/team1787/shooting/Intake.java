@@ -52,11 +52,11 @@ public class Intake {
 	
 	
 	public void squeezeCube() {
-		intakeSolenoid.set(true);
+		intakeSolenoid.set(false);
 	}
 
 	public void releaseCube() {
-		intakeSolenoid.set(false);
+		intakeSolenoid.set(true);
 	}
 	
 	
