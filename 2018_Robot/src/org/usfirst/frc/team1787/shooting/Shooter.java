@@ -58,20 +58,7 @@ public class Shooter {
 	
 	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int DISENGAGE_TIME) {
 		
-		if (rampUpTime > 0 && rampUpTime < 2) {
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
-		}
-		
-		else if (rampUpTime > 20 && rampUpTime < 22) {
-			output.squeezeCube();
-		}
-		
-		else if (rampUpTime > DISENGAGE_TIME) {
-			output.releaseCube();
-			output.turnOffWheels();
-		}
-		
-		rampUpTime++;
+		output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
 		
 	}
 	
