@@ -51,31 +51,43 @@ public class Robot extends TimedRobot {
 	private int JOYSTICK_SLIDER_AXIS = 3;
 	
 	//Input options
+	
+	//Right Stick
 	private final int INTAKE_BUTTON = 1;
 	private final int REVERSE_INTAKE_BUTTON = 2;
 	private final int CLIMB_EXTEND_BUTTON = 13;
 	private final int CLIMB_RETRACT_BUTTON = 14;
 	private final int HIGH_POWER_SHOOTING_BUTTON = 10;
-	private final int MED_POWER_SHOOTING_BUTTON = 9;
-	private final int LOW_POWER_SHOOTING_BUTTON = 8;
+	private final int BALANCED_POWER_SHOOTING_BUTTON = 9;
+	private final int SWITCH_POWER_SHOOTING_BUTTON = 8;
 	private final int OUTPUT_SQUEEZE_BUTTON = 11;
 	private final int OUTPUT_RELEASE_BUTTON = 16;
+	//Left Stick
+	private final int SHOOTER_ASSEMBLY_EXTEND_BUTTON = 11;
+	private final int SHOOTER_ASSEMBLY_RETRACT_BUTTON = 16;
+	private final int REVERSE_OUTPUT_BUTTON = 2;
+	private final int INTAKE_SQUEEZE_BUTTON = 3;
+	private final int INTAKE_RELEASE_BUTTON = 4;
+	private final int CLIMB_SOLENOID_EXTEND_BUTTON = 13;
+	private final int CLIMB_SOLENOID_RETRACT_BUTTON = 14;
+	
 	
 	// Shooting motor voltages
 	private double HIGH_POWER_TOP_WHEELS = 0.98;
 	private double HIGH_POWER_BOT_WHEELS = 0.88;
 	
-	private double MED_POWER_TOP_WHEELS = 0.8;
-	private double MED_POWER_BOT_WHEELS = 0.7;
+	private double BALANCED_POWER_TOP_WHEELS = 0.8;
+	private double BALANCED_POWER_BOT_WHEELS = 0.7;
 	
-	private double LOW_POWER_TOP_WHEELS = 0.45;
-	private double LOW_POWER_BOT_WHEELS = 0.6;
+	private double SWITCH_POWER_TOP_WHEELS = 0.45;
+	private double SWITCH_POWER_BOT_WHEELS = 0.6;
 	
 	
 	
 	private final double RIGHT_INTAKE_VOLTAGE = 0.35;
 	private final double LEFT_INTAKE_VOLTAGE = 0.15;
 	private final double INTAKE_OUT_VOLTAGE = -0.25;
+	private final double REVERSE_OUTPUT_VOLTAGE = -0.2;
 	
 	private int disengageTime = 50;
 	private int rampUpTime = 0;
@@ -84,7 +96,7 @@ public class Robot extends TimedRobot {
 	
 	
 	
-	//Timer runs some of the below methods every 20ms
+	//Timer runs some of the beSWITCH methods every 20ms
 
 	@Override
 	public void robotInit() {
@@ -109,6 +121,7 @@ public class Robot extends TimedRobot {
 		output.turnOffWheels();
 		intake.squeezeCube();
 		shooter.extendShooter();
+		driveTrain.highGear();
 		
 		
 	}
@@ -116,6 +129,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
+		driveTrain.highGear();
 		
 		
 		/************************
@@ -131,33 +145,62 @@ public class Robot extends TimedRobot {
 		//Arcade Drive
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
-		
-		
-		
-		//Set the gear based on the right slider
-		if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) > 0) {
-			driveTrain.highGear();
-		}
-		else if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) < 0) {
-			driveTrain.lowGear();
-		}
-		
+				
 		
 		
 		
 		//Shoot cubes
-		if (leftStick.getRawButtonPressed(1)) {
-			shootingTimer = 0;
-		}
-		else if (leftStick.getRawButton(1)) {
-			shootingTimer++;
-			shooter.shootThoseDankCubes(LOW_POWER_TOP_WHEELS, LOW_POWER_BOT_WHEELS, shootingTimer, disengageTime);
-		}
-		else if (leftStick.getRawButtonReleased(1)) {
-			shooter.resetForThoseDankCubes();
+		//rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)
+		if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
+			
+			if (shootingTimer > 100) {
+				shootingTimer = 0;
+				
+			}
+			
+			else if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
+				shooter.shootThoseDankCubes(HIGH_POWER_TOP_WHEELS, HIGH_POWER_BOT_WHEELS, shootingTimer, disengageTime);
+			}
+			
+			else if (rightStick.getRawButtonReleased(HIGH_POWER_SHOOTING_BUTTON)) {
+				shooter.resetForThoseDankCubes();
+			}
 		}
 		
+		else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
+			
+			if (shootingTimer > disengageTime) {
+				shootingTimer = 0;
+			}
+			
+			else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
+				shooter.shootThoseDankCubes(BALANCED_POWER_TOP_WHEELS, BALANCED_POWER_BOT_WHEELS, shootingTimer, disengageTime);
+			}
+			
+			else if (rightStick.getRawButtonReleased(BALANCED_POWER_SHOOTING_BUTTON)) {
+				shooter.resetForThoseDankCubes();
+			}
+		}
 		
+		else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
+			
+			if (shootingTimer > disengageTime) {
+				shootingTimer = 0;
+			}
+			
+			else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
+				shootingTimer++;
+				shooter.shootThoseDankCubes(SWITCH_POWER_TOP_WHEELS, SWITCH_POWER_BOT_WHEELS, shootingTimer, disengageTime);
+			}
+			
+			else if (rightStick.getRawButtonReleased(SWITCH_POWER_SHOOTING_BUTTON)) {
+				shooter.resetForThoseDankCubes();
+			}
+		}
+		
+		shootingTimer++;
+			
+			
 		
 		
 		//Forward intake
@@ -181,7 +224,6 @@ public class Robot extends TimedRobot {
 		else if (rightStick.getRawButtonReleased(INTAKE_BUTTON)) {
 			intake.turnOffWheels();
 			intakeTimer = 0;
-			
 		}
 				
 		
@@ -199,9 +241,6 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		
-		
-		
 		//Output solenoid
 		if (rightStick.getRawButtonPressed(OUTPUT_SQUEEZE_BUTTON)) {
 			output.squeezeCube();
@@ -213,7 +252,20 @@ public class Robot extends TimedRobot {
 		
 		
 
+		//Climbing 
+		if (rightStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
+			climb.extendPiston();
+			shooter.extendShooter();
+			
+		}
+		else if (rightStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
+			climb.retractPiston();
+			shooter.retractShooter();
+		}
 		
+				
+				
+				
 		
 		/*******************
 		 *                 *
@@ -221,6 +273,8 @@ public class Robot extends TimedRobot {
 		 *                 *
 		 *******************
 		 */
+		
+		
 		
 		
 		//Intake solenoid
@@ -233,16 +287,12 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		
-		//Climbing 
-		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
-			climb.extendPiston();
-			shooter.extendShooter();
-			
+		//Reverse output
+		if (leftStick.getRawButtonPressed(REVERSE_OUTPUT_BUTTON)) {
+			output.turnOnWheels(REVERSE_OUTPUT_VOLTAGE, REVERSE_OUTPUT_VOLTAGE);
 		}
-		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
-			climb.retractPiston();
-			shooter.retractShooter();
+		else if (leftStick.getRawButtonReleased(REVERSE_OUTPUT_BUTTON)) {
+			output.turnOffWheels();
 		}
 		
 		
@@ -254,15 +304,26 @@ public class Robot extends TimedRobot {
 		}
 		if (leftStick.getRawButtonPressed(4)) {
 			shooter.retractShooter();
-		} 
+		}
+		
+				
+		
+		//Climb without shooter movement
+		if (leftStick.getRawButtonPressed(CLIMB_SOLENOID_EXTEND_BUTTON)) {
+			climb.extendPiston();
+		}
+		else if (leftStick.getRawButtonReleased(CLIMB_SOLENOID_RETRACT_BUTTON)) {
+			climb.retractPiston();
+		}
+		
 		
 		
 		SmartDashboard.putNumber("High top wheels", HIGH_POWER_TOP_WHEELS);
 		SmartDashboard.putNumber("High bottom wheels", HIGH_POWER_BOT_WHEELS);
-		SmartDashboard.putNumber("Medium top wheels", MED_POWER_TOP_WHEELS);
-		SmartDashboard.putNumber("Medium bottom wheels", MED_POWER_BOT_WHEELS);
-		SmartDashboard.putNumber("Low top wheels", LOW_POWER_TOP_WHEELS);
-		SmartDashboard.putNumber("Low bottom wheels", LOW_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("BALANCEDium top wheels", BALANCED_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("BALANCEDium bottom wheels", BALANCED_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("SWITCH top wheels", SWITCH_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("SWITCH bottom wheels", SWITCH_POWER_BOT_WHEELS);
 		
 		
 		//Putting everything on shuffleboard 
@@ -274,7 +335,7 @@ public class Robot extends TimedRobot {
 		autonomous.pushDataToShuffleboard();
 		//#########################################################################
 			
-		}
+	}
 	
 		
 		

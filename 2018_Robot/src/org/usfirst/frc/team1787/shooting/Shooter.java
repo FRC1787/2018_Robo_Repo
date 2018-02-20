@@ -66,6 +66,7 @@ public class Shooter {
 		
 		if (SHOOTER_TIMER == 1) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+			output.releaseCube();
 		}
 		else if (SHOOTER_TIMER > 10 && SHOOTER_TIMER < 20) {
 			intake.turnOnWheels(0.1, 0.1);

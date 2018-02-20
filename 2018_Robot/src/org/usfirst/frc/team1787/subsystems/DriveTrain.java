@@ -160,13 +160,13 @@ public class DriveTrain {
 	
 	public void highGear() 
 	{
-		gearboxSolenoid.set(true);
+		gearboxSolenoid.set(false);
 	}
 	
 	
 	public void lowGear()
 	{
-		gearboxSolenoid.set(false);
+		gearboxSolenoid.set(true);
 	}
 	
 
