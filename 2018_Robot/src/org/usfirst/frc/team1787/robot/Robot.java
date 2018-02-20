@@ -58,34 +58,29 @@ public class Robot extends TimedRobot {
 	private final int HIGH_POWER_SHOOTING_BUTTON = 10;
 	private final int MED_POWER_SHOOTING_BUTTON = 9;
 	private final int LOW_POWER_SHOOTING_BUTTON = 8;
+	private final int OUTPUT_SQUEEZE_BUTTON = 11;
+	private final int OUTPUT_RELEASE_BUTTON = 16;
 	
 	// Shooting motor voltages
-	private double switchVoltageTop = 0.45;
-	private double switchVoltageBottom = 0.6;
+	private double HIGH_POWER_TOP_WHEELS = 0.98;
+	private double HIGH_POWER_BOT_WHEELS = 0.88;
 	
-	private double scaleVoltageTopMed = 0.8;
-	private double scaleVoltageBottomMed = 0.7;
+	private double MED_POWER_TOP_WHEELS = 0.8;
+	private double MED_POWER_BOT_WHEELS = 0.7;
 	
-	private double scaleVoltageTopHigh = 0.98;
-	private double scaleVoltageBottomHigh = 0.88;
+	private double LOW_POWER_TOP_WHEELS = 0.45;
+	private double LOW_POWER_BOT_WHEELS = 0.6;
+	
+	
 	
 	private final double RIGHT_INTAKE_VOLTAGE = 0.35;
 	private final double LEFT_INTAKE_VOLTAGE = 0.15;
 	private final double INTAKE_OUT_VOLTAGE = -0.25;
 	
-	
-
-	
 	private int disengageTime = 50;
 	private int rampUpTime = 0;
-	
-	private boolean shootingTime = false;
-	private boolean buttonPressedHigh = false;
-	private boolean buttonPressedMed = false;
-	private boolean buttonPressedswitch = false;
-	
-	private boolean encoderReset = true;
-
+	private int shootingTimer = 0;
+	private int intakeTimer = 0;
 	
 	
 	
@@ -99,8 +94,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		output.turnOffWheels();
-		intake.testSolenoid(true);
-		shooter.testSolenoid(false);
+		intake.squeezeCube();
+		shooter.extendShooter();
 		driveTrain.resetAuto();
 	}
 
@@ -112,8 +107,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		output.turnOffWheels();
-		intake.testSolenoid(true);
-		shooter.testSolenoid(false);
+		intake.squeezeCube();
+		shooter.extendShooter();
 		
 		
 	}
@@ -130,19 +125,14 @@ public class Robot extends TimedRobot {
 		 ************************
 		 */
 		
-			/*		
-		// engage intake when not shooting 
-		if (shootingTime == false) {
-			intake.testSolenoid(false);
-		}
-		// disengage intake when shooting
-		else if (shootingTime == true) {
-			intake.testSolenoid(true);
-		}
-		*/
 		
-		//drive the robot
+		
+		
+		//Arcade Drive
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		//driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
+		
+		
 		
 		//Set the gear based on the right slider
 		if (rightStick.getRawAxis(JOYSTICK_SLIDER_AXIS) > 0) {
@@ -154,30 +144,52 @@ public class Robot extends TimedRobot {
 		
 		
 		
+		
 		//Shoot cubes
 		if (leftStick.getRawButtonPressed(1)) {
-			intake.testSolenoid(false);
-			shooter.shootThoseDankCubes(switchVoltageTop, switchVoltageBottom, disengageTime);
+			intake.releaseCube();
+			shootingTimer = 0;
+		}
+		else if (leftStick.getRawButton(1)) {
+			shootingTimer++;
+			shooter.shootThoseDankCubes(LOW_POWER_TOP_WHEELS, LOW_POWER_BOT_WHEELS, shootingTimer, disengageTime);
 		}
 		else if (leftStick.getRawButtonReleased(1)) {
+			intake.squeezeCube();
 			shooter.resetForThoseDankCubes();
 		}
 		
 		
 		
-		// pull cube in
+		
+		//Forward intake
 		if (rightStick.getRawButtonPressed(INTAKE_BUTTON)) {
+			intakeTimer = 0;
 			intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
-			//intake.releaseCube();
+			
+		}
+		else if (rightStick.getRawButton(INTAKE_BUTTON)) {
+			
+			intakeTimer++;
+			
+			if (intakeTimer % 18 == 0) {
+				intake.turnOffWheels();
+			}
+			else if ((intakeTimer % 18) == 2) {
+				intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
+			}
+			
 		}
 		else if (rightStick.getRawButtonReleased(INTAKE_BUTTON)) {
 			intake.turnOffWheels();
-			//intake.releaseCube();
+			intakeTimer = 0;
+			
 		}
 				
-		intake.releaseCube();
 		
-		// dispense cube
+		
+		
+		//Reverse intake
 		if (rightStick.getRawButtonPressed(REVERSE_INTAKE_BUTTON)) {
 			intake.turnOnWheels(INTAKE_OUT_VOLTAGE, INTAKE_OUT_VOLTAGE);
 			//intake.squeezeCube();
@@ -190,44 +202,16 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		// engage intake
-		if (leftStick.getRawButtonPressed(4)) {
-			intake.squeezeCube();
-		}
-		else if (leftStick.getRawButtonPressed(3)) {
-			intake.releaseCube();
-		}
 		
-		// hold cube in place for driving
-		if (rightStick.getRawButtonPressed(11)) {
+		
+		//Output solenoid
+		if (rightStick.getRawButtonPressed(OUTPUT_SQUEEZE_BUTTON)) {
 			output.squeezeCube();
 		}
-		else if (rightStick.getRawButtonPressed(16)) {
+		else if (rightStick.getRawButtonPressed(OUTPUT_RELEASE_BUTTON)) {
 			output.releaseCube();
 		}
 
-		//Move shooter assembly
-		if (leftStick.getRawButtonPressed(3)) {
-			shooter.testSolenoid(true);
-		}
-		if (leftStick.getRawButtonPressed(4)) {
-			shooter.testSolenoid(false);
-		} 
-		
-		
-		//Climbing 
-		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
-			climb.extendPiston();
-			shooter.testSolenoid(true);
-			
-		}
-		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
-			climb.retractPiston();
-			shooter.testSolenoid(true);
-		}
-		
-	
-		
 		
 		
 
@@ -241,12 +225,46 @@ public class Robot extends TimedRobot {
 		 */
 		
 		
-		SmartDashboard.putNumber("topMotorVoltageHighScale", scaleVoltageTopHigh);
-		SmartDashboard.putNumber("bottomMotorVoltageHighScale", scaleVoltageBottomHigh);
-		SmartDashboard.putNumber("topMotorVoltageMedscale", scaleVoltageTopMed);
-		SmartDashboard.putNumber("bottomMotorVoltageMedScale", scaleVoltageBottomMed);
-		SmartDashboard.putNumber("topMotorVoltageSwitch", switchVoltageTop);
-		SmartDashboard.putNumber("bottomMotorVoltageSwitch", switchVoltageBottom);
+		//Intake solenoid
+		if (leftStick.getRawButtonPressed(4)) {
+			intake.squeezeCube();
+		}
+		else if (leftStick.getRawButtonPressed(3)) {
+			intake.releaseCube();
+		}	
+		
+		
+		
+		
+		//Climbing 
+		if (leftStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
+			climb.extendPiston();
+			shooter.extendShooter();
+			
+		}
+		else if (leftStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
+			climb.retractPiston();
+			shooter.retractShooter();
+		}
+		
+		
+		
+		
+		//Move shooter assembly
+		if (leftStick.getRawButtonPressed(3)) {
+			shooter.extendShooter();
+		}
+		if (leftStick.getRawButtonPressed(4)) {
+			shooter.retractShooter();
+		} 
+		
+		
+		SmartDashboard.putNumber("High top wheels", HIGH_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("High bottom wheels", HIGH_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("Medium top wheels", MED_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("Medium bottom wheels", MED_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("Low top wheels", LOW_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("Low bottom wheels", LOW_POWER_BOT_WHEELS);
 		
 		
 		//Putting everything on shuffleboard 
@@ -257,19 +275,6 @@ public class Robot extends TimedRobot {
 		shooter.pushDataToShuffleboard();
 		autonomous.pushDataToShuffleboard();
 		//#########################################################################
-					
-			
-			
-			if (rampUpTime >20 && rampUpTime < 22) {
-				output.testSolenoid(true);
-			}
-			if (rampUpTime > disengageTime) {
-				output.turnOffWheels();
-				output.testSolenoid(false);
-				buttonPressedHigh = false;
-				shootingTime = false;
-				rampUpTime =0;
-			}
 			
 		}
 	
@@ -285,6 +290,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());	
+		
+		
+		
+		if (rightStick.getRawButtonPressed(1)) {
+			intake.squeezeCube();
+		}
+		else if (rightStick.getRawButtonReleased(1)) {
+			intake.releaseCube();
+		}
 	}
 	
 	public void disabledInit() {
@@ -293,7 +307,7 @@ public class Robot extends TimedRobot {
 	
 	public void disabledPeriodic() {
 		output.turnOffWheels();
-		shooter.testSolenoid(true);
+		shooter.extendShooter();
 		driveTrain.resetAuto();
 	}
 }

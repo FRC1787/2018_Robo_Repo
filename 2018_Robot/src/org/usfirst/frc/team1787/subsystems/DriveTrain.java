@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1787.subsystems;
 
-import org.omg.CORBA.ORBPackage.InconsistentTypeCode;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;

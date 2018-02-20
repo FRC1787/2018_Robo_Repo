@@ -49,16 +49,33 @@ public class Shooter {
 	
 	private static final Shooter instance = new Shooter();
 	
-	public void testSolenoid(boolean boolInput) {
-		shooterMoveSolenoid.set(boolInput);
+	
+	
+	public void extendShooter() {
+		shooterMoveSolenoid.set(true);
+	}
+	
+	public void retractShooter() {
+		shooterMoveSolenoid.set(false);
 	}
 	
 	
 	
 	
-	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int DISENGAGE_TIME) {
+	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER, int DISENGAGE_TIME) {
 		
-		output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+		if (SHOOTER_TIMER == 1) {
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+		}
+		else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
+			output.squeezeCube();
+		}
+		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
+			output.turnOffWheels();
+			output.releaseCube();
+			
+		}
+		
 		
 	}
 	

@@ -38,10 +38,6 @@ public class Intake {
 	}
 	
 	
-	public void testSolenoid(boolean boolInput) {
-		intakeSolenoid.set(boolInput);
-	}
-	
 	
 	public void turnOnWheels(double rightIntakeVoltage, double leftIntakeVoltage ) {
 		intakeRight.set(rightIntakeVoltage);
@@ -75,19 +71,7 @@ public class Intake {
 		intakeRight.set(-INTAKE_VOLTAGE);
 	}
 	
-	public void pullCubeIn (double rightIntakeVoltage, double leftIntakeVoltage) {
-		intakeSolenoid.set(false);
-		intakeRight.set( rightIntakeVoltage );
-		intakeLeft.set(leftIntakeVoltage);
-	}
-	
-	public void pushCubeOut(double intakeOutVoltage) {
-		intakeSolenoid.set(false);
-		intakeRight.set(intakeOutVoltage);
-		intakeLeft.set(intakeOutVoltage);
-	}
-	
-	
+		
 	
 	public void pushDataToShuffleboard() {
 		SmartDashboard.putBoolean("Gripped: ", intakeSolenoid.get());
