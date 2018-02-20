@@ -131,33 +131,10 @@ public class Robot extends TimedRobot {
 		 ************************
 		 */
 		
-		
-		
-		/*
-		// Getting values from outline view
-			// intake voltage
-				rightIntakeVoltage = prefs.getDouble("rightIntakeVoltage", 0.35);
-				leftIntakeVoltage = prefs.getDouble("leftIntakeVoltage", 0.2);
-				intakeOutVoltage  = prefs.getDouble("dispenseVoltage", -0.2);
-			//timer values
-				disengageTime = prefs.getInt("disengageTime", 50);
-			//shooting voltages
-				// scale in high position voltage 
-					scaleVoltageTopHigh = prefs.getDouble("topMotorVoltageHighscale", 0.98);
-					scaleVoltageBottomHigh = prefs.getDouble("bottomMotorVoltageHighScale", 0.88);
-				//scale in balance position voltage
-					scaleVoltageTopMed = prefs.getDouble("topMotorVoltageBalancescale", 0.8);
-					scaleVoltageBottomMed = prefs.getDouble("bottomMotorVoltageBalancescale", 0.7);
-				//switch voltage
-					switchVoltageTop = prefs.getDouble("topMotorVoltageSwitch", 0.45);
-					switchVoltageBottom = prefs.getDouble("bottomMotorVoltageSwitch", 0.6);
-				*/	
-		//reset encoder value
-				
 			/*		
 		// engage intake when not shooting 
 		if (shootingTime == false) {
-		intake.testSolenoid(false);
+			intake.testSolenoid(false);
 		}
 		// disengage intake when shooting
 		else if (shootingTime == true) {
@@ -178,16 +155,7 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		// pull cube in
-		if (rightStick.getRawButtonPressed(intakeButton)) {
-			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
-			intake.testSolenoid(true);
-		}
-		else if (rightStick.getRawButtonReleased(intakeButton)) {
-			intake.turnOffWheels();
-		}
-		
-		
+		//Shoot cubes
 		if (leftStick.getRawButtonPressed(1)) {
 			intake.testSolenoid(false);
 			shooter.shootThoseDankCubes(switchVoltageTop, switchVoltageBottom, disengageTime);
@@ -196,6 +164,17 @@ public class Robot extends TimedRobot {
 			shooter.resetForThoseDankCubes();
 		}
 		
+		
+		
+		// pull cube in
+		if (rightStick.getRawButtonPressed(intakeButton)) {
+			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
+			intake.testSolenoid(true);
+		}
+		else if (rightStick.getRawButtonReleased(intakeButton)) {
+			intake.turnOffWheels();
+		}
+				
 		
 		
 		// dispense cube
@@ -262,12 +241,6 @@ public class Robot extends TimedRobot {
 		 */
 		
 		
-		/*
-		SmartDashboard.putNumber("leftEncoderValue", leftEncoder.get());
-		SmartDashboard.putNumber("rightEncoderValue", rightEncoder.get());
-		SmartDashboard.putNumber("rightEncoderDistance", 3.2* leftEncoder.getDistance() );
-		SmartDashboard.putNumber("leftEncoderDistance", 3.2*leftEncoder.getDistance());
-		*/
 		SmartDashboard.putNumber("topMotorVoltageHighScale", scaleVoltageTopHigh);
 		SmartDashboard.putNumber("bottomMotorVoltageHighScale", scaleVoltageBottomHigh);
 		SmartDashboard.putNumber("topMotorVoltageMedscale", scaleVoltageTopMed);
