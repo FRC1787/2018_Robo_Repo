@@ -15,58 +15,63 @@ public class Autonomous {
 	  
    
    
+   public void autonomousStraight(double moveDistance, double moveSpeed) {
+	   driveTrain.moveStraight(moveDistance, moveSpeed);
+	   
+	   if (driveTrain.getLeftEncoder() > moveDistance || driveTrain.getRightEncoder() > moveDistance) {
+		   autonomousActionNumber++;
+		   driveTrain.resetAuto();
+	   }
+   }
+   
+   
+   /**
+    * First boolean is left, second boolean is right
+    */
+   public void autonomousTurn(double turnSpeed, boolean leftTurn, boolean rightTurn) {
+	   if (leftTurn == true) {
+		   
+		   driveTrain.turnLeft(turnSpeed);
+		   
+		   if (driveTrain.getLeftEncoder() == lastLeftEncoderValue || driveTrain.getRightEncoder() == lastRightEncoderValue) {
+			   autonomousActionNumber++;
+			   driveTrain.resetAuto();
+			   lastRightEncoderValue = -1;
+			   lastLeftEncoderValue = -1;
+		   }
+		   
+		   
+	   }
+	   
+	   else if (rightTurn == true) {
+		   
+		   driveTrain.turnRight(turnSpeed);
+		   
+		   if (driveTrain.getLeftEncoder() == lastLeftEncoderValue || driveTrain.getRightEncoder() == lastRightEncoderValue) {
+			   autonomousActionNumber++;
+			   driveTrain.resetAuto();
+			   lastRightEncoderValue = -1;
+			   lastLeftEncoderValue = -1;
+		   }
+	   }
+	   
+	   lastRightEncoderValue = driveTrain.getRightEncoder();
+	   lastLeftEncoderValue = driveTrain.getLeftEncoder();
+   }
+   
    
 	public void autonomousPeriodic01() {
 	   
 	   if (autonomousActionNumber == 0) {
-		   
-		   driveTrain.moveStraight(0.25, 0.375);
-		   
-		   if (driveTrain.getLeftEncoder() > 0.5 || driveTrain.getRightEncoder() > 0.5) {
-			   autonomousActionNumber = 1;
-			   driveTrain.resetAuto();
-		   }
+		   this.autonomousStraight(0.25, 0.375);
 	   }
-	   /*
-	   else if (autonomousActionNumber == 1) {
-		   
-		   driveTrain.moveStraight(0.25, -0.375);
-		   
-		   if (driveTrain.getLeftEncoder() < -0.5 || driveTrain.getRightEncoder() < -0.5) {
-			   autonomousActionNumber = 2;
-			   driveTrain.resetAuto();
-		   }
-	   }
-	   */
 	   
 	   else if (autonomousActionNumber == 1) {
-		   
-		   driveTrain.turnLeft(0.375);
-		   
-		   if (driveTrain.getLeftEncoder() == lastLeftEncoderValue || driveTrain.getRightEncoder() == lastRightEncoderValue) {
-			   autonomousActionNumber = 2;
-			   driveTrain.resetAuto();
-			   lastRightEncoderValue = -1;
-			   lastLeftEncoderValue = -1;
-		   }
-		   
-		   lastRightEncoderValue = driveTrain.getRightEncoder();
-		   lastLeftEncoderValue = driveTrain.getLeftEncoder();
+		   this.autonomousTurn(0.375, true, false);
 	   }
 	   
 	   else if (autonomousActionNumber == 2) {
-		   
-		   driveTrain.turnRight(0.375);
-		   
-		   if (driveTrain.getLeftEncoder() == lastLeftEncoderValue || driveTrain.getRightEncoder() == lastRightEncoderValue) {
-			   autonomousActionNumber = 3;
-			   driveTrain.resetAuto();
-			   lastRightEncoderValue = -1;
-			   lastLeftEncoderValue = -1;
-		   }
-		   
-		   lastRightEncoderValue = driveTrain.getRightEncoder();
-		   lastLeftEncoderValue = driveTrain.getLeftEncoder();
+		   this.autonomousTurn(0.375, false, true);
 	   }
 	   
 	   
@@ -75,6 +80,10 @@ public class Autonomous {
 	   
 	   
    }
+	
+	
+	
+
    
    
    public void pushDataToShuffleboard() {

@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CameraServer;
 
-
 public class Robot extends TimedRobot {
 	
 	protected int farfar38;
@@ -52,13 +51,13 @@ public class Robot extends TimedRobot {
 	private int JOYSTICK_SLIDER_AXIS = 3;
 	
 	//Input options
-	private int intakeButton = 1;
-	private int dispenseButton = 2;
-	private int CLIMB_EXTEND_BUTTON = 13;
-	private int CLIMB_RETRACT_BUTTON = 14;
-	private int shootInHighScaleButton = 10;
-	private int shootInMediumScaleButton = 9;
-	private int shootInSwitchButton = 8;
+	private final int INTAKE_BUTTON = 1;
+	private final int REVERSE_INTAKE_BUTTON = 2;
+	private final int CLIMB_EXTEND_BUTTON = 13;
+	private final int CLIMB_RETRACT_BUTTON = 14;
+	private final int HIGH_POWER_SHOOTING_BUTTON = 10;
+	private final int MED_POWER_SHOOTING_BUTTON = 9;
+	private final int LOW_POWER_SHOOTING_BUTTON = 8;
 	
 	// Shooting motor voltages
 	private double switchVoltageTop = 0.45;
@@ -70,9 +69,9 @@ public class Robot extends TimedRobot {
 	private double scaleVoltageTopHigh = 0.98;
 	private double scaleVoltageBottomHigh = 0.88;
 	
-	private double rightIntakeVoltage = 0.35;
-	private double leftIntakeVoltage = 0.2;
-	private double intakeOutVoltage = -0.2;
+	private final double RIGHT_INTAKE_VOLTAGE = 0.35;
+	private final double LEFT_INTAKE_VOLTAGE = 0.15;
+	private final double INTAKE_OUT_VOLTAGE = -0.25;
 	
 	
 
@@ -94,7 +93,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		//CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	@Override
@@ -142,7 +141,7 @@ public class Robot extends TimedRobot {
 		}
 		*/
 		
-	 // drive the robot
+		//drive the robot
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		
 		//Set the gear based on the right slider
@@ -167,22 +166,23 @@ public class Robot extends TimedRobot {
 		
 		
 		// pull cube in
-		if (rightStick.getRawButtonPressed(intakeButton)) {
-			intake.pullCubeIn(rightIntakeVoltage, leftIntakeVoltage);
-			intake.testSolenoid(true);
+		if (rightStick.getRawButtonPressed(INTAKE_BUTTON)) {
+			intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
+			//intake.releaseCube();
 		}
-		else if (rightStick.getRawButtonReleased(intakeButton)) {
+		else if (rightStick.getRawButtonReleased(INTAKE_BUTTON)) {
 			intake.turnOffWheels();
+			//intake.releaseCube();
 		}
 				
-		
+		intake.releaseCube();
 		
 		// dispense cube
-		if (rightStick.getRawButtonPressed(dispenseButton)) {
-			intake.pushCubeOut(intakeOutVoltage);
-			intake.testSolenoid(true);
+		if (rightStick.getRawButtonPressed(REVERSE_INTAKE_BUTTON)) {
+			intake.turnOnWheels(INTAKE_OUT_VOLTAGE, INTAKE_OUT_VOLTAGE);
+			//intake.squeezeCube();
 		}
-		else if (rightStick.getRawButtonReleased(dispenseButton)) {
+		else if (rightStick.getRawButtonReleased(REVERSE_INTAKE_BUTTON)) {
 			intake.turnOffWheels();
 		}
 			
@@ -192,10 +192,10 @@ public class Robot extends TimedRobot {
 		
 		// engage intake
 		if (leftStick.getRawButtonPressed(4)) {
-			intake.testSolenoid(false);
+			intake.squeezeCube();
 		}
 		else if (leftStick.getRawButtonPressed(3)) {
-			intake.testSolenoid(true);
+			intake.releaseCube();
 		}
 		
 		// hold cube in place for driving
