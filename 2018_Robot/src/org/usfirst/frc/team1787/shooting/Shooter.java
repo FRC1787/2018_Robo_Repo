@@ -16,108 +16,79 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 
 public class Shooter {
-	
+
 	/*
 	 * Steps to synchronize
 	 * 
-	 * 1.) Start shooting motors (top and uptake motors) and briefly turn on intake motors
-	 * Delay
-	 * 2.) Open up the intake to release the cube
-	 * Delay
-	 * 3.) Engage the uptake by engaging the pistons
-	 * Delay
-	 * 4.) Move everything to default positions.
+	 * 1.) Start shooting motors (top and uptake motors) and briefly turn on intake
+	 * motors Delay 2.) Open up the intake to release the cube Delay 3.) Engage the
+	 * uptake by engaging the pistons Delay 4.) Move everything to default
+	 * positions.
 	 */
-	
+
 	private final int SHOOTER_MOVE_SOLENOID_ID = 4;
 	private Solenoid shooterMoveSolenoid = new Solenoid(SHOOTER_MOVE_SOLENOID_ID);
-	
-	
-	//private double TOP_SHOOTING_VOLTAGE = 0.1;
-	//private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
-	//private double INTAKE_VOLTAGE = 0.1;
-	
-	//Extra talon
+
+	// private double TOP_SHOOTING_VOLTAGE = 0.1;
+	// private double BOTTOM_SHOOTING_VOLTAGE = 0.1;
+	// private double INTAKE_VOLTAGE = 0.1;
+
+	// Extra talon
 	private final int EXTRA_TALON_ID = 4;
 	private WPI_TalonSRX extraTalon = new WPI_TalonSRX(EXTRA_TALON_ID);
-	
+
 	private int rampUpTime = 0;
-	
-	
+
 	private Intake intake = Intake.getInstance();
 	private Output output = Output.getInstance();
-	
+
 	private static final Shooter instance = new Shooter();
-	
-	
-	
+
 	public void extendShooter() {
 		shooterMoveSolenoid.set(true);
 	}
-	
+
 	public void retractShooter() {
 		shooterMoveSolenoid.set(false);
 	}
-	
-	
-	
-	
-	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER, int DISENGAGE_TIME) {
-		
+
+	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER,
+			int DISENGAGE_TIME) {
+
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
-			//intake.releaseCube();
-		}
-		else if (SHOOTER_TIMER == 2) {
+			// intake.releaseCube();
+		} else if (SHOOTER_TIMER == 2) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
-		}
-		else if (SHOOTER_TIMER == 3) {
+		} else if (SHOOTER_TIMER == 3) {
 			intake.turnOnWheels(0.1, 0.1);
-		}
-		else if (SHOOTER_TIMER > 12 && SHOOTER_TIMER < 14) {
+		} else if (SHOOTER_TIMER > 12 && SHOOTER_TIMER < 14) {
 			intake.releaseCube();
-		}
-		else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22 ) {
+		} else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22) {
 			intake.turnOffWheels();
-		}
-		else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
+		} else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
 			output.squeezeCube();
-		}
-		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
+		} else if (SHOOTER_TIMER > DISENGAGE_TIME) {
 			output.turnOffWheels();
 			intake.squeezeCube();
-			
-			
 		}
-		
-		
 	}
-	
-	
-	
-	
+
 	public void resetForThoseDankCubes() {
-		//Reset everything to default positions upon button release
-		
-		
+		// Reset everything to default positions upon button release
 		output.turnOffWheels();
 		output.squeezeCube();
 		intake.squeezeCube();
 		intake.turnOffWheels();
-		
-		
 	}
-	
+
 	public void pushDataToShuffleboard() {
-		//shuffleboard data here
-		//SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());
+		// shuffleboard data here
+		// SmartDashboard.putNumber("Shooter Timer", SHOOTER_TIMER.get());
 	}
-	
+
 	public static Shooter getInstance() {
 		return instance;
 	}
 
 }
-
-
-
