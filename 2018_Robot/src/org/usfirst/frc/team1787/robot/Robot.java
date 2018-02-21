@@ -156,56 +156,6 @@ public class Robot extends TimedRobot {
 		
 		
 		//Shoot cubes
-		/*
-		if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
-			
-			if (rightStick.getRawButtonPressed(HIGH_POWER_SHOOTING_BUTTON)) {
-				shootingTimer = 0;
-				
-			}
-			
-			else if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(HIGH_POWER_TOP_WHEELS, HIGH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
-			
-			else if (rightStick.getRawButtonReleased(HIGH_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
-		}
-		
-		else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
-			
-			if (rightStick.getRawButtonPressed(BALANCED_POWER_SHOOTING_BUTTON)) {
-				shootingTimer = 0;
-			}
-			
-			else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(BALANCED_POWER_TOP_WHEELS, BALANCED_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
-			
-			else if (rightStick.getRawButtonReleased(BALANCED_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
-		}
-		
-		else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
-			
-			if (rightStick.getRawButtonPressed(SWITCH_POWER_SHOOTING_BUTTON)) {
-				shootingTimer = 0;
-			}
-			
-			else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(SWITCH_POWER_TOP_WHEELS, SWITCH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
-			
-			else if (rightStick.getRawButtonReleased(SWITCH_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
-		}
-		
-		shootingTimer++;
-		*/
-		
 		if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
 			
 			if (rightStick.getRawButtonPressed(HIGH_POWER_SHOOTING_BUTTON)) {
