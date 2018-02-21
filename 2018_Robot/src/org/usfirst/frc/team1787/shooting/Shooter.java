@@ -64,9 +64,36 @@ public class Shooter {
 	
 	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER, int DISENGAGE_TIME) {
 		
+		/*
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
+		}
+		else if (SHOOTER_TIMER == 2) {
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+		}
+		else if (SHOOTER_TIMER == 3) {
+			intake.turnOnWheels(0.1, 0.1);
+		}
+		else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22 ) {
 			intake.releaseCube();
+			intake.turnOffWheels();
+		}
+		else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
+			output.squeezeCube();
+		}
+		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
+			output.turnOffWheels();
+			intake.squeezeCube();
+			
+		}
+		
+		
+	}
+		*/
+		
+		if (SHOOTER_TIMER == 1) {
+			output.releaseCube();
+			//intake.releaseCube();
 		}
 		else if (SHOOTER_TIMER == 2) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
@@ -98,10 +125,13 @@ public class Shooter {
 	
 	public void resetForThoseDankCubes() {
 		//Reset everything to default positions upon button release
+		
+		
 		output.turnOffWheels();
 		output.squeezeCube();
 		intake.squeezeCube();
 		intake.turnOffWheels();
+		
 		
 	}
 	
