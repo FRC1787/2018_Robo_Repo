@@ -63,8 +63,8 @@ public class Robot extends TimedRobot {
 	private final int OUTPUT_SQUEEZE_BUTTON = 11;
 	private final int OUTPUT_RELEASE_BUTTON = 16;
 	//Left Stick
-	private final int SHOOTER_ASSEMBLY_EXTEND_BUTTON = 11;
-	private final int SHOOTER_ASSEMBLY_RETRACT_BUTTON = 16;
+	private final int SHOOTER_ASSEMBLY_EXTEND_BUTTON = 7;
+	private final int SHOOTER_ASSEMBLY_RETRACT_BUTTON = 8;
 	private final int REVERSE_OUTPUT_BUTTON = 2;
 	private final int INTAKE_SQUEEZE_BUTTON = 3;
 	private final int INTAKE_RELEASE_BUTTON = 4;
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 	private final double REVERSE_OUTPUT_VOLTAGE = -0.4;
 	
 	// shooter diengage time 
-	private final int DISENGAGE_TIME = 50;
+	private final int DISENGAGE_TIME = 35;
 	
 	//variable variables 
 	private int rampUpTime = 0;
@@ -160,16 +160,10 @@ public class Robot extends TimedRobot {
 			
 			if (rightStick.getRawButtonPressed(HIGH_POWER_SHOOTING_BUTTON)) {
 				shootingTimer = 0;
-				
 			}
 			
-			else if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(HIGH_POWER_TOP_WHEELS, HIGH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
+			shooter.shootThoseDankCubes(HIGH_POWER_TOP_WHEELS, HIGH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
 			
-			else if (rightStick.getRawButtonReleased(HIGH_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
 		}
 		
 		else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
@@ -178,13 +172,8 @@ public class Robot extends TimedRobot {
 				shootingTimer = 0;
 			}
 			
-			else if (rightStick.getRawButton(BALANCED_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(BALANCED_POWER_TOP_WHEELS, BALANCED_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
+			shooter.shootThoseDankCubes(BALANCED_POWER_TOP_WHEELS, BALANCED_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
 			
-			else if (rightStick.getRawButtonReleased(BALANCED_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
 		}
 		
 		else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
@@ -193,13 +182,11 @@ public class Robot extends TimedRobot {
 				shootingTimer = 0;
 			}
 			
-			else if (rightStick.getRawButton(SWITCH_POWER_SHOOTING_BUTTON)) {
-				shooter.shootThoseDankCubes(SWITCH_POWER_TOP_WHEELS, SWITCH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
-			}
-			
-			else if (rightStick.getRawButtonReleased(SWITCH_POWER_SHOOTING_BUTTON)) {
-				shooter.resetForThoseDankCubes();
-			}
+			shooter.shootThoseDankCubes(SWITCH_POWER_TOP_WHEELS, SWITCH_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
+		}
+		
+		else if (rightStick.getRawButtonReleased(HIGH_POWER_SHOOTING_BUTTON) || rightStick.getRawButtonReleased(BALANCED_POWER_SHOOTING_BUTTON) || rightStick.getRawButtonReleased(SWITCH_POWER_SHOOTING_BUTTON)) {
+			shooter.resetForThoseDankCubes();
 		}
 		
 		shootingTimer++;
@@ -218,10 +205,10 @@ public class Robot extends TimedRobot {
 			
 			intakeTimer++;
 			
-			if (intakeTimer % 50 == 0) {
+			if (intakeTimer % 35 == 0) {
 				intake.turnOffWheels();
 			}
-			else if ((intakeTimer % 50) == 10) {
+			else if ((intakeTimer % 35) == 10) {
 				intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
 			}
 			
@@ -264,12 +251,13 @@ public class Robot extends TimedRobot {
 		if (rightStick.getRawButtonPressed(CLIMB_EXTEND_BUTTON)) {
 			climb.extendPiston();
 			shooter.retractShooter();
+			intake.releaseCube();
+			output.releaseCube();
 			
 		}
 		else if (rightStick.getRawButtonPressed(CLIMB_RETRACT_BUTTON)) {
 			climb.retractPiston();
 		}
-		
 				
 				
 				
@@ -300,6 +288,10 @@ public class Robot extends TimedRobot {
 			intakeTimer = 0;
 			output.squeezeCube();
 		}
+		
+		
+		
+		
 		//Intake solenoid
 		if (leftStick.getRawButtonPressed(INTAKE_SQUEEZE_BUTTON)) {
 			intake.squeezeCube();
@@ -307,6 +299,7 @@ public class Robot extends TimedRobot {
 		else if (leftStick.getRawButtonPressed(INTAKE_RELEASE_BUTTON)) {
 			intake.releaseCube();
 		}	
+		
 		
 		
 		

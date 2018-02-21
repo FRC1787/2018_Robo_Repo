@@ -66,6 +66,7 @@ public class Shooter {
 		
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
+			intake.releaseCube();
 		}
 		else if (SHOOTER_TIMER == 2) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
@@ -73,8 +74,10 @@ public class Shooter {
 		else if (SHOOTER_TIMER == 3) {
 			intake.turnOnWheels(0.1, 0.1);
 		}
-		else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22 ) {
+		else if (SHOOTER_TIMER > 12 && SHOOTER_TIMER < 14) {
 			intake.releaseCube();
+		}
+		else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22 ) {
 			intake.turnOffWheels();
 		}
 		else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
@@ -83,6 +86,7 @@ public class Shooter {
 		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
 			output.turnOffWheels();
 			intake.squeezeCube();
+			
 			
 		}
 		
@@ -97,6 +101,8 @@ public class Shooter {
 		output.turnOffWheels();
 		output.squeezeCube();
 		intake.squeezeCube();
+		intake.turnOffWheels();
+		
 	}
 	
 	public void pushDataToShuffleboard() {

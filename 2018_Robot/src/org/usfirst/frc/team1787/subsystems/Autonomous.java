@@ -67,8 +67,10 @@ public class Autonomous {
 	   lastLeftEncoderValue = driveTrain.getLeftEncoder();
    }
    
-   
-	public void autonomousPeriodic01() {
+   	/**
+   	 * Testing (example straight, turn L, and turn R)
+   	 */
+	public void autonomousPeriodic00() {
 	   
 	   if (autonomousActionNumber == 0) {
 		   this.autonomousStraight(0.375, 0.25);
@@ -83,10 +85,15 @@ public class Autonomous {
 	   } 
 	   
    }
+	
+	
+	
+	
+	
 	/**
 	 * Move straight 11.667 feet and shoot a cube
 	 */
-	public void autonomoutPeriodic02() {
+	public void autonomousPeriodic01() {
 		if (autonomousActionNumber == 0) {
 		   this.autonomousStraight(0.375, 11.667);
 		}
@@ -97,7 +104,7 @@ public class Autonomous {
 		}
 		   
 		else if (autonomousActionNumber == 2) {
-		   this.autonomousTurn(0.375, 'R');
+		   shooter.resetForThoseDankCubes();
 		} 
 	}
 	
