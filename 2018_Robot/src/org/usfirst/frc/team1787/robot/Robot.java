@@ -300,10 +300,10 @@ public class Robot extends TimedRobot {
 			climb.retractPiston();
 		}
 
-		SmartDashboard.putNumber("High top wheels", HIGH_POWER_TOP_WHEELS);
-		SmartDashboard.putNumber("High bottom wheels", HIGH_POWER_BOT_WHEELS);
-		SmartDashboard.putNumber("BALANCEDium top wheels", BALANCED_POWER_TOP_WHEELS);
-		SmartDashboard.putNumber("BALANCEDium bottom wheels", BALANCED_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("HIGH top wheels", HIGH_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("HIGH bottom wheels", HIGH_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("BALANCED top wheels", BALANCED_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("BALANCED bottom wheels", BALANCED_POWER_BOT_WHEELS);
 		SmartDashboard.putNumber("SWITCH top wheels", SWITCH_POWER_TOP_WHEELS);
 		SmartDashboard.putNumber("SWITCH bottom wheels", SWITCH_POWER_BOT_WHEELS);
 
