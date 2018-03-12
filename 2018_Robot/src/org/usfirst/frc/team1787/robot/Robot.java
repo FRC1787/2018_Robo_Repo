@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends TimedRobot {
 
-	protected int farfar38;
+	protected int farfar37;
 
 	// Create single instances of objects for use in the program
 	private DriveTrain driveTrain = DriveTrain.getInstance();
