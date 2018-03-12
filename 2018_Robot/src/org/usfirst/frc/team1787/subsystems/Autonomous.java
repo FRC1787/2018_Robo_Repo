@@ -65,6 +65,10 @@ public class Autonomous {
 		lastLeftEncoderValue = driveTrain.getLeftEncoder();
 	}
 
+	
+	
+	
+	
 	/**
 	 * Testing (example straight, turn L, and turn R)
 	 */
@@ -84,6 +88,10 @@ public class Autonomous {
 
 	}
 
+	
+	
+	
+	
 	/**
 	 * Move straight 11.667 feet and shoot a cube
 	 */
@@ -102,6 +110,126 @@ public class Autonomous {
 		}
 	}
 
+	
+	
+	
+	/**
+	 * Short side to switch
+	 */
+	public void autonomousPeriodic02() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousStraight(0.375, 11.667);
+		}
+		
+		else if (autonomousActionNumber == 1) {
+			this.autonomousTurn(0.375, 'R');
+		}
+
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight(0.375, 2.234);
+		}
+
+		else if (autonomousActionNumber == 3) {
+			autoShootingTimer++;
+			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
+		}
+
+		else if (autonomousActionNumber == 4) {
+			shooter.resetForThoseDankCubes();
+		}
+	}
+
+	
+	
+	
+	/**
+	 * Long side to switch
+	 */
+	public void autonomousPeriodic03() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousStraight(0.375, 11.667);
+		}
+		
+		else if (autonomousActionNumber == 1) {
+			this.autonomousTurn(0.375, 'L');
+		}
+
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight(0.375, 2.234);
+		}
+
+		else if (autonomousActionNumber == 3) {
+			autoShootingTimer++;
+			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
+		}
+
+		else if (autonomousActionNumber == 4) {
+			shooter.resetForThoseDankCubes();
+		}
+	}
+
+	
+	
+	
+	/**
+	 * Short side to scale
+	 */
+	public void autonomousPeriodic04() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousStraight(0.375, 25.250);
+		}
+		
+		else if (autonomousActionNumber == 1) {
+			this.autonomousTurn(0.375, 'R');
+		}
+
+		else if (autonomousActionNumber == 2) {
+			//Be careful of the encoders only counting up, if they do then negate 1.000
+			this.autonomousStraight(-0.375, 1.000);
+		}
+
+		else if (autonomousActionNumber == 3) {
+			autoShootingTimer++;
+			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
+		}
+
+		else if (autonomousActionNumber == 4) {
+			shooter.resetForThoseDankCubes();
+		}
+	}
+
+	
+	
+	
+	/**
+	 * Long side to scale
+	 */
+	public void autonomousPeriodic05() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousStraight(0.375, 25.250);
+		}
+		
+		else if (autonomousActionNumber == 1) {
+			this.autonomousTurn(0.375, 'L');
+		}
+
+		else if (autonomousActionNumber == 2) {
+			//Be careful of the encoders only counting up, if they do then negate 1.000
+			this.autonomousStraight(-0.375, 1.000);
+		}
+
+		else if (autonomousActionNumber == 3) {
+			autoShootingTimer++;
+			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
+		}
+
+		else if (autonomousActionNumber == 4) {
+			shooter.resetForThoseDankCubes();
+		}
+	}
+	
+	
+	
 	public void pushDataToShuffleboard() {
 
 	}
