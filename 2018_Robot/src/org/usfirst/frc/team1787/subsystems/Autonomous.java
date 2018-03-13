@@ -70,21 +70,9 @@ public class Autonomous {
 	
 	
 	/**
-	 * Testing (example straight, turn L, and turn R)
+	 * Do nothing
 	 */
-	public void autonomousPeriodic00() {
-
-		if (autonomousActionNumber == 0) {
-			this.autonomousStraight(0.375, 0.25);
-		}
-
-		else if (autonomousActionNumber == 1) {
-			this.autonomousTurn(0.375, 'L');
-		}
-
-		else if (autonomousActionNumber == 2) {
-			this.autonomousTurn(0.375, 'R');
-		}
+	public void doNothing() {
 
 	}
 
@@ -93,30 +81,19 @@ public class Autonomous {
 	
 	
 	/**
-	 * Move straight 11.667 feet and shoot a cube
+	 * Move straight 11.667 feet
 	 */
-	public void autonomousPeriodic01() {
-		if (autonomousActionNumber == 0) {
-			this.autonomousStraight(0.375, 11.667);
-		}
-
-		else if (autonomousActionNumber == 1) {
-			autoShootingTimer++;
-			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
-		}
-
-		else if (autonomousActionNumber == 2) {
-			shooter.resetForThoseDankCubes();
-		}
+	public void baseline() {
+		this.autonomousStraight(0.375, 11.667);
 	}
 
 	
 	
 	
 	/**
-	 * Short side to switch
+	 * Short side corner to switch
 	 */
-	public void autonomousPeriodic02() {
+	public void shortSwitch() {
 		if (autonomousActionNumber == 0) {
 			this.autonomousStraight(0.375, 11.667);
 		}
@@ -143,9 +120,9 @@ public class Autonomous {
 	
 	
 	/**
-	 * Long side to switch
+	 * Long side corner to switch
 	 */
-	public void autonomousPeriodic03() {
+	public void longSwitch() {
 		if (autonomousActionNumber == 0) {
 			this.autonomousStraight(0.375, 11.667);
 		}
@@ -172,9 +149,9 @@ public class Autonomous {
 	
 	
 	/**
-	 * Short side to scale
+	 * Short side corner to scale
 	 */
-	public void autonomousPeriodic04() {
+	public void shortScale() {
 		if (autonomousActionNumber == 0) {
 			this.autonomousStraight(0.375, 25.250);
 		}
@@ -202,9 +179,9 @@ public class Autonomous {
 	
 	
 	/**
-	 * Long side to scale
+	 * Long side corner to scale
 	 */
-	public void autonomousPeriodic05() {
+	public void longScale() {
 		if (autonomousActionNumber == 0) {
 			this.autonomousStraight(0.375, 25.250);
 		}

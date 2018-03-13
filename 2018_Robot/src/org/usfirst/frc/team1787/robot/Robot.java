@@ -18,6 +18,7 @@ import org.usfirst.frc.team1787.subsystems.Testing;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +26,8 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -94,12 +97,27 @@ public class Robot extends TimedRobot {
 	private int rampUpTime = 0;
 	private int shootingTimer = 0;
 	private int intakeTimer = 0;
+	
+	// Auto selection stuff
+	Command autonomousCommand;
+	
+	SendableChooser<Integer> autonomousChooser = new SendableChooser<>();
+	public String gameSpecificData;
+	
+	
+	
 
 	// Timer runs the periodic methods below every 20ms
 
 	@Override
 	public void robotInit() {
 		CameraServer.getInstance().startAutomaticCapture();
+		
+		autonomousChooser.addDefault("Move Straight", 1);
+		autonomousChooser.addObject("Do Nothing", 0);
+		autonomousChooser.addObject("Short corner", 2);
+		autonomousChooser.addObject("Long Corner", 3);
+		SmartDashboard.putData("Autonomous Chooser", autonomousChooser);
 	}
 
 	@Override
@@ -110,11 +128,12 @@ public class Robot extends TimedRobot {
 		driveTrain.resetAuto();
 		driveTrain.highGear();
 		output.squeezeCube();
+		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
-		autonomous.autonomousPeriodic01();
+		
 	}
 
 	@Override
