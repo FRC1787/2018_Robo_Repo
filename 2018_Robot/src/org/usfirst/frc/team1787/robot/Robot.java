@@ -99,11 +99,9 @@ public class Robot extends TimedRobot {
 	private int intakeTimer = 0;
 	
 	// Auto selection stuff
-	Command autonomousCommand;
-	
-	SendableChooser<Integer> autonomousChooser = new SendableChooser<>();
-	public String gameSpecificData;
-	
+	SendableChooser<Integer> autoChooser;
+	String gameData;
+	private int autonomousTimer;
 	
 	
 
@@ -113,11 +111,14 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		CameraServer.getInstance().startAutomaticCapture();
 		
-		autonomousChooser.addDefault("Move Straight", 1);
-		autonomousChooser.addObject("Do Nothing", 0);
-		autonomousChooser.addObject("Short corner", 2);
-		autonomousChooser.addObject("Long Corner", 3);
-		SmartDashboard.putData("Autonomous Chooser", autonomousChooser);
+		autoChooser = new SendableChooser<Integer>();
+		autoChooser.addDefault("Move Straight", 1);
+		autoChooser.addObject("Do Nothing", 0);
+		autoChooser.addObject("Short/Left Side", 2);
+		autoChooser.addObject("Long/Right Side", 3);
+		SmartDashboard.putData("Auto Chooser", autoChooser);
+		
+		autonomousTimer = 0;
 	}
 
 	@Override
@@ -129,11 +130,38 @@ public class Robot extends TimedRobot {
 		driveTrain.highGear();
 		output.squeezeCube();
 		
+		autonomousTimer = 0;
+		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
-		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+	    
+	    if (gameData.length() > 0) {
+	    	//Short/Left is 2, Long/Right is 3
+	    	if (autoChooser.getSelected() == 0) {
+	    		autonomous.doNothing();
+	    	}
+	    	else if (autoChooser.getSelected() == 1) {
+	    		autonomous.baseline();
+	    	}
+	    	else if (gameData.charAt(0) == 'L' && autoChooser.getSelected() == 2) {
+	    		autonomous.shortSwitch();
+	    	}
+	    	else if (gameData.charAt(1) == 'L' && autoChooser.getSelected() == 2) {
+	    		autonomous.shortScale();
+	    	}
+	    	else if (gameData.charAt(0) == 'R' && autoChooser.getSelected() == 3) {
+	    		autonomous.longSwitch();
+	    	}
+	    	else if (gameData.charAt(1) == 'R' && autoChooser.getSelected() == 3) {
+	    		autonomous.longScale();
+	    	}
+	    	else {
+	    		autonomous.doNothing();
+	    	}
+	    }
 	}
 
 	@Override
