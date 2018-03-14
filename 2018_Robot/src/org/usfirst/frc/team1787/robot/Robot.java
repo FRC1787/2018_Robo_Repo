@@ -97,10 +97,11 @@ public class Robot extends TimedRobot {
 	private int rampUpTime = 0;
 	private int shootingTimer = 0;
 	private int intakeTimer = 0;
+	private String nullZone = "";
 	
 	// Auto selection stuff
 	SendableChooser<Integer> autoChooser;
-	String gameData;
+	private String gameData;
 	private int autonomousTimer;
 	
 	
@@ -161,6 +162,19 @@ public class Robot extends TimedRobot {
 	    	else {
 	    		autonomous.doNothing();
 	    	}
+	    }
+	    
+	    
+	    
+	    
+	    if (gameData.charAt(1) == 'R') {
+	    	nullZone = "RIGHT";
+	    }
+	    else if (gameData.charAt(1) == 'L') {
+	    	nullZone = "LEFT";
+	    }
+	    else {
+	    	nullZone = "USE FIELD";
 	    }
 	}
 
@@ -353,6 +367,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("BALANCED bottom wheels", BALANCED_POWER_BOT_WHEELS);
 		SmartDashboard.putNumber("SWITCH top wheels", SWITCH_POWER_TOP_WHEELS);
 		SmartDashboard.putNumber("SWITCH bottom wheels", SWITCH_POWER_BOT_WHEELS);
+		SmartDashboard.putString("NULL ZONE", nullZone);
 
 		// Putting everything on shuffleboard
 		driveTrain.pushDataToShuffleboard();
