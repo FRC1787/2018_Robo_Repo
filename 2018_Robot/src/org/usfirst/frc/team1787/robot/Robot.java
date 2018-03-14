@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1787.robot;
 
-import java.sql.Time;
-
 import org.usfirst.frc.team1787.shooting.Intake;
 import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
@@ -13,7 +11,6 @@ import org.usfirst.frc.team1787.shooting.Shooter;
 import org.usfirst.frc.team1787.subsystems.Autonomous;
 import org.usfirst.frc.team1787.subsystems.Climb;
 import org.usfirst.frc.team1787.subsystems.DriveTrain;
-import org.usfirst.frc.team1787.subsystems.Testing;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -36,11 +33,30 @@ public class Robot extends TimedRobot {
 
 	protected int farfar37;
 
+	
+	/*
+	 * TO DO AT PITTSBURGH
+	 * 
+	 * -Test autonomous distances and shooting power
+	 * -Test all shooting power levels
+	 * -Test intake on both even and uneven power levels
+	 * -Set up shuffleboard
+	 * -Update all talons and victors
+	 * -Test reverse intake into exchange
+	 * -Test reverse shooter
+	 * -Test all button mappings
+	 * -Drink coffee to stay going
+	 * -Lots of practice matches
+	 * -Lots of practice fields
+	 */
+	
+	
+	
+	
 	// Create single instances of objects for use in the program
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private Climb climb = Climb.getInstance();
 	private Shooter shooter = Shooter.getInstance();
-	private Testing testing = Testing.getInstance();
 	private Output output = Output.getInstance();
 	private Intake intake = Intake.getInstance();
 	private Autonomous autonomous = Autonomous.getInstance();
