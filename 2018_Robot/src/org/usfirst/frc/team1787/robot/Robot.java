@@ -120,6 +120,8 @@ public class Robot extends TimedRobot {
 	private String gameData;
 	private int autonomousTimer;
 	
+	//Camera
+	
 	
 
 	// Timer runs the periodic methods below every 20ms
