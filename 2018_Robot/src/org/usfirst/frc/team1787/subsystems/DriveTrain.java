@@ -44,7 +44,7 @@ public class DriveTrain {
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB, true);
 	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
 
-	private final double WHEEL_RADIUS = 0.0254 * (6.25 / 2);
+	private final double WHEEL_RADIUS = 3;
 	private final double WHEEL_CIRCUMFERENCE = (2 * Math.PI * WHEEL_RADIUS);
 	private final double PULSES_PER_ROTATION = 2532;
 	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE / PULSES_PER_ROTATION;
@@ -101,7 +101,7 @@ public class DriveTrain {
 
 	public void tankDrive(double leftInput, double rightInput) {
 		leftMaster.set(leftInput);
-		leftFollower.set(-leftInput);
+		leftFollower.set(leftInput);
 		rightMaster.set(rightInput);
 		rightFollower.set(rightInput);
 	}
@@ -153,7 +153,7 @@ public class DriveTrain {
 		if (leftEncoder.getDistance() * 3.280839 <= moveDistance
 				&& rightEncoder.getDistance() * 3.280839 <= moveDistance) {
 			leftMaster.set(moveSpeed);
-			leftFollower.set(-moveSpeed);
+			leftFollower.set(moveSpeed);
 			rightMaster.set(moveSpeed);
 			rightFollower.set(moveSpeed);
 		}

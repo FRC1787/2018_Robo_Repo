@@ -19,6 +19,7 @@ public class Autonomous {
 	private double lastLeftEncoderValue = -1;
 	private int autoShootingTimer = 0;
 	private int intakeTimer = 0;
+	private final double AUTO_CORRECTION_FACTOR = 2.0;
 	
 	
 	
@@ -98,10 +99,14 @@ public class Autonomous {
 	
 	
 	/**
-	 * Move straight 11.667 feet
+	 * Move straight
 	 */
 	public void baseline() {
-		this.autonomousStraight(0.375, 12);
+		if (autonomousActionNumber == 0) {
+			//
+			this.autonomousStraight(0.2, 11.667); // DANNY IS LAME
+		}
+		
 	}
 
 	
@@ -145,15 +150,15 @@ public class Autonomous {
 	 */
 	public void longSwitch() {
 		if (autonomousActionNumber == 0) {
-			this.autonomousStraight(0.375, 11.667);
+			this.autonomousStraight(0.2, 11.667-AUTO_CORRECTION_FACTOR);
 		}
 		
 		else if (autonomousActionNumber == 1) {
-			this.autonomousTurn(0.375, 'L');
+			this.autonomousTurn(0.2, 'L');
 		}
 
 		else if (autonomousActionNumber == 2) {
-			this.autonomousStraight(0.375, 2.234);
+			//this.autonomousStraight(0.375, 2.234);
 		}
 
 		else if (autonomousActionNumber == 3) {

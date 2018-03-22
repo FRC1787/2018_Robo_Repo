@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
 	// Intake motor voltages
 	private final double RIGHT_INTAKE_VOLTAGE = 0.35;
 	private final double LEFT_INTAKE_VOLTAGE = 0.15;
-	private final double INTAKE_OUT_VOLTAGE = -0.25;
+	private final double INTAKE_OUT_VOLTAGE = -0.5;
 	private final double REVERSE_OUTPUT_VOLTAGE = -0.4;
 
 	// Shooter disengage time
@@ -182,8 +182,8 @@ public class Robot extends TimedRobot {
 		botCam.setBrightness(50);
 		botCam.setWhiteBalanceAuto();
 		
-		topCam.setResolution(320, 240);
-		topCam.setFPS(10);
+		topCam.setResolution(160, 120);
+		topCam.setFPS(20);
 		topCam.setExposureAuto();
 		topCam.setBrightness(50);
 		topCam.setWhiteBalanceAuto();
@@ -462,11 +462,12 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
+		
 	}
 
 	public void disabledInit() {
 		output.turnOffWheels();
+		driveTrain.resetAuto();
 	}
 
 	public void disabledPeriodic() {

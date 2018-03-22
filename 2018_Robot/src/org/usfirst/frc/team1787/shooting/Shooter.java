@@ -61,7 +61,7 @@ public class Shooter {
 		} else if (SHOOTER_TIMER == 2) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
 		} else if (SHOOTER_TIMER == 3) {
-			intake.turnOnWheels(0.1, 0.1);
+			intake.turnOnWheels(0.375, 0.375);
 		} else if (SHOOTER_TIMER > 12 && SHOOTER_TIMER < 14) {
 			intake.releaseCube();
 		} else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22) {
