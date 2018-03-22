@@ -133,7 +133,7 @@ public class DriveTrain {
 
 		leftMaster.set(leftMotorOutput);
 		rightMaster.set(rightMotorOutput);
-		leftFollower.set(-leftMotorOutput);
+		leftFollower.set(leftMotorOutput);
 		rightFollower.set(rightMotorOutput);
 
 	}

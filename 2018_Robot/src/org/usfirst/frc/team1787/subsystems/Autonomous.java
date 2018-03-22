@@ -101,7 +101,7 @@ public class Autonomous {
 	 * Move straight 11.667 feet
 	 */
 	public void baseline() {
-		this.autonomousStraight(0.375, 11.667);
+		this.autonomousStraight(0.375, 12);
 	}
 
 	

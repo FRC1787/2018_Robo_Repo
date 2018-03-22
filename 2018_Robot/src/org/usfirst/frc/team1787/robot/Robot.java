@@ -127,8 +127,8 @@ public class Robot extends TimedRobot {
 	//Camera code
 	CameraServer server = CameraServer.getInstance();
 	  
-	private UsbCamera topCam;
-	private UsbCamera botCam;
+	private UsbCamera topCam = server.startAutomaticCapture(1);
+	private UsbCamera botCam = server.startAutomaticCapture(0);
 	 
 	private final int IMAGE_WIDTH_PIXELS = 160;
 	private final int IMAGE_HEIGHT_PIXELS = 120;
@@ -159,6 +159,7 @@ public class Robot extends TimedRobot {
 		quotes.add("This game is awesome");
 		quotes.add("This game sucks");
 		quotes.add("There's always next year");
+		quotes.add("I am your property now, Jordan");
 		
 		
 		CameraServer.getInstance();
@@ -173,23 +174,20 @@ public class Robot extends TimedRobot {
 		
 		autonomousTimer = 0;
 		
-		topCam = server.startAutomaticCapture(0);
-		botCam = server.startAutomaticCapture(1);
-		  
-		botCam.setResolution(IMAGE_WIDTH_PIXELS, IMAGE_HEIGHT_PIXELS);
+		
+		
+		botCam.setResolution(160, 120);
 		botCam.setFPS(10);
 		botCam.setExposureAuto();
 		botCam.setBrightness(50);
 		botCam.setWhiteBalanceAuto();
 		
-		topCam.setResolution(IMAGE_WIDTH_PIXELS, IMAGE_HEIGHT_PIXELS);
+		topCam.setResolution(320, 240);
 		topCam.setFPS(10);
 		topCam.setExposureAuto();
 		topCam.setBrightness(50);
 		topCam.setWhiteBalanceAuto();
 		
-		
-		SmartDashboard.putString("Inspirational Quote", quotes.get((int) Math.random()*(quotes.size()+1)));
 	}
 
 	@Override
@@ -202,6 +200,8 @@ public class Robot extends TimedRobot {
 		output.squeezeCube();
 		
 		autonomousTimer = 0;
+		
+		SmartDashboard.putString("Inspirational Quote", quotes.get((int) Math.random()*(quotes.size()+1)));
 		
 	}
 
