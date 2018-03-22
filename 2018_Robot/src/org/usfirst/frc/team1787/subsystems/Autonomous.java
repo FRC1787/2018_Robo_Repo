@@ -33,7 +33,7 @@ public class Autonomous {
 	}
 
 	/**
-	 * First boolean is left, second boolean is right
+	 * Turn method
 	 */
 	public void autonomousTurn(double turnSpeed, char turnDirection) {
 		if (turnDirection == 'L' || turnDirection == 'l') {
@@ -104,7 +104,7 @@ public class Autonomous {
 	public void baseline() {
 		if (autonomousActionNumber == 0) {
 			//
-			this.autonomousStraight(0.2, 11.667); // DANNY IS LAME
+			this.autonomousStraight(0.2, 140); // DANNY IS LAME
 		}
 		
 	}

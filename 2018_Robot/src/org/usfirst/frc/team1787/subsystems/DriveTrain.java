@@ -46,7 +46,7 @@ public class DriveTrain {
 
 	private final double WHEEL_RADIUS = 3;
 	private final double WHEEL_CIRCUMFERENCE = (2 * Math.PI * WHEEL_RADIUS);
-	private final double PULSES_PER_ROTATION = 2532;
+	private final double PULSES_PER_ROTATION = 2048;
 	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE / PULSES_PER_ROTATION;
 
 	private static final DriveTrain instance = new DriveTrain();
@@ -150,8 +150,8 @@ public class DriveTrain {
 
 	public void moveStraight(double moveDistance, double moveSpeed) {
 
-		if (leftEncoder.getDistance() * 3.280839 <= moveDistance
-				&& rightEncoder.getDistance() * 3.280839 <= moveDistance) {
+		if (leftEncoder.getDistance() <= moveDistance
+				&& rightEncoder.getDistance() <= moveDistance) {
 			leftMaster.set(moveSpeed);
 			leftFollower.set(moveSpeed);
 			rightMaster.set(moveSpeed);
