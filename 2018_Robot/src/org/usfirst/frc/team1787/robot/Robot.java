@@ -123,6 +123,8 @@ public class Robot extends TimedRobot {
 	private String gameData;
 	private int autonomousTimer;
 	
+	//Camera
+	
 	
 	//Camera code
 	CameraServer server = CameraServer.getInstance();
