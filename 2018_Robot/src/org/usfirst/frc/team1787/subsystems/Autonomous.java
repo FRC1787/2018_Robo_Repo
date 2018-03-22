@@ -2,6 +2,7 @@ package org.usfirst.frc.team1787.subsystems;
 
 import java.awt.RenderingHints;
 
+import org.usfirst.frc.team1787.shooting.Intake;
 import org.usfirst.frc.team1787.shooting.Shooter;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,12 +12,16 @@ public class Autonomous {
 
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private Shooter shooter = Shooter.getInstance();
+	private Intake intake = Intake.getInstance();
 	private static final Autonomous instance = new Autonomous();
 	private int autonomousActionNumber = 0;
 	private double lastRightEncoderValue = -1;
 	private double lastLeftEncoderValue = -1;
 	private int autoShootingTimer = 0;
-
+	private int intakeTimer = 0;
+	
+	
+	
 	public void autonomousStraight(double moveSpeed, double moveDistance) {
 		driveTrain.moveStraight(moveDistance, moveSpeed);
 
@@ -66,7 +71,15 @@ public class Autonomous {
 	}
 
 	
-	public void autonomousShoot() {
+	public void autonomousIntake(double intakeSpeed, int intakeTime) {
+		if (intakeTime < 10) {
+			intake.turnOnWheels(intakeSpeed, intakeSpeed);
+		}
+		else {
+			intake.turnOffWheels();
+			intakeTimer = 0;
+			autonomousActionNumber++;
+		}
 		
 	}
 	
@@ -109,13 +122,17 @@ public class Autonomous {
 		else if (autonomousActionNumber == 2) {
 			this.autonomousStraight(0.375, 2.234);
 		}
-
+		
 		else if (autonomousActionNumber == 3) {
+			this.autonomousIntake(0.375, 6);
+		}
+
+		else if (autonomousActionNumber == 4) {
 			autoShootingTimer++;
 			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
 		}
 
-		else if (autonomousActionNumber == 4) {
+		else if (autonomousActionNumber == 5) {
 			shooter.resetForThoseDankCubes();
 		}
 	}
