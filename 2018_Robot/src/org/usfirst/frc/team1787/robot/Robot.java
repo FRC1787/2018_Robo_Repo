@@ -48,9 +48,7 @@ public class Robot extends TimedRobot {
 	 * -Test reverse intake into exchange
 	 * -Test reverse shooter
 	 * -Test all button mappings
-	 * -Drink coffee to stay going
-	 * -Lots of practice matches
-	 * -Lots of practice fields
+	 * -Test cameras
 	 */
 	
 	
@@ -66,8 +64,8 @@ public class Robot extends TimedRobot {
 	Preferences prefs = Preferences.getInstance();
 
 	// Joystick setup
-	private final int RIGHT_JOYSTICK_ID = 0;
-	private final int LEFT_JOYSTICK_ID = 1;
+	private final int RIGHT_JOYSTICK_ID = 1;
+	private final int LEFT_JOYSTICK_ID = 0;
 	private Joystick rightStick = new Joystick(RIGHT_JOYSTICK_ID);
 	private Joystick leftStick = new Joystick(LEFT_JOYSTICK_ID);
 	private int JOYSTICK_ROTATION_AXIS = 2;
@@ -146,7 +144,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		
 		quotes.add("What a great day to suck as driver!");
-		quotes.add("There will always be someone better");
+		quotes.add("Give up.");
 		quotes.add("Don't forget the heat shrink");
 		quotes.add("What a beautiful day to be a driver");
 		quotes.add("Better than last year, better than ever");
@@ -170,6 +168,7 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Do Nothing", 0);
 		autoChooser.addObject("Short/Left Side", 2);
 		autoChooser.addObject("Long/Right Side", 3);
+		autoChooser.addObject("Shooting Test", 4);
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 		
 		autonomousTimer = 0;
@@ -229,6 +228,9 @@ public class Robot extends TimedRobot {
 	    	}
 	    	else if (gameData.charAt(1) == 'R' && autoChooser.getSelected() == 3) {
 	    		autonomous.longScale();
+	    	}
+	    	else if (autoChooser.getSelected() == 4) {
+	    		autonomous.intakeShooterTest();
 	    	}
 	    	else {
 	    		autonomous.doNothing();

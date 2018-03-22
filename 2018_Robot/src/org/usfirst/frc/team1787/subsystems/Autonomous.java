@@ -227,6 +227,21 @@ public class Autonomous {
 	}
 	
 	
+	public void intakeShooterTest() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousIntake(0.375, 6);
+		}
+		
+		else if (autonomousActionNumber == 1) {
+			shooter.shootThoseDankCubes(0.45, 0.6, autoShootingTimer, 50);
+		}
+		
+		else if (autonomousActionNumber == 2) {
+			shooter.resetForThoseDankCubes();
+		}
+	}
+	
+	
 	
 	public void pushDataToShuffleboard() {
 
