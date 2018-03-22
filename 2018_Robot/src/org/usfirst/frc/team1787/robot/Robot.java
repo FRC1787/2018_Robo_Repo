@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1787.robot;
 
+import java.util.ArrayList;
+
 import org.usfirst.frc.team1787.shooting.Intake;
 import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends TimedRobot {
@@ -121,11 +124,43 @@ public class Robot extends TimedRobot {
 	private int autonomousTimer;
 	
 	
+	//Camera code
+	CameraServer server = CameraServer.getInstance();
+	  
+	private UsbCamera topCam;
+	private UsbCamera botCam;
+	 
+	private final int IMAGE_WIDTH_PIXELS = 160;
+	private final int IMAGE_HEIGHT_PIXELS = 120;
+	
+	//Inspiration
+	private ArrayList<String> quotes = new ArrayList<String>();
+	
+	
 
 	// Timer runs the periodic methods below every 20ms
 
 	@Override
 	public void robotInit() {
+		
+		quotes.add("What a great day to suck as driver!");
+		quotes.add("There will always be someone better");
+		quotes.add("Don't forget the heat shrink");
+		quotes.add("What a beautiful day to be a driver");
+		quotes.add("Better than last year, better than ever");
+		quotes.add("No one asked you to be a woman.");
+		quotes.add("What a beautiful day to be a driver");
+		quotes.add("You're going to win!");
+		quotes.add("Don't waste a second");
+		quotes.add("Act before you think");
+		quotes.add("Act with gracious professionalism");
+		quotes.add("You may win or lose but you'll never be defeated");
+		quotes.add("Start at a 11.75th of a step and move up 2 per second");
+		quotes.add("This game is awesome");
+		quotes.add("This game sucks");
+		quotes.add("There's always next year");
+		
+		
 		CameraServer.getInstance().startAutomaticCapture();
 		
 		autoChooser = new SendableChooser<Integer>();
@@ -136,6 +171,24 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 		
 		autonomousTimer = 0;
+		
+		topCam = server.startAutomaticCapture(0);
+		botCam = server.startAutomaticCapture(1);
+		  
+		botCam.setResolution(IMAGE_WIDTH_PIXELS, IMAGE_HEIGHT_PIXELS);
+		botCam.setFPS(10);
+		botCam.setExposureAuto();
+		botCam.setBrightness(50);
+		botCam.setWhiteBalanceAuto();
+		
+		topCam.setResolution(IMAGE_WIDTH_PIXELS, IMAGE_HEIGHT_PIXELS);
+		topCam.setFPS(10);
+		topCam.setExposureAuto();
+		topCam.setBrightness(50);
+		topCam.setWhiteBalanceAuto();
+		
+		
+		SmartDashboard.putString("Inspirational Quote", quotes.get((int) Math.random()*(quotes.size()+1)));
 	}
 
 	@Override
@@ -282,6 +335,8 @@ public class Robot extends TimedRobot {
 			intakeTimer = 0;
 			output.squeezeCube();
 		}
+		
+		
 
 		// Reverse intake
 		if (rightStick.getRawButtonPressed(REVERSE_INTAKE_BUTTON)) {

@@ -66,6 +66,10 @@ public class Autonomous {
 	}
 
 	
+	public void autonomousShoot() {
+		
+	}
+	
 	
 	
 	
