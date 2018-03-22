@@ -64,8 +64,8 @@ public class Robot extends TimedRobot {
 	Preferences prefs = Preferences.getInstance();
 
 	// Joystick setup
-	private final int RIGHT_JOYSTICK_ID = 1;
-	private final int LEFT_JOYSTICK_ID = 0;
+	private final int RIGHT_JOYSTICK_ID = 0;
+	private final int LEFT_JOYSTICK_ID = 1;
 	private Joystick rightStick = new Joystick(RIGHT_JOYSTICK_ID);
 	private Joystick leftStick = new Joystick(LEFT_JOYSTICK_ID);
 	private int JOYSTICK_ROTATION_AXIS = 2;
@@ -161,7 +161,7 @@ public class Robot extends TimedRobot {
 		quotes.add("There's always next year");
 		
 		
-		CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance();
 		
 		autoChooser = new SendableChooser<Integer>();
 		autoChooser.addDefault("Move Straight", 1);

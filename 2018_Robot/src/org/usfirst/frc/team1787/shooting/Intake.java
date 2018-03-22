@@ -38,8 +38,8 @@ public class Intake {
 	}
 
 	public void turnOnWheels(double rightIntakeVoltage, double leftIntakeVoltage) {
-		intakeRight.set(rightIntakeVoltage);
-		intakeLeft.set(leftIntakeVoltage);
+		intakeRight.set(-rightIntakeVoltage);
+		intakeLeft.set(-leftIntakeVoltage);
 	}
 
 	public void turnOffWheels() {
