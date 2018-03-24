@@ -44,9 +44,9 @@ public class DriveTrain {
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB, true);
 	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
 
-	private final double WHEEL_RADIUS = 3;
+	private final double WHEEL_RADIUS = 6.05/2; //3in converted to feet
 	private final double WHEEL_CIRCUMFERENCE = (2 * Math.PI * WHEEL_RADIUS);
-	private final double PULSES_PER_ROTATION = 2048;
+	private final double PULSES_PER_ROTATION = 2532;
 	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE / PULSES_PER_ROTATION;
 
 	private static final DriveTrain instance = new DriveTrain();
@@ -76,10 +76,10 @@ public class DriveTrain {
 		rightFollower.enableVoltageCompensation(true);
 
 		// testing stuff
-		leftMaster.setNeutralMode(NeutralMode.Coast);
-		rightMaster.setNeutralMode(NeutralMode.Coast);
-		leftFollower.setNeutralMode(NeutralMode.Coast);
-		rightFollower.setNeutralMode(NeutralMode.Coast);
+		leftMaster.setNeutralMode(NeutralMode.Brake);
+		rightMaster.setNeutralMode(NeutralMode.Brake);
+		leftFollower.setNeutralMode(NeutralMode.Brake);
+		rightFollower.setNeutralMode(NeutralMode.Brake);
 
 		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
@@ -161,7 +161,7 @@ public class DriveTrain {
 
 	public void turnRight(double turnSpeed) {
 
-		if (leftEncoder.get() - rightEncoder.get() < AUTO_RIGHT_TURN_VALUE) {
+		if (leftEncoder.get() < AUTO_RIGHT_TURN_VALUE && rightEncoder.get() > -1*AUTO_RIGHT_TURN_VALUE) {
 			this.tankDrive(turnSpeed, -turnSpeed);
 		} else {
 			this.tankDrive(0, 0);
@@ -170,7 +170,7 @@ public class DriveTrain {
 
 	public void turnLeft(double turnSpeed) {
 
-		if (rightEncoder.get() - leftEncoder.get() < AUTO_LEFT_TURN_VALUE) {
+		if (rightEncoder.get() < AUTO_LEFT_TURN_VALUE && leftEncoder.get() > -1*AUTO_LEFT_TURN_VALUE) {
 			this.tankDrive(-turnSpeed, turnSpeed);
 		} else {
 			this.tankDrive(0, 0);
@@ -184,11 +184,11 @@ public class DriveTrain {
 	}
 
 	public double getLeftEncoder() {
-		return (leftEncoder.getDistance() * 3.280839);
+		return (leftEncoder.getDistance()/12);
 	}
 
 	public double getRightEncoder() {
-		return (rightEncoder.getDistance() * 3.280839);
+		return (rightEncoder.getDistance()/12);
 	}
 
 }

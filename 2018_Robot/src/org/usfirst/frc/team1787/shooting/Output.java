@@ -60,6 +60,13 @@ public class Output {
 		topFollower.set(TOP_SHOOTER_VOLTAGE);
 		bottomFollower.set(BOTTOM_SHOOTER_VOLTAGE);
 	}
+	
+	public void turnOnWheelsSideways (double TOP_LEFT_SHOOTER_VOLTAGE, double TOP_RIGHT_SHOOTER_VOLTAGE, double BOTTOM_SHOOTER_VOLTAGE) {
+		topMaster.set(TOP_RIGHT_SHOOTER_VOLTAGE);
+		bottomMaster.set(BOTTOM_SHOOTER_VOLTAGE);
+		topFollower.set(TOP_LEFT_SHOOTER_VOLTAGE);
+		bottomFollower.set(BOTTOM_SHOOTER_VOLTAGE);
+	}
 
 	public void turnOffWheels() {
 		topMaster.stopMotor();

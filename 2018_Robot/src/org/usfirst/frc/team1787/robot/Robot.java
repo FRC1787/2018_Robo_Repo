@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
 	private double BALANCED_POWER_TOP_WHEELS = 0.8;
 	private double BALANCED_POWER_BOT_WHEELS = 0.7;
 
-	private double SWITCH_POWER_TOP_WHEELS = 0.45;
+	private double SWITCH_POWER_TOP_WHEELS = 0.55;
 	private double SWITCH_POWER_BOT_WHEELS = 0.6;
 
 	// Intake motor voltages
@@ -121,63 +121,51 @@ public class Robot extends TimedRobot {
 	private String gameData;
 	private int autonomousTimer;
 	
+	private String autonomousSelection;
+	
 	//Camera
 	
 	
 	//Camera code
+	
 	CameraServer server = CameraServer.getInstance();
 	  
-	private UsbCamera topCam = server.startAutomaticCapture(1);
-	private UsbCamera botCam = server.startAutomaticCapture(0);
+	private UsbCamera topCam;
+	private UsbCamera botCam;
 	 
 	private final int IMAGE_WIDTH_PIXELS = 160;
 	private final int IMAGE_HEIGHT_PIXELS = 120;
 	
-	//Inspiration
-	private ArrayList<String> quotes = new ArrayList<String>();
-	
-	
-
 	// Timer runs the periodic methods below every 20ms
 
 	@Override
 	public void robotInit() {
 		
-		quotes.add("What a great day to suck as driver!");
-		quotes.add("Give up.");
-		quotes.add("Don't forget the heat shrink");
-		quotes.add("What a beautiful day to be a driver");
-		quotes.add("Better than last year, better than ever");
-		quotes.add("No one asked you to be a woman.");
-		quotes.add("What a beautiful day to be a driver");
-		quotes.add("You're going to win!");
-		quotes.add("Don't waste a second");
-		quotes.add("Act before you think");
-		quotes.add("Act with gracious professionalism");
-		quotes.add("You may win or lose but you'll never be defeated");
-		quotes.add("Start at a 11.75th of a step and move up 2 per second");
-		quotes.add("This game is awesome");
-		quotes.add("This game sucks");
-		quotes.add("There's always next year");
-		quotes.add("I am your property now, Jordan");
+		CameraServer server = CameraServer.getInstance();
+		  
+		topCam = server.startAutomaticCapture(1);
+		botCam = server.startAutomaticCapture(0);
 		
 		
 		CameraServer.getInstance();
-		
+		/*
 		autoChooser = new SendableChooser<Integer>();
-		autoChooser.addDefault("Move Straight", 1);
-		autoChooser.addObject("Do Nothing", 0);
+		autoChooser.addObject("Move Straight", 1);
+		autoChooser.addDefault("Do Nothing", 0);
 		autoChooser.addObject("Short/Left Side", 2);
 		autoChooser.addObject("Long/Right Side", 3);
 		autoChooser.addObject("Shooting Test", 4);
+		autoChooser.addDefault("Timed Left", 5);
+		autoChooser.addObject("Timed Right", 6);
 		SmartDashboard.putData("Auto Chooser", autoChooser);
-		
+		SmartDashboard.putNumber("Selected Auton", autoChooser.getSelected());
+		*/
 		autonomousTimer = 0;
 		
 		
 		
 		botCam.setResolution(160, 120);
-		botCam.setFPS(10);
+		botCam.setFPS(20);
 		botCam.setExposureAuto();
 		botCam.setBrightness(50);
 		botCam.setWhiteBalanceAuto();
@@ -189,6 +177,8 @@ public class Robot extends TimedRobot {
 		topCam.setWhiteBalanceAuto();
 		
 	}
+	
+	
 
 	@Override
 	public void autonomousInit() {
@@ -199,43 +189,77 @@ public class Robot extends TimedRobot {
 		driveTrain.highGear();
 		output.squeezeCube();
 		
-		autonomousTimer = 0;
+		//autonomousSelection = "right";
+		//autonomousSelection = "left";
+		autonomousSelection = "straight";
 		
-		SmartDashboard.putString("Inspirational Quote", quotes.get((int) Math.random()*(quotes.size()+1)));
+		autonomousTimer = 0;
 		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
+		
+		
+		
+		
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 	    
 	    if (gameData.length() > 0) {
 	    	//Short/Left is 2, Long/Right is 3
-	    	if (autoChooser.getSelected() == 0) {
+	    	if (autonomousSelection == "") {
 	    		autonomous.doNothing();
 	    	}
-	    	else if (autoChooser.getSelected() == 1) {
+	    	
+	    	
+	    	/* Pulse based
+	    	else if (autonomousSelection == "straight") {
 	    		autonomous.baseline();
 	    	}
-	    	else if (gameData.charAt(0) == 'L' && autoChooser.getSelected() == 2) {
+	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == "left") {
 	    		autonomous.shortSwitch();
 	    	}
-	    	else if (gameData.charAt(1) == 'L' && autoChooser.getSelected() == 2) {
+	    	else if (gameData.charAt(1) == 'L' && autonomousSelection == "left") {
 	    		autonomous.shortScale();
 	    	}
-	    	else if (gameData.charAt(0) == 'R' && autoChooser.getSelected() == 3) {
+	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == "right") {
 	    		autonomous.longSwitch();
 	    	}
-	    	else if (gameData.charAt(1) == 'R' && autoChooser.getSelected() == 3) {
+	    	else if (gameData.charAt(1) == 'R' && autonomousSelection == "right") {
 	    		autonomous.longScale();
 	    	}
-	    	else if (autoChooser.getSelected() == 4) {
-	    		autonomous.intakeShooterTest();
+	    	*/
+	    	
+	    	
+	    	
+	    	//Time based
+	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == "left") {
+	    		autonomous.timedBaselineSameShot();
 	    	}
+	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == "right") {
+	    		autonomous.timedBaselineSameShot();
+	    	}
+	    	
+	    	
+	    	
+	    	
+	    	/*
+	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == 6) {
+	    		autonomous.timedBaselineSameShot();
+	    	}
+	    	
+	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == 5) {
+	    		autonomous.timedBaselineDiffShotGoR();
+	    	}
+	    	*/
+	    	
 	    	else {
-	    		autonomous.doNothing();
+	    		//autonomous.timedBaseline();
+	    		autonomous.pulseDistTest();
 	    	}
 	    }
+	    
+	    
 	    
 	    
 	    
@@ -263,13 +287,25 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		driveTrain.highGear();
-
+		
+		
+		
 		/************************
 		 * * RIGHT STICK CONTROLS * *
 		 ************************
 		 */
 
+		//driveTrain.highGear();
+		
+		if (rightStick.getRawAxis(3) > 0) {
+			driveTrain.lowGear();
+		}
+		else if (rightStick.getRawAxis(3) < 0) {
+			driveTrain.highGear();
+		}
+		
+		
+		
 		// Arcade Drive
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
 		// driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
@@ -309,6 +345,34 @@ public class Robot extends TimedRobot {
 		else if (rightStick.getRawButtonReleased(HIGH_POWER_SHOOTING_BUTTON)
 				|| rightStick.getRawButtonReleased(BALANCED_POWER_SHOOTING_BUTTON)
 				|| rightStick.getRawButtonReleased(SWITCH_POWER_SHOOTING_BUTTON)) {
+			shooter.resetForThoseDankCubes();
+		}
+		
+		
+		
+		
+		
+		if (rightStick.getRawButton(7)) {
+			//Right is faster
+			if (rightStick.getRawButtonPressed(7)) {
+				shootingTimer = 0;
+			}
+
+			shooter.shootThoseDankCubesSideways(0.55, 0.8, BALANCED_POWER_BOT_WHEELS, shootingTimer, DISENGAGE_TIME);
+
+		}
+ 
+		else if (rightStick.getRawButton(5)) {
+			//Left is faster
+			if (rightStick.getRawButtonPressed(5)) {
+				shootingTimer = 0;
+			}
+
+			shooter.shootThoseDankCubesSideways(0.8, 0.55,  BALANCED_POWER_BOT_WHEELS, shootingTimer,
+					DISENGAGE_TIME);
+		}
+
+		else if (rightStick.getRawButtonReleased(5) || rightStick.getRawButtonReleased(7)) {
 			shooter.resetForThoseDankCubes();
 		}
 
