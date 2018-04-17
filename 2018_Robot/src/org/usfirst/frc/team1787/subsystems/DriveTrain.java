@@ -50,6 +50,7 @@ public class DriveTrain {
 	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE / PULSES_PER_ROTATION;
 
 	private static final DriveTrain instance = new DriveTrain();
+	
 
 	private DriveTrain() {
 

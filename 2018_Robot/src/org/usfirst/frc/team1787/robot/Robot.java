@@ -13,6 +13,7 @@ import org.usfirst.frc.team1787.shooting.Shooter;
 import org.usfirst.frc.team1787.subsystems.Autonomous;
 import org.usfirst.frc.team1787.subsystems.Climb;
 import org.usfirst.frc.team1787.subsystems.DriveTrain;
+import org.usfirst.frc.team1787.subsystems.Gyroscope;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -61,6 +62,7 @@ public class Robot extends TimedRobot {
 	private Output output = Output.getInstance();
 	private Intake intake = Intake.getInstance();
 	private Autonomous autonomous = Autonomous.getInstance();
+	private Gyroscope gyroscope = Gyroscope.getInstance();
 	Preferences prefs = Preferences.getInstance();
 
 	// Joystick setup
@@ -161,6 +163,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Selected Auton", autoChooser.getSelected());
 		*/
 		autonomousTimer = 0;
+		gyroscope.resetGyro();
 		
 		
 		
@@ -190,8 +193,8 @@ public class Robot extends TimedRobot {
 		output.squeezeCube();
 		
 		//autonomousSelection = "right";
-		//autonomousSelection = "left";
-		autonomousSelection = "straight";
+		autonomousSelection = "left";
+		//autonomousSelection = "straight";
 		
 		autonomousTimer = 0;
 		
@@ -417,6 +420,20 @@ public class Robot extends TimedRobot {
 			intake.turnOffWheels();
 			output.squeezeCube();
 		}
+		
+		//Fast Reverse
+		if (leftStick.getRawButtonPressed(10)) {
+			intake.turnOnWheels(-1.0, -1.0);
+			output.releaseCube();
+			// intake.squeezeCube();
+		}
+
+		else if (leftStick.getRawButtonReleased(10)) {
+			intake.turnOffWheels();
+			output.squeezeCube();
+		}
+		
+
 
 		// Output solenoid
 		if (rightStick.getRawButtonPressed(OUTPUT_SQUEEZE_BUTTON)) {
@@ -515,6 +532,7 @@ public class Robot extends TimedRobot {
 		output.pushDataToShuffleboard();
 		shooter.pushDataToShuffleboard();
 		autonomous.pushDataToShuffleboard();
+		gyroscope.pushDataToShuffleboard();
 		// #########################################################################
 
 	}
