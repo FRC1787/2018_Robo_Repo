@@ -556,5 +556,6 @@ public class Robot extends TimedRobot {
 		output.turnOffWheels();
 		shooter.extendShooter();
 		driveTrain.resetAuto();
+		gyroscope.resetGyro();
 	}
 }
