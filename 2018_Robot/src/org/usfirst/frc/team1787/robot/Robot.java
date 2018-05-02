@@ -276,6 +276,8 @@ public class Robot extends TimedRobot {
 	    else {
 	    	nullZone = "USE FIELD";
 	    }
+	    
+	    gyroscope.updateGyro();
 	}
 
 	@Override
@@ -290,7 +292,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		
+		gyroscope.updateGyro();
 		
 		
 		/************************

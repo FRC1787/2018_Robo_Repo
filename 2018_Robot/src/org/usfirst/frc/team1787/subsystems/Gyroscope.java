@@ -10,23 +10,27 @@ public class Gyroscope {
 	private static final Gyroscope instance = new Gyroscope();
 	private double fixedGyroOutput = 0;
 	private double fixedGyroCounter = 0;
-	private final double GYRO_OFFSET_COEFFICIENT = 0.003;
+	private final double GYRO_OFFSET_COEFFICIENT = 0;//0.0024000675;//0.002400075;
 	
 	
-	public void pushDataToShuffleboard() {
-		fixedGyroCounter = fixedGyroCounter + 0.02;
-		fixedGyroOutput = (gyro0.getAngle()) + (GYRO_OFFSET_COEFFICIENT * fixedGyroCounter);
-		//gyro0.setSensitivity(0.007);
-		
+	public void pushDataToShuffleboard() {	
 		SmartDashboard.putNumber("Gyro Angle", fixedGyroOutput);
-		//SmartDashboard.putNumber("Gyro", gyro.)
 	}
 	
-	public static Gyroscope getInstance() {
-		return instance;
+	public void updateGyro() {
+		fixedGyroCounter = fixedGyroCounter + 0.02;
+		fixedGyroOutput = (gyro0.getAngle()) + (GYRO_OFFSET_COEFFICIENT * fixedGyroCounter);
+	}
+	
+	public double returnGyro() {
+		return fixedGyroOutput;
 	}
 	
 	public void resetGyro() {
 		gyro0.reset();
+	}
+
+	public static Gyroscope getInstance() {
+		return instance;
 	}
 }
