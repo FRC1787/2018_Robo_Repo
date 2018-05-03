@@ -193,8 +193,8 @@ public class Robot extends TimedRobot {
 		output.squeezeCube();
 		
 		//autonomousSelection = "right";
-		autonomousSelection = "left";
-		//autonomousSelection = "straight";
+		//autonomousSelection = "left";
+		autonomousSelection = "straight";
 		
 		autonomousTimer = 0;
 		
@@ -293,7 +293,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		gyroscope.updateGyro();
-		
+		gyroscope.gyroDrift();
 		
 		/************************
 		 * * RIGHT STICK CONTROLS * *
@@ -552,6 +552,7 @@ public class Robot extends TimedRobot {
 	public void disabledInit() {
 		output.turnOffWheels();
 		driveTrain.resetAuto();
+		gyroscope.resetGyro();
 	}
 
 	public void disabledPeriodic() {
