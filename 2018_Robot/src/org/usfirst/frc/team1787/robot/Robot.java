@@ -236,11 +236,16 @@ public class Robot extends TimedRobot {
 	    	
 	    	
 	    	//Time based
+	    	/*
 	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == "left") {
 	    		autonomous.timedBaselineSameShot();
 	    	}
 	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == "right") {
 	    		autonomous.timedBaselineSameShot();
+	    	}
+	    	*/
+	    	else if (autonomousSelection == "TickStraight") {
+	    		autonomous.baseline();
 	    	}
 	    	
 	    	
@@ -258,7 +263,7 @@ public class Robot extends TimedRobot {
 	    	
 	    	else {
 	    		//autonomous.timedBaseline();
-	    		autonomous.pulseDistTest();
+	    		//autonomous.pulseDistTest();
 	    	}
 	    }
 	    
