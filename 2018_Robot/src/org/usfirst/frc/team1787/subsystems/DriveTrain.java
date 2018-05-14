@@ -44,7 +44,7 @@ public class DriveTrain {
 	private Encoder rightEncoder = new Encoder(rightEncoderChannelA, rightEncoderChannelB, true);
 	private Encoder leftEncoder = new Encoder(leftEncoderChannelA, leftEncoderChannelB, true);
 
-	private final double WHEEL_RADIUS = 6.05/2; //3in converted to feet
+	private final double WHEEL_RADIUS = (6.05/2)/12; //3in converted to feet
 	private final double WHEEL_CIRCUMFERENCE = (2 * Math.PI * WHEEL_RADIUS);
 	private final double PULSES_PER_ROTATION = 2532;
 	private final double DISTANCE_PER_PULSE = WHEEL_CIRCUMFERENCE / PULSES_PER_ROTATION;
@@ -185,11 +185,11 @@ public class DriveTrain {
 	}
 
 	public double getLeftEncoder() {
-		return (leftEncoder.getDistance()/12);
+		return leftEncoder.getDistance();
 	}
 
 	public double getRightEncoder() {
-		return (rightEncoder.getDistance()/12);
+		return rightEncoder.getDistance();
 	}
 
 }

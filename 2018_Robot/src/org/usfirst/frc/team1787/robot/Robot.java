@@ -189,12 +189,13 @@ public class Robot extends TimedRobot {
 		intake.squeezeCube();
 		shooter.extendShooter();
 		driveTrain.resetAuto();
+		autonomous.resetAuto();
 		driveTrain.highGear();
 		output.squeezeCube();
 		
 		//autonomousSelection = "right";
 		//autonomousSelection = "left";
-		autonomousSelection = "straight";
+		autonomousSelection = "TickStraight";
 		
 		autonomousTimer = 0;
 		
@@ -245,7 +246,7 @@ public class Robot extends TimedRobot {
 	    	}
 	    	*/
 	    	else if (autonomousSelection == "TickStraight") {
-	    		autonomous.baseline();
+	    		autonomous.pulseStraightTest();
 	    	}
 	    	
 	    	
