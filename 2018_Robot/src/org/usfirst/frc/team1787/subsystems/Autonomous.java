@@ -20,23 +20,23 @@ public class Autonomous {
 	private int autoShootingTimer = 0;
 	private int intakeTimer = 0;
 	
-	private final double AUTO_CORRECTION_DISTANCE = 0.333;	
+	private final double AUTO_STRAIGHT_CORRECTION_DISTANCE = 0.333;	
 	
 	
 	
 	public void autonomousStraight(double moveSpeed, double moveDistance) {
-		driveTrain.moveStraight(moveDistance-AUTO_CORRECTION_DISTANCE, moveSpeed);
+		driveTrain.moveStraight(moveDistance-AUTO_STRAIGHT_CORRECTION_DISTANCE, moveSpeed);
 
-		if (driveTrain.getLeftEncoder() > moveDistance-AUTO_CORRECTION_DISTANCE || driveTrain.getRightEncoder() > moveDistance-AUTO_CORRECTION_DISTANCE) {
+		if (driveTrain.getLeftEncoder() > moveDistance-AUTO_STRAIGHT_CORRECTION_DISTANCE || driveTrain.getRightEncoder() > moveDistance-AUTO_STRAIGHT_CORRECTION_DISTANCE) {
 			autonomousActionNumber++;
 			driveTrain.resetAuto();
 		}
 	}
 
 	/**
-	 * Turn method
+	 * Turn methods
 	 */
-	public void autonomousTurn(double turnSpeed, char turnDirection) {
+	public void autonomousTickTurn(double turnSpeed, char turnDirection) {
 		if (turnDirection == 'L' || turnDirection == 'l') {
 
 			driveTrain.turnLeft(turnSpeed);
@@ -71,6 +71,14 @@ public class Autonomous {
 		lastRightEncoderValue = driveTrain.getRightEncoder();
 		lastLeftEncoderValue = driveTrain.getLeftEncoder();
 	}
+	
+	public void autonomousGyroTurn(double turnAngle, char turnDirection) {
+		
+	}
+	
+	
+	
+	
 
 	
 	public void autonomousIntake(double intakeSpeed, int intakeTime) {
@@ -102,6 +110,10 @@ public class Autonomous {
 		if (autonomousActionNumber == 0) {
 			autonomousStraight(0.2, 6);
 		}
+	}
+	
+	public void pulseTurnTest() {
+		
 	}
 	
 	
