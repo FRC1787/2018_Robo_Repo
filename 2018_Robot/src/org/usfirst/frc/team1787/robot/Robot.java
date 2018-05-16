@@ -113,7 +113,6 @@ public class Robot extends TimedRobot {
 	private final int DISENGAGE_TIME = 50;
 
 	// Variable variables
-	private int rampUpTime = 0;
 	private int shootingTimer = 0;
 	private int intakeTimer = 0;
 	private String nullZone = "";
@@ -121,7 +120,6 @@ public class Robot extends TimedRobot {
 	// Auto selection stuff
 	SendableChooser<Integer> autoChooser;
 	private String gameData;
-	private int autonomousTimer;
 	
 	private String autonomousSelection;
 	
@@ -134,9 +132,6 @@ public class Robot extends TimedRobot {
 	  
 	private UsbCamera topCam;
 	private UsbCamera botCam;
-	 
-	private final int IMAGE_WIDTH_PIXELS = 160;
-	private final int IMAGE_HEIGHT_PIXELS = 120;
 	
 	// Timer runs the periodic methods below every 20ms
 
@@ -162,7 +157,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 		SmartDashboard.putNumber("Selected Auton", autoChooser.getSelected());
 		*/
-		autonomousTimer = 0;
 		gyroscope.resetGyro();
 		
 		
@@ -196,8 +190,7 @@ public class Robot extends TimedRobot {
 		//autonomousSelection = "right";
 		//autonomousSelection = "left";
 		autonomousSelection = "TickStraight";
-		
-		autonomousTimer = 0;
+
 		
 	}
 
@@ -215,57 +208,10 @@ public class Robot extends TimedRobot {
 	    		autonomous.doNothing();
 	    	}
 	    	
-	    	
-	    	/* Pulse based
-	    	else if (autonomousSelection == "straight") {
-	    		autonomous.baseline();
-	    	}
-	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == "left") {
-	    		autonomous.shortSwitch();
-	    	}
-	    	else if (gameData.charAt(1) == 'L' && autonomousSelection == "left") {
-	    		autonomous.shortScale();
-	    	}
-	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == "right") {
-	    		autonomous.longSwitch();
-	    	}
-	    	else if (gameData.charAt(1) == 'R' && autonomousSelection == "right") {
-	    		autonomous.longScale();
-	    	}
-	    	*/
-	    	
-	    	
-	    	
-	    	//Time based
-	    	/*
-	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == "left") {
-	    		autonomous.timedBaselineSameShot();
-	    	}
-	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == "right") {
-	    		autonomous.timedBaselineSameShot();
-	    	}
-	    	*/
 	    	else if (autonomousSelection == "TickStraight") {
 	    		autonomous.pulseStraightTest();
 	    	}
-	    	
-	    	
-	    	
-	    	
-	    	/*
-	    	else if (gameData.charAt(0) == 'L' && autonomousSelection == 6) {
-	    		autonomous.timedBaselineSameShot();
-	    	}
-	    	
-	    	else if (gameData.charAt(0) == 'R' && autonomousSelection == 5) {
-	    		autonomous.timedBaselineDiffShotGoR();
-	    	}
-	    	*/
-	    	
-	    	else {
-	    		//autonomous.timedBaseline();
-	    		//autonomous.pulseDistTest();
-	    	}
+
 	    }
 	    
 	    
@@ -299,7 +245,6 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		gyroscope.updateGyro();
-		gyroscope.gyroDrift();
 		
 		/************************
 		 * * RIGHT STICK CONTROLS * *

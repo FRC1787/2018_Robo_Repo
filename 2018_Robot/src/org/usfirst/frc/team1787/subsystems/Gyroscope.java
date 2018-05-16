@@ -11,7 +11,6 @@ public class Gyroscope {
 	private static final Gyroscope instance = new Gyroscope();
 	private double fixedGyroOutput = 0;
 	private double fixedGyroCounter = 0;
-	private double gyroDriftHalfSecond = 0;
 	private final double GYRO_OFFSET_COEFFICIENT = 0.0485;//0.002400075;
 	
 	
@@ -26,21 +25,7 @@ public class Gyroscope {
 		return fixedGyroOutput;
 	}
 	
-	public double gyroDrift() {
-		fixedGyroCounter = fixedGyroCounter + 0.02;
-		if (fixedGyroCounter > 1.75 && fixedGyroCounter < 1.77) {
-			this.resetGyro();
-		}
-		else if (fixedGyroCounter > 2.25 && fixedGyroCounter < 2.27) {
-			gyroDriftHalfSecond = gyro0.getAngle();
-		}
-		else if (fixedGyroCounter > 2.3) {
-			this.resetGyro();
-		}
-		
-		
-		return fixedGyroCounter;
-	}
+
 	
 	public void pushDataToShuffleboard() {	
 		SmartDashboard.putNumber("New Gyro Angle", fixedGyroOutput);
