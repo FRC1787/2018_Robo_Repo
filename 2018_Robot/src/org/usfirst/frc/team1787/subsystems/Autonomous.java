@@ -100,7 +100,13 @@ public class Autonomous {
 	
 	public void pulseStraightTest() {
 		if (autonomousActionNumber == 0) {
-			autonomousStraight(0.2, 6);
+			autonomousStraight(0.2, 2);
+		}
+		else if (autonomousActionNumber == 1) {
+			autonomousTurn(0.2, 'L');
+		}
+		else if (autonomousActionNumber == 2) {
+			autonomousTurn(0.2, 'R');
 		}
 	}
 	

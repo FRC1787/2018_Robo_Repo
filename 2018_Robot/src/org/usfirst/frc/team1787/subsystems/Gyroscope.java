@@ -11,7 +11,7 @@ public class Gyroscope {
 	private static final Gyroscope instance = new Gyroscope();
 	private double fixedGyroOutput = 0;
 	private double fixedGyroCounter = 0;
-	private final double GYRO_OFFSET_COEFFICIENT = 0.0485;//0.002400075;
+	private final double GYRO_OFFSET_COEFFICIENT = 0;//0.0485;
 	
 	
 	

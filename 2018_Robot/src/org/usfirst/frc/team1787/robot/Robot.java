@@ -94,8 +94,8 @@ public class Robot extends TimedRobot {
 	private final int CLIMB_SOLENOID_RETRACT_BUTTON = 14;
 
 	// Shooting motor voltages
-	private double HIGH_POWER_TOP_WHEELS = 0.98;
-	private double HIGH_POWER_BOT_WHEELS = 0.88;
+	private double HIGH_POWER_TOP_WHEELS = 1.00;
+	private double HIGH_POWER_BOT_WHEELS = 0.9;
 
 	private double BALANCED_POWER_TOP_WHEELS = 0.8;
 	private double BALANCED_POWER_BOT_WHEELS = 0.7;
@@ -110,10 +110,10 @@ public class Robot extends TimedRobot {
 	private final double REVERSE_OUTPUT_VOLTAGE = -0.4;
 
 	// Shooter disengage time
-	private final int DISENGAGE_TIME = 50;
+	private final double DISENGAGE_TIME = 50;
 
 	// Variable variables
-	private int shootingTimer = 0;
+	private double shootingTimer = 0;
 	private int intakeTimer = 0;
 	private String nullZone = "";
 	
@@ -332,7 +332,7 @@ public class Robot extends TimedRobot {
 			shooter.resetForThoseDankCubes();
 		}
 
-		shootingTimer++;
+		shootingTimer = shootingTimer+1;
 
 		// Forward intake
 		if (rightStick.getRawButtonPressed(INTAKE_BUTTON)) {
@@ -510,6 +510,6 @@ public class Robot extends TimedRobot {
 		output.turnOffWheels();
 		shooter.extendShooter();
 		driveTrain.resetAuto();
-		gyroscope.resetGyro();
+		//gyroscope.resetGyro();
 	}
 }

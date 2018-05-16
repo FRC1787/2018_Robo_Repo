@@ -52,30 +52,40 @@ public class Shooter {
 		shooterMoveSolenoid.set(false);
 	}
 
-	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER,
-			int DISENGAGE_TIME) {
+	public void shootThoseDankCubes(double TOP_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double SHOOTER_TIMER,
+			double DISENGAGE_TIME) {
 
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
-			// intake.releaseCube();
-		} else if (SHOOTER_TIMER == 2) {
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
-		} else if (SHOOTER_TIMER == 3) {
-			intake.turnOnWheels(0.375, 0.375);
-		} else if (SHOOTER_TIMER > 12 && SHOOTER_TIMER < 14) {
 			intake.releaseCube();
-		} else if (SHOOTER_TIMER > 20 && SHOOTER_TIMER < 22) {
-			intake.turnOffWheels();
-		} else if (SHOOTER_TIMER > 22 && SHOOTER_TIMER < 26) {
-			output.squeezeCube();
-		} else if (SHOOTER_TIMER > DISENGAGE_TIME) {
-			output.turnOffWheels();
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, 0);
+			intake.turnOnWheels(0.375, 0.375);
+		} else if (SHOOTER_TIMER == 11) {
 			intake.squeezeCube();
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, -0.25);
+		} else if (SHOOTER_TIMER == 31) {
+			intake.releaseCube();
+			intake.turnOffWheels();
+		} else if (SHOOTER_TIMER == 36) {
+			output.squeezeCube();
+		} else if (SHOOTER_TIMER == 41) {
+			output.releaseCube();
+		} else if (SHOOTER_TIMER == 45) {
+			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
+		} else if (SHOOTER_TIMER == 55) {
+			output.squeezeCube();
+		} else if (SHOOTER_TIMER == 64) {
+			
+		} else if (SHOOTER_TIMER > DISENGAGE_TIME+125) {
+			output.turnOffWheels();
+			intake.turnOffWheels();
+			intake.squeezeCube();
+			output.releaseCube();
 		}
 	}
 	
-	public void shootThoseDankCubesSideways(double TOP_LEFT_SHOOTING_VOLTAGE, double TOP_RIGHT_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, int SHOOTER_TIMER,
-			int DISENGAGE_TIME) {
+	public void shootThoseDankCubesSideways(double TOP_LEFT_SHOOTING_VOLTAGE, double TOP_RIGHT_SHOOTING_VOLTAGE, double BOTTOM_SHOOTING_VOLTAGE, double SHOOTER_TIMER,
+			double DISENGAGE_TIME) {
 
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
