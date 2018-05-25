@@ -7,7 +7,7 @@ import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
 
 /* CLASS DEFINITION:
- * This class is the main class for the robot, which ties all parts together and is automatically called upon by the RoboRIO
+ * This class is the main class for the robot, which ties all parts together and is automatically called upon by the RoboRIO yeet
  */
 
 import org.usfirst.frc.team1787.subsystems.Autonomous;
