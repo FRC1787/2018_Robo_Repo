@@ -35,24 +35,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends TimedRobot {
 
-	protected int farfar37;
-
-	
-	/*
-	 * TO DO AT PITTSBURGH
-	 * 
-	 * -Test autonomous distances and shooting power
-	 * -Test all shooting power levels
-	 * -Test intake on both even and uneven power levels
-	 * -Set up shuffleboard
-	 * -Update all talons and victors
-	 * -Test reverse intake into exchange
-	 * -Test reverse shooter
-	 * -Test all button mappings
-	 * -Test cameras
-	 */
-	
-	
+	protected int farfar37;	
 	
 	
 	// Create single instances of objects for use in the program
