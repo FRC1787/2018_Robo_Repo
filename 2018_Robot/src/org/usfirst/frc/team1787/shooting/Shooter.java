@@ -66,10 +66,6 @@ public class Shooter {
 		} else if (SHOOTER_TIMER == 31) {
 			intake.releaseCube();
 			intake.turnOffWheels();
-		} else if (SHOOTER_TIMER == 36) {
-			output.squeezeCube();
-		} else if (SHOOTER_TIMER == 41) {
-			output.releaseCube();
 		} else if (SHOOTER_TIMER == 45) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
 		} else if (SHOOTER_TIMER == 55) {

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1787.robot;
 
+import java.io.PushbackInputStream;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team1787.shooting.Intake;
@@ -196,42 +197,11 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-		
-		
-		
-		
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-	    
-	    if (gameData.length() > 0) {
-	    	//Short/Left is 2, Long/Right is 3
-	    	if (autonomousSelection == "") {
-	    		autonomous.doNothing();
-	    	}
-	    	
-	    	else if (autonomousSelection == "TickStraight") {
-	    		autonomous.pulseStraightTest();
-	    	}
 
-	    }
-	    
-	    
-	    
-	    
-	    
-	    
-	    if (gameData.charAt(1) == 'R') {
-	    	nullZone = "RIGHT";
-	    }
-	    else if (gameData.charAt(1) == 'L') {
-	    	nullZone = "LEFT";
-	    }
-	    else {
-	    	nullZone = "USE FIELD";
-	    }
-	    
-	    gyroscope.updateGyro();
+		autonomous.screwYouVan();
 	}
-
+	
+		
 	@Override
 	public void teleopInit() {
 		output.turnOffWheels();
@@ -250,6 +220,14 @@ public class Robot extends TimedRobot {
 		 * * RIGHT STICK CONTROLS * *
 		 ************************
 		 */
+		
+	
+
+		//test code for turning method		
+		
+		
+		
+
 
 		//driveTrain.highGear();
 		
@@ -469,7 +447,9 @@ public class Robot extends TimedRobot {
 		else if (leftStick.getRawButtonReleased(CLIMB_SOLENOID_RETRACT_BUTTON)) {
 			climb.retractPiston();
 		}
-
+		
+		
+		
 		SmartDashboard.putNumber("HIGH top wheels", HIGH_POWER_TOP_WHEELS);
 		SmartDashboard.putNumber("HIGH bottom wheels", HIGH_POWER_BOT_WHEELS);
 		SmartDashboard.putNumber("BALANCED top wheels", BALANCED_POWER_TOP_WHEELS);
@@ -477,7 +457,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("SWITCH top wheels", SWITCH_POWER_TOP_WHEELS);
 		SmartDashboard.putNumber("SWITCH bottom wheels", SWITCH_POWER_BOT_WHEELS);
 		SmartDashboard.putString("NULL ZONE", nullZone);
-
+		SmartDashboard.putNumber("RIGHT ENCODER VALUE", driveTrain.getRightEncoderValue());
+		SmartDashboard.putNumber("LEFT ENCODER VALUE", driveTrain.getLeftEncoderValue());
+		
+		
 		// Putting everything on shuffleboard
 		driveTrain.pushDataToShuffleboard();
 		climb.pushDataToShuffleboard();

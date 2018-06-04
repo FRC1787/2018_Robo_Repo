@@ -19,6 +19,7 @@ public class Autonomous {
 	private double lastLeftEncoderValue = -1;
 	private int autoShootingTimer = 0;
 	private int intakeTimer = 0;
+	public final int AUTO_TURN_VALUE = 4830;
 	
 	private final double AUTO_CORRECTION_DISTANCE = 0.333;	
 	
@@ -39,42 +40,30 @@ public class Autonomous {
 	public void autonomousTurn(double turnSpeed, char turnDirection) {
 		if (turnDirection == 'L' || turnDirection == 'l') {
 
-			driveTrain.turnLeft(turnSpeed);
-
-			if (driveTrain.getLeftEncoder() == lastLeftEncoderValue
-					|| driveTrain.getRightEncoder() == lastRightEncoderValue) {
-				autonomousActionNumber++;
+			if ( Math.abs(driveTrain.getLeftEncoderValue()) - driveTrain.getRightEncoderValue() <= AUTO_TURN_VALUE  || Math.abs(driveTrain.getRightEncoderValue()) - driveTrain.getLeftEncoderValue() <= AUTO_TURN_VALUE) {
+				driveTrain.tankDrive(-turnSpeed, turnSpeed);
+				
+			} else if (Math.abs(driveTrain.getLeftEncoderValue()) - driveTrain.getRightEncoderValue() >= AUTO_TURN_VALUE  || Math.abs(driveTrain.getRightEncoderValue()) - driveTrain.getLeftEncoderValue() >= AUTO_TURN_VALUE) {
 				driveTrain.resetAuto();
-				lastRightEncoderValue = -1;
-				lastLeftEncoderValue = -1;
+				autonomousActionNumber++;
 			}
 
 		}
 
 		else if (turnDirection == 'R' || turnDirection == 'r') {
 
-			driveTrain.turnRight(turnSpeed);
-
-			if (driveTrain.getLeftEncoder() == lastLeftEncoderValue
-					|| driveTrain.getRightEncoder() == lastRightEncoderValue) {
-				autonomousActionNumber++;
+			if ( Math.abs(driveTrain.getLeftEncoderValue()) + driveTrain.getRightEncoderValue() <= AUTO_TURN_VALUE  || Math.abs(driveTrain.getRightEncoderValue()) + driveTrain.getLeftEncoderValue() <= AUTO_TURN_VALUE ) {
+				driveTrain.tankDrive(turnSpeed, -turnSpeed);
+				
+			} else if (Math.abs(driveTrain.getLeftEncoderValue()) + driveTrain.getRightEncoderValue() >= AUTO_TURN_VALUE  || Math.abs(driveTrain.getRightEncoderValue()) + driveTrain.getLeftEncoderValue() >= AUTO_TURN_VALUE) {
 				driveTrain.resetAuto();
-				lastRightEncoderValue = -1;
-				lastLeftEncoderValue = -1;
+				autonomousActionNumber++;
 			}
 		}
-
-		else {
-			driveTrain.tankDrive(0.1, -0.1);
-		}
-
-		lastRightEncoderValue = driveTrain.getRightEncoder();
-		lastLeftEncoderValue = driveTrain.getLeftEncoder();
 	}
 
-	
 	public void autonomousIntake(double intakeSpeed, int intakeTime) {
-		if (intakeTime < 10) {
+		if (intakeTime < 100) {
 			intake.turnOnWheels(intakeSpeed, intakeSpeed);
 		}
 		else {
@@ -83,6 +72,29 @@ public class Autonomous {
 			autonomousActionNumber++;
 		}
 		
+	}
+	
+	public void autonomousShoot() {
+		
+	}
+	
+	
+	
+	
+	
+	
+	public void screwYouVan() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousTurn(0.3, 'L');
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousTurn(0.3, 'R');
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousIntake(0.3, intakeTimer);
+			intakeTimer++;
+		}
+			
 	}
 	
 	

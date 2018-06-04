@@ -33,8 +33,7 @@ public class DriveTrain {
 	public boolean RIGHT_DRIVE_MASTER_INVERTED = false;
 	public boolean RIGHT_DRIVE_FOLLOWER_INVERTED = false;
 
-	public final int AUTO_RIGHT_TURN_VALUE = 4830;
-	public final int AUTO_LEFT_TURN_VALUE = 4830;
+	
 
 	private final int rightEncoderChannelA = 0;
 	private final int rightEncoderChannelB = 1;
@@ -160,23 +159,7 @@ public class DriveTrain {
 		}
 	}
 
-	public void turnRight(double turnSpeed) {
-
-		if (leftEncoder.get() < AUTO_RIGHT_TURN_VALUE && rightEncoder.get() > -1*AUTO_RIGHT_TURN_VALUE) {
-			this.tankDrive(turnSpeed, -turnSpeed);
-		} else {
-			this.tankDrive(0, 0);
-		}
-	}
-
-	public void turnLeft(double turnSpeed) {
-
-		if (rightEncoder.get() < AUTO_LEFT_TURN_VALUE && leftEncoder.get() > -1*AUTO_LEFT_TURN_VALUE) {
-			this.tankDrive(-turnSpeed, turnSpeed);
-		} else {
-			this.tankDrive(0, 0);
-		}
-	}
+	
 
 	public void resetAuto() {
 		leftEncoder.reset();
@@ -190,6 +173,13 @@ public class DriveTrain {
 
 	public double getRightEncoder() {
 		return rightEncoder.getDistance();
+	}
+	
+	public int getRightEncoderValue() {
+		return rightEncoder.get();
+	}
+	public int getLeftEncoderValue() {
+		return leftEncoder.get();
 	}
 
 }
