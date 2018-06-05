@@ -103,15 +103,6 @@ public class Robot extends TimedRobot {
 	
 	// Auto selection stuff
 	SendableChooser<Integer> autoChooser;
-	private String gameData;
-	
-	private String autonomousSelection;
-	
-	//Camera
-	
-	
-	//Camera code
-	
 	CameraServer server = CameraServer.getInstance();
 	  
 	private UsbCamera topCam;
@@ -129,18 +120,7 @@ public class Robot extends TimedRobot {
 		
 		
 		CameraServer.getInstance();
-		/*
-		autoChooser = new SendableChooser<Integer>();
-		autoChooser.addObject("Move Straight", 1);
-		autoChooser.addDefault("Do Nothing", 0);
-		autoChooser.addObject("Short/Left Side", 2);
-		autoChooser.addObject("Long/Right Side", 3);
-		autoChooser.addObject("Shooting Test", 4);
-		autoChooser.addDefault("Timed Left", 5);
-		autoChooser.addObject("Timed Right", 6);
-		SmartDashboard.putData("Auto Chooser", autoChooser);
-		SmartDashboard.putNumber("Selected Auton", autoChooser.getSelected());
-		*/
+
 		gyroscope.resetGyro();
 		
 		
@@ -170,12 +150,7 @@ public class Robot extends TimedRobot {
 		autonomous.resetAuto();
 		driveTrain.highGear();
 		output.squeezeCube();
-		
-		//autonomousSelection = "right";
-		//autonomousSelection = "left";
-		autonomousSelection = "TickStraight";
-
-		
+	
 	}
 
 	@Override
@@ -216,7 +191,6 @@ public class Robot extends TimedRobot {
 		
 		// Arcade Drive
 		driveTrain.arcadeDrive(-rightStick.getY(), rightStick.getX());
-		// driveTrain.tankDrive(-leftStick.getY(), -rightStick.getY());
 
 		// Shoot cubes
 		if (rightStick.getRawButton(HIGH_POWER_SHOOTING_BUTTON)) {
@@ -318,7 +292,6 @@ public class Robot extends TimedRobot {
 		if (rightStick.getRawButtonPressed(REVERSE_INTAKE_BUTTON)) {
 			intake.turnOnWheels(INTAKE_OUT_VOLTAGE, INTAKE_OUT_VOLTAGE);
 			output.releaseCube();
-			// intake.squeezeCube();
 		}
 
 		else if (rightStick.getRawButtonReleased(REVERSE_INTAKE_BUTTON)) {
@@ -330,7 +303,6 @@ public class Robot extends TimedRobot {
 		if (leftStick.getRawButtonPressed(10)) {
 			intake.turnOnWheels(-1.0, -1.0);
 			output.releaseCube();
-			// intake.squeezeCube();
 		}
 
 		else if (leftStick.getRawButtonReleased(10)) {
@@ -467,6 +439,5 @@ public class Robot extends TimedRobot {
 		output.turnOffWheels();
 		shooter.extendShooter();
 		driveTrain.resetAuto();
-		//gyroscope.resetGyro();
 	}
 }
