@@ -205,15 +205,6 @@ public class Robot extends TimedRobot {
 		 */
 		
 	
-
-		//test code for turning method		
-		
-		
-		
-
-
-		//driveTrain.highGear();
-		
 		if (rightStick.getRawAxis(3) > 0) {
 			driveTrain.lowGear();
 		}

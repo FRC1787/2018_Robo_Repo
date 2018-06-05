@@ -85,7 +85,6 @@ public class Shooter {
 
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
-			// intake.releaseCube();
 		} else if (SHOOTER_TIMER == 2) {
 			output.turnOnWheelsSideways(TOP_LEFT_SHOOTING_VOLTAGE, TOP_RIGHT_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
 		} else if (SHOOTER_TIMER == 3) {

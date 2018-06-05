@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1787.subsystems;
 
 import java.awt.RenderingHints;
+import java.security.PrivilegedActionException;
 
 import org.usfirst.frc.team1787.shooting.Intake;
 import org.usfirst.frc.team1787.shooting.Shooter;
@@ -19,7 +20,9 @@ public class Autonomous {
 	private double lastLeftEncoderValue = -1;
 	private int autoShootingTimer = 0;
 	private int intakeTimer = 0;
+	private int waitTimer = 0;
 	public final int AUTO_TURN_VALUE = 4830;
+	private final double SHOOTING_DISENGAGE_TIME = 50;
 	
 	private final double AUTO_CORRECTION_DISTANCE = 0.333;	
 	
@@ -74,10 +77,30 @@ public class Autonomous {
 		
 	}
 	
-	public void autonomousShoot() {
-		
+	public void autonomousShoot(char shootingPower, int shootingTime) {
+		if (shootingPower == 'H') {
+			shooter.shootThoseDankCubes(1.0, 0.9, autoShootingTimer, SHOOTING_DISENGAGE_TIME);
+		}
+		else if (shootingPower == 'M') {
+			shooter.shootThoseDankCubes(0.8, 0.7, autoShootingTimer, SHOOTING_DISENGAGE_TIME);
+		}
+		else if (shootingPower == 'L') {
+			shooter.shootThoseDankCubes(0.55, 0.6, autoShootingTimer, SHOOTING_DISENGAGE_TIME);
+
+		}
+		autoShootingTimer++;
 	}
 	
+	
+	public void autonomousWait(int waitTime) {
+		if (waitTimer < waitTime) {
+			waitTimer++;
+		}
+		else {
+			waitTimer = 0;
+			autonomousActionNumber++;
+		}
+	}
 	
 	
 	
@@ -85,14 +108,10 @@ public class Autonomous {
 	
 	public void screwYouVan() {
 		if (autonomousActionNumber == 0) {
-			this.autonomousTurn(0.3, 'L');
+			this.autonomousWait(100);
 		}
 		else if (autonomousActionNumber == 1) {
-			this.autonomousTurn(0.3, 'R');
-		}
-		else if (autonomousActionNumber == 2) {
-			this.autonomousIntake(0.3, intakeTimer);
-			intakeTimer++;
+			this.autonomousShoot('L', autoShootingTimer);
 		}
 			
 	}
