@@ -97,6 +97,8 @@ public class DriveTrain {
 	public void pushDataToShuffleboard() {
 		SmartDashboard.putData("Left Drive: ", leftMaster);
 		SmartDashboard.putData("Right Drive: ", rightMaster);
+		SmartDashboard.putNumber("Left Enc. Dist.", leftEncoder.getDistance());
+		SmartDashboard.putNumber("Right Enc. Dist.", rightEncoder.getDistance());
 	}
 
 	public void tankDrive(double leftInput, double rightInput) {
@@ -145,20 +147,6 @@ public class DriveTrain {
 	public void lowGear() {
 		gearboxSolenoid.set(true);
 	}
-
-	// Autonomous methods
-
-	public void moveStraight(double moveDistance, double moveSpeed) {
-
-		if (leftEncoder.getDistance() <= moveDistance
-				&& rightEncoder.getDistance() <= moveDistance) {
-			leftMaster.set(moveSpeed);
-			leftFollower.set(moveSpeed);
-			rightMaster.set(moveSpeed);
-			rightFollower.set(moveSpeed);
-		}
-	}
-
 	
 
 	public void resetAuto() {
@@ -167,11 +155,11 @@ public class DriveTrain {
 		this.tankDrive(0, 0);
 	}
 
-	public double getLeftEncoder() {
+	public double getLeftEncoderDistance() {
 		return leftEncoder.getDistance();
 	}
 
-	public double getRightEncoder() {
+	public double getRightEncoderDistance() {
 		return rightEncoder.getDistance();
 	}
 	

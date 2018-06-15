@@ -24,16 +24,20 @@ public class Autonomous {
 	public final int AUTO_TURN_VALUE = 4830;
 	private final double SHOOTING_DISENGAGE_TIME = 50;
 	
-	private final double AUTO_CORRECTION_DISTANCE = 0.333;	
+	private final double AUTO_CORRECTION_DISTANCE = 0; //0.333;	
 	
 	
 	
 	public void autonomousStraight(double moveSpeed, double moveDistance) {
-		driveTrain.moveStraight(moveDistance-AUTO_CORRECTION_DISTANCE, moveSpeed);
 
-		if (driveTrain.getLeftEncoder() > moveDistance-AUTO_CORRECTION_DISTANCE || driveTrain.getRightEncoder() > moveDistance-AUTO_CORRECTION_DISTANCE) {
+		if (Math.abs(driveTrain.getLeftEncoderDistance()) > moveDistance-AUTO_CORRECTION_DISTANCE && Math.abs(driveTrain.getRightEncoderDistance()) > moveDistance-AUTO_CORRECTION_DISTANCE) {
 			autonomousActionNumber++;
 			driveTrain.resetAuto();
+			driveTrain.tankDrive(0, 0);
+		}
+		
+		else {
+			driveTrain.tankDrive(moveSpeed, moveSpeed);
 		}
 	}
 
@@ -102,6 +106,15 @@ public class Autonomous {
 		}
 	}
 	
+	/**
+	 * Do nothing
+	 */
+	public void doNothing() {
+		driveTrain.tankDrive(0, 0);
+	}
+	
+	
+	
 	
 	
 	
@@ -111,23 +124,14 @@ public class Autonomous {
 			this.autonomousWait(100);
 		}
 		else if (autonomousActionNumber == 1) {
-			this.autonomousShoot('L', autoShootingTimer);
+			this.autonomousStraight(0.2, 10*12);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.doNothing();
 		}
 			
 	}
-	
-	
-	
-	
-	/**
-	 * Do nothing
-	 */
-	public void doNothing() {
-
-	}
-
-	
-	
+		
 	
 	public void pulseStraightTest() {
 		if (autonomousActionNumber == 0) {
