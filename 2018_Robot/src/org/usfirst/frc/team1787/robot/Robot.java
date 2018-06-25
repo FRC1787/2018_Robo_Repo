@@ -475,7 +475,7 @@ public class Robot extends TimedRobot {
 
 	public void disabledPeriodic() {
 		output.turnOffWheels();
-		shooter.extendShooter();
+		//shooter.extendShooter();
 		driveTrain.resetAuto();
 		//gyroscope.resetGyro();
 	}

@@ -4,6 +4,7 @@ import java.awt.RenderingHints;
 import java.security.PrivilegedActionException;
 
 import org.usfirst.frc.team1787.shooting.Intake;
+import org.usfirst.frc.team1787.shooting.Output;
 import org.usfirst.frc.team1787.shooting.Shooter;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -14,6 +15,7 @@ public class Autonomous {
 	private DriveTrain driveTrain = DriveTrain.getInstance();
 	private Shooter shooter = Shooter.getInstance();
 	private Intake intake = Intake.getInstance();
+	private Output output = Output.getInstance();
 	private static final Autonomous instance = new Autonomous();
 	private int autonomousActionNumber = 0;
 	private double lastRightEncoderValue = -1;
@@ -21,16 +23,16 @@ public class Autonomous {
 	private int autoShootingTimer = 0;
 	private int intakeTimer = 0;
 	private int waitTimer = 0;
-	public final int AUTO_TURN_VALUE = 4830;
+	public final int AUTO_TURN_VALUE = 5850;//4830;
 	private final double SHOOTING_DISENGAGE_TIME = 50;
 	
-	private final double AUTO_CORRECTION_DISTANCE = 0; //0.333;	
+	private final double AUTO_CORRECTION_DISTANCE = 0.5; //feet	
 	
 	
 	
-	public void autonomousStraight(double moveSpeed, double moveDistance) {
+	public void autonomousStraight(double moveSpeed, double moveDistance) { //distance is in inches
 
-		if (Math.abs(driveTrain.getLeftEncoderDistance()) > moveDistance-AUTO_CORRECTION_DISTANCE && Math.abs(driveTrain.getRightEncoderDistance()) > moveDistance-AUTO_CORRECTION_DISTANCE) {
+		if (Math.abs(driveTrain.getLeftEncoderDistance()) > (moveDistance/12)-AUTO_CORRECTION_DISTANCE && Math.abs(driveTrain.getRightEncoderDistance()) > (moveDistance/12)-AUTO_CORRECTION_DISTANCE) {
 			autonomousActionNumber++;
 			driveTrain.resetAuto();
 			driveTrain.tankDrive(0, 0);
@@ -69,15 +71,22 @@ public class Autonomous {
 		}
 	}
 
-	public void autonomousIntake(double intakeSpeed, int intakeTime) {
-		if (intakeTime < 100) {
-			intake.turnOnWheels(intakeSpeed, intakeSpeed);
+	public void autonomousIntake(double leftIntakeSpeed, double rightIntakeSpeed, int totalIntakeTime, int currentIntakeTime) {
+		if (currentIntakeTime < totalIntakeTime) {
+			output.releaseCube();
+			if (currentIntakeTime % 35 == 0) {
+				intake.turnOffWheels();
+			} else if ((currentIntakeTime % 35) == 10) {
+				intake.turnOnWheels(rightIntakeSpeed, leftIntakeSpeed);
+			}
 		}
 		else {
 			intake.turnOffWheels();
 			intakeTimer = 0;
+			output.squeezeCube();
 			autonomousActionNumber++;
 		}
+		intakeTimer++;
 		
 	}
 	
@@ -121,12 +130,30 @@ public class Autonomous {
 	
 	public void screwYouVan() {
 		if (autonomousActionNumber == 0) {
-			this.autonomousWait(100);
+			this.autonomousWait(50);
 		}
 		else if (autonomousActionNumber == 1) {
-			this.autonomousStraight(0.2, 10*12);
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
 		}
 		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight(0.375, 12*11);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousWait(25);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 6) {
+			this.autonomousStraight(0.375, 12*11);
+		}
+		else if (autonomousActionNumber == 7) {
+			this.autonomousShoot('L', autoShootingTimer);
+		}
+		else if (autonomousActionNumber == 8) {
 			this.doNothing();
 		}
 			
@@ -150,10 +177,12 @@ public class Autonomous {
 	
 	public void resetAuto() {
 		autonomousActionNumber = 0;
+		intakeTimer = 0;
+		autoShootingTimer = 0;
 	}
 	
 	public void pushDataToShuffleboard() {
-
+		SmartDashboard.putNumber("Auto Action Number", autonomousActionNumber);
 	}
 
 	public static Autonomous getInstance() {
