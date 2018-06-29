@@ -30,7 +30,7 @@ public class Autonomous {
 	
 	
 	
-	public void autonomousStraight(double moveSpeed, double moveDistance) { //distance is in inches
+	public void autonomousStraight(char direction, double moveSpeed, double moveDistance) { //distance is in inches
 
 		if (Math.abs(driveTrain.getLeftEncoderDistance()) > (moveDistance/12)-AUTO_CORRECTION_DISTANCE && Math.abs(driveTrain.getRightEncoderDistance()) > (moveDistance/12)-AUTO_CORRECTION_DISTANCE) {
 			autonomousActionNumber++;
@@ -39,7 +39,13 @@ public class Autonomous {
 		}
 		
 		else {
-			driveTrain.tankDrive(moveSpeed, moveSpeed);
+			if (direction == 'F') {
+				driveTrain.tankDrive(moveSpeed, moveSpeed);
+			}
+			else if (direction == 'B') {
+				driveTrain.tankDrive(-moveSpeed, -moveSpeed);
+			}
+				
 		}
 	}
 
@@ -124,6 +130,154 @@ public class Autonomous {
 	
 	
 	
+	public void autoRR() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 145);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousStraight('F', 0.375, 22);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousShoot('M', autoShootingTimer);
+		}
+		
+	}
+	
+	
+	
+	public void autoLR() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 300);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousStraight('B', 0.375, 20);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousShoot('H', autoShootingTimer);
+		}
+	}
+	
+	
+	
+	public void autoRL() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 210);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousStraight('F', 0.375, 220);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 6) {
+			this.autonomousStraight('F', 0.375, 70);
+		}
+		else if (autonomousActionNumber == 7) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 8) {
+			this.autonomousStraight('F', 0.375, 10);
+		}
+	}
+	
+	
+	
+	public void autoLLswitch() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 210);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousStraight('F', 0.375, 235);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 6) {
+			this.autonomousStraight('F', 0.375, 70);
+		}
+		else if (autonomousActionNumber == 7) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 8) {
+			this.autonomousStraight('F', 0.375, 25);
+		}
+		else if (autonomousActionNumber == 9) {
+			this.autonomousShoot('M', autoShootingTimer);
+		}
+		
+	}
+	
+	
+	
+	public void autoLLscale() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 210);
+		}
+		else if (autonomousActionNumber == 3) {
+			this.autonomousTurn(0.375, 'L');
+		}
+		else if (autonomousActionNumber == 4) {
+			this.autonomousStraight('F', 0.375, 235);
+		}
+		else if (autonomousActionNumber == 5) {
+			this.autonomousTurn(0.375, 'R');
+		}
+		else if (autonomousActionNumber == 6) {
+			this.autonomousStraight('F', 0.375, 90);
+		}
+		else if (autonomousActionNumber == 7) {
+			this.autonomousTurn(0.375, 'R');
+		}
+		else if (autonomousActionNumber == 8) {
+			this.autonomousStraight('B', 0.375, 16);
+		}
+		else if (autonomousActionNumber == 9) {
+			this.autonomousShoot('H', autoShootingTimer);
+		}
+	}
+	
 	
 	
 	
@@ -136,7 +290,7 @@ public class Autonomous {
 			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
 		}
 		else if (autonomousActionNumber == 2) {
-			this.autonomousStraight(0.375, 12*11);
+			this.autonomousStraight('F', 0.375, 12*11);
 		}
 		else if (autonomousActionNumber == 3) {
 			this.autonomousTurn(0.375, 'L');
@@ -148,7 +302,7 @@ public class Autonomous {
 			this.autonomousTurn(0.375, 'L');
 		}
 		else if (autonomousActionNumber == 6) {
-			this.autonomousStraight(0.375, 12*11);
+			this.autonomousStraight('F', 0.375, 12*11);
 		}
 		else if (autonomousActionNumber == 7) {
 			this.autonomousShoot('L', autoShootingTimer);
@@ -157,6 +311,19 @@ public class Autonomous {
 			this.doNothing();
 		}
 			
+	}
+	
+	
+	public void baseline() {
+		if (autonomousActionNumber == 0) {
+			this.autonomousWait(50);
+		}
+		else if (autonomousActionNumber == 1) {
+			this.autonomousIntake(0.35, 0.15, 140, intakeTimer);
+		}
+		else if (autonomousActionNumber == 2) {
+			this.autonomousStraight('F', 0.375, 11*11);
+		}
 	}
 		
 	
