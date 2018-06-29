@@ -157,6 +157,16 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 
 		autonomous.screwYouVan();
+		
+		SmartDashboard.putNumber("HIGH top wheels", HIGH_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("HIGH bottom wheels", HIGH_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("BALANCED top wheels", BALANCED_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("BALANCED bottom wheels", BALANCED_POWER_BOT_WHEELS);
+		SmartDashboard.putNumber("SWITCH top wheels", SWITCH_POWER_TOP_WHEELS);
+		SmartDashboard.putNumber("SWITCH bottom wheels", SWITCH_POWER_BOT_WHEELS);
+		SmartDashboard.putString("NULL ZONE", nullZone);
+		SmartDashboard.putNumber("RIGHT ENCODER VALUE", driveTrain.getRightEncoderValue());
+		SmartDashboard.putNumber("LEFT ENCODER VALUE", driveTrain.getLeftEncoderValue());
 	}
 	
 		
@@ -437,7 +447,7 @@ public class Robot extends TimedRobot {
 
 	public void disabledPeriodic() {
 		output.turnOffWheels();
-		shooter.extendShooter();
+		//shooter.extendShooter();
 		driveTrain.resetAuto();
 	}
 }
