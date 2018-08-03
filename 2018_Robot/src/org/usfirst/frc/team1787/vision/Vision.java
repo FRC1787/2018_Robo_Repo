@@ -22,12 +22,14 @@ public class Vision {
 	private CvSource outputStream;
 	private CvSink topFrameGrabber;
 	private CvSink bottomFrameGrabber;
-	private int STANDARD_IMG_WIDTH = 160;
-	private int STANDARD_IMG_HEIGHT = 120;
+	private static int STANDARD_IMG_WIDTH = 160;
+	private static int STANDARD_IMG_HEIGHT = 120;
 	private Mat originalFrame;
 	private Mat processedFrame;
 	private final Scalar FILTER_UPPER_BOUND = new Scalar(100, 255, 255);
 	private final Scalar FILTER_LOWER_BOUND = new Scalar(60, 0, 20);
+	private static final double CENTER_X = (STANDARD_IMG_WIDTH - 1) / 2.0;
+	private static final double CENTER_Y = (STANDARD_IMG_HEIGHT - 1) / 2.0;
 	
 	private Vision() {
 		CameraServer server = CameraServer.getInstance();
