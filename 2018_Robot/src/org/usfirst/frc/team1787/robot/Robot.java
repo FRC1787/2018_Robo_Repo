@@ -15,6 +15,7 @@ import org.usfirst.frc.team1787.subsystems.Autonomous;
 import org.usfirst.frc.team1787.subsystems.Climb;
 import org.usfirst.frc.team1787.subsystems.DriveTrain;
 import org.usfirst.frc.team1787.subsystems.Gyroscope;
+import org.usfirst.frc.team1787.vision.Vision;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -47,7 +48,7 @@ public class Robot extends TimedRobot {
 	private Intake intake = Intake.getInstance();
 	private Autonomous autonomous = Autonomous.getInstance();
 	private Gyroscope gyroscope = Gyroscope.getInstance();
-	Preferences prefs = Preferences.getInstance();
+	private Vision vision = Vision.getInstance();
 
 	// Joystick setup
 	private final int RIGHT_JOYSTICK_ID = 0;
@@ -105,41 +106,19 @@ public class Robot extends TimedRobot {
 	SendableChooser<Integer> autoChooser;
 	CameraServer server = CameraServer.getInstance();
 	  
-	private UsbCamera topCam;
-	private UsbCamera botCam;
+	
 	
 	// Timer runs the periodic methods below every 20ms
 
 	@Override
 	public void robotInit() {
-		
-		CameraServer server = CameraServer.getInstance();
-		  
-		topCam = server.startAutomaticCapture(1);
-		botCam = server.startAutomaticCapture(0);
-		
-		
-		CameraServer.getInstance();
-
-		gyroscope.resetGyro();
-		
-		
-		
-		botCam.setResolution(160, 120);
-		botCam.setFPS(20);
-		botCam.setExposureAuto();
-		botCam.setBrightness(50);
-		botCam.setWhiteBalanceAuto();
-		
-		topCam.setResolution(160, 120);
-		topCam.setFPS(20);
-		topCam.setExposureAuto();
-		topCam.setBrightness(50);
-		topCam.setWhiteBalanceAuto();
-		
+			gyroscope.resetGyro();
 	}
 	
-	
+	@Override
+	public void robotPeriodic() {
+		//vision.visionProcessing();
+	}
 
 	@Override
 	public void autonomousInit() {
@@ -183,6 +162,14 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		gyroscope.updateGyro();
+		
+		
+		
+		vision.visionProcessing();
+		
+		
+		
+		
 		
 		/************************
 		 * * RIGHT STICK CONTROLS * *
