@@ -112,12 +112,12 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-			gyroscope.resetGyro();
+		gyroscope.resetGyro();
 	}
 	
 	@Override
 	public void robotPeriodic() {
-		//vision.visionProcessing();
+		vision.visionProcessing();
 	}
 
 	@Override
@@ -165,7 +165,8 @@ public class Robot extends TimedRobot {
 		
 		
 		
-		vision.visionProcessing();
+		
+		//vision.visionProcessing();
 		
 		
 		
@@ -423,6 +424,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
+		
+		driveTrain.highGear();
+		vision.visionTargeting();
 		
 	}
 
