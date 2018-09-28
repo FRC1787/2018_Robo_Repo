@@ -34,10 +34,11 @@ public class Vision {
 	private MatOfPoint optimalContour;
 	private Point centerOfBestContour;
 	private double errorX;
-	private final double ACCEPTABLE_CENTER_RANGE = 3.0;
+	private final double ACCEPTABLE_CENTER_RANGE = 5.0;
+	private final double VISION_CORRECTION_SPEED = 0.3;
 	private ArrayList<MatOfPoint> allContours;
-	private final Scalar FILTER_UPPER_BOUND = new Scalar(100, 255, 255);
-	private final Scalar FILTER_LOWER_BOUND = new Scalar(60, 0, 20);
+	private final Scalar FILTER_UPPER_BOUND = new Scalar(100, 255, 128);
+	private final Scalar FILTER_LOWER_BOUND = new Scalar(60, 224, 20);
 	private static final double CENTER_X = (STANDARD_IMG_WIDTH - 1) / 2.0;
 	private static final double CENTER_Y = (STANDARD_IMG_HEIGHT - 1) / 2.0;
 	private Targeting targeting = Targeting.getInstance();
@@ -51,14 +52,14 @@ public class Vision {
 		
 		topCam.setResolution(STANDARD_IMG_WIDTH, STANDARD_IMG_HEIGHT);
 		topCam.setFPS(20);
-		topCam.setExposureManual(0);
-		topCam.setBrightness(100);
+		topCam.setExposureManual(5);//vision targeting optimal value is 0
+		topCam.setBrightness(100);//changed by Jordan, usually 100
 		topCam.setWhiteBalanceManual(WhiteBalance.kFixedIndoor);
 		
 		bottomCam.setResolution(STANDARD_IMG_WIDTH, STANDARD_IMG_HEIGHT);
 		bottomCam.setFPS(20);
-		bottomCam.setExposureManual(0);
-		bottomCam.setBrightness(100);
+		bottomCam.setExposureManual(5);
+		bottomCam.setBrightness(100);//was 100
 		bottomCam.setWhiteBalanceManual(WhiteBalance.kFixedIndoor);
 		
 		
@@ -118,10 +119,10 @@ public class Vision {
 				driveTrain.tankDrive(0, 0);
 			}
 			else if (errorX >= ACCEPTABLE_CENTER_RANGE) {
-				driveTrain.tankDrive(0.5, -0.5);
+				driveTrain.tankDrive(VISION_CORRECTION_SPEED, -VISION_CORRECTION_SPEED);
 			}
 			else if (errorX <= -ACCEPTABLE_CENTER_RANGE) {
-				driveTrain.tankDrive(-0.5, 0.5);
+				driveTrain.tankDrive(-VISION_CORRECTION_SPEED, VISION_CORRECTION_SPEED);
 			}
 		}
 		else {

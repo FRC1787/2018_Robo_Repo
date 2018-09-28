@@ -54,6 +54,8 @@ public class Intake {
 	public void releaseCube() {
 		intakeSolenoid.set(true);
 	}
+	
+
 
 	public void pushDataToShuffleboard() {
 		SmartDashboard.putBoolean("Gripped: ", intakeSolenoid.get());

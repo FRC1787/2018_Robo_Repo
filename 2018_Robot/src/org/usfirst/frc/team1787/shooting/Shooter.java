@@ -57,25 +57,24 @@ public class Shooter {
 
 		if (SHOOTER_TIMER == 1) {
 			output.releaseCube();
-			intake.releaseCube();
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, 0);
-			intake.turnOnWheels(0.375, 0.375);
-		} else if (SHOOTER_TIMER == 11) {
-			intake.squeezeCube();
-			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, -0.25);
-		} else if (SHOOTER_TIMER == 31) {
-			intake.releaseCube();
-			intake.turnOffWheels();
-		} else if (SHOOTER_TIMER == 45) {
 			output.turnOnWheels(TOP_SHOOTING_VOLTAGE, BOTTOM_SHOOTING_VOLTAGE);
-		} else if (SHOOTER_TIMER == 55) {
-			output.squeezeCube();
-		} else if (SHOOTER_TIMER == 64) {
-			
-		} else if (SHOOTER_TIMER > DISENGAGE_TIME+125) {
-			output.turnOffWheels();
-			intake.turnOffWheels();
+			intake.turnOnWheels(0.375, 0.375);
+		} 
+		
+		else if (SHOOTER_TIMER == 3) {
 			intake.squeezeCube();
+		} 
+		
+		else if (SHOOTER_TIMER == 16) {
+			intake.releaseCube();
+			intake.turnOffWheels();
+		} 
+		
+		else if (SHOOTER_TIMER == 22) {
+			output.squeezeCube();
+		} 
+		
+		else if (SHOOTER_TIMER > DISENGAGE_TIME) {
 			output.releaseCube();
 		}
 	}
@@ -105,7 +104,7 @@ public class Shooter {
 		// Reset everything to default positions upon button release
 		output.turnOffWheels();
 		output.squeezeCube();
-		intake.squeezeCube();
+		intake.releaseCube();
 		intake.turnOffWheels();
 	}
 

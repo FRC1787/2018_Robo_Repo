@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
 	private double BALANCED_POWER_TOP_WHEELS = 0.8;
 	private double BALANCED_POWER_BOT_WHEELS = 0.7;
 
-	private double SWITCH_POWER_TOP_WHEELS = 0.55;
+	private double SWITCH_POWER_TOP_WHEELS = 0.6;
 	private double SWITCH_POWER_BOT_WHEELS = 0.6;
 
 	// Intake motor voltages
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
 	private final double REVERSE_OUTPUT_VOLTAGE = -0.4;
 
 	// Shooter disengage time
-	private final double DISENGAGE_TIME = 50;
+	private final double DISENGAGE_TIME = 60;
 
 	// Variable variables
 	private double shootingTimer = 0;
@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		output.turnOffWheels();
-		intake.squeezeCube();
+		intake.releaseCube();
 		shooter.extendShooter();
 		driveTrain.highGear();
 		output.squeezeCube();
@@ -260,7 +260,7 @@ public class Robot extends TimedRobot {
 
 		// Forward intake
 		if (rightStick.getRawButtonPressed(INTAKE_BUTTON)) {
-
+			intake.squeezeCube();
 			output.releaseCube();
 			intakeTimer = 0;
 			intake.turnOnWheels(RIGHT_INTAKE_VOLTAGE, LEFT_INTAKE_VOLTAGE);
@@ -282,12 +282,14 @@ public class Robot extends TimedRobot {
 			intake.turnOffWheels();
 			intakeTimer = 0;
 			output.squeezeCube();
+			intake.releaseCube();
 		}
 		
 		
 
 		// Reverse intake
 		if (rightStick.getRawButtonPressed(REVERSE_INTAKE_BUTTON)) {
+			intake.squeezeCube();
 			intake.turnOnWheels(INTAKE_OUT_VOLTAGE, INTAKE_OUT_VOLTAGE);
 			output.releaseCube();
 		}
@@ -295,16 +297,19 @@ public class Robot extends TimedRobot {
 		else if (rightStick.getRawButtonReleased(REVERSE_INTAKE_BUTTON)) {
 			intake.turnOffWheels();
 			output.squeezeCube();
+			intake.releaseCube();
 		}
 		
 		//Fast Reverse
 		if (leftStick.getRawButtonPressed(10)) {
+			intake.squeezeCube();
 			intake.turnOnWheels(-1.0, -1.0);
 			output.releaseCube();
 		}
 
 		else if (leftStick.getRawButtonReleased(10)) {
 			intake.turnOffWheels();
+			intake.releaseCube();
 			output.squeezeCube();
 		}
 		
@@ -340,6 +345,7 @@ public class Robot extends TimedRobot {
 		if (leftStick.getRawButton(INTAKE_BUTTON)) {
 			intakeTimer++;
 			output.releaseCube();
+			intake.squeezeCube();
 
 			if (intakeTimer % 50 == 0) {
 				intake.turnOffWheels();
@@ -354,6 +360,7 @@ public class Robot extends TimedRobot {
 			intake.turnOffWheels();
 			intakeTimer = 0;
 			output.squeezeCube();
+			intake.releaseCube();
 		}
 
 		// Intake solenoid
