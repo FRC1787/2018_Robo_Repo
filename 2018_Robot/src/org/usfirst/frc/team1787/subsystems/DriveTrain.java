@@ -14,26 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain {
 
-	private final int LEFT_DRIVE_MASTER_TALON_ID = 10;
-	private final int LEFT_DRIVE_FOLLOWER_VICTOR_ID = 11;
-	private final int RIGHT_DRIVE_MASTER_TALON_ID = 9;
-	private final int RIGHT_DRIVE_FOLLOWER_VICTOR_ID = 8;
+	private WPI_TalonSRX leftMaster = new WPI_TalonSRX(10);
+	private WPI_VictorSPX leftFollower = new WPI_VictorSPX(11);
+	private WPI_TalonSRX rightMaster = new WPI_TalonSRX(9);
+	private WPI_VictorSPX rightFollower = new WPI_VictorSPX(8);
 
-	private WPI_TalonSRX leftMaster = new WPI_TalonSRX(LEFT_DRIVE_MASTER_TALON_ID);
-	private WPI_VictorSPX leftFollower = new WPI_VictorSPX(LEFT_DRIVE_FOLLOWER_VICTOR_ID);
-	private WPI_TalonSRX rightMaster = new WPI_TalonSRX(RIGHT_DRIVE_MASTER_TALON_ID);
-	private WPI_VictorSPX rightFollower = new WPI_VictorSPX(RIGHT_DRIVE_FOLLOWER_VICTOR_ID);
-
-	private final int GEAR_BOX_SOLENOID_ID = 3;
-	private Solenoid gearboxSolenoid = new Solenoid(GEAR_BOX_SOLENOID_ID);
-
-	// Added these to control inversion for each motor controller
-	public boolean LEFT_DRIVE_MASTER_INVERTED = true;
-	public boolean LEFT_DRIVE_FOLLOWER_INVERTED = true;
-	public boolean RIGHT_DRIVE_MASTER_INVERTED = false;
-	public boolean RIGHT_DRIVE_FOLLOWER_INVERTED = false;
-
-	
+	private Solenoid gearboxSolenoid = new Solenoid(3)
 
 	private final int rightEncoderChannelA = 0;
 	private final int rightEncoderChannelB = 1;
@@ -59,10 +45,10 @@ public class DriveTrain {
 
 		// Inverting all of the talons so that they all light up green when the robot
 		// goes forward
-		leftMaster.setInverted(LEFT_DRIVE_MASTER_INVERTED);
-		leftFollower.setInverted(LEFT_DRIVE_FOLLOWER_INVERTED);
-		rightMaster.setInverted(RIGHT_DRIVE_MASTER_INVERTED);
-		rightFollower.setInverted(RIGHT_DRIVE_FOLLOWER_INVERTED);
+		leftMaster.setInverted(true);
+		leftFollower.setInverted(true);
+		rightMaster.setInverted(false);
+		rightFollower.setInverted(false);
 
 		// Voltage Compensation for the talons
 		leftMaster.configVoltageCompSaturation(12, 10);
@@ -70,6 +56,7 @@ public class DriveTrain {
 		rightMaster.configVoltageCompSaturation(12, 10);
 		rightFollower.configVoltageCompSaturation(12, 10);
 
+		// Enable voltage compensation
 		leftMaster.enableVoltageCompensation(true);
 		leftFollower.enableVoltageCompensation(true);
 		rightMaster.enableVoltageCompensation(true);
@@ -123,19 +110,23 @@ public class DriveTrain {
 		// Basic drive class, makes the robot move forwards or backwards with a rotation
 
 		// Makes driving input feel less sensitive, better control
-		yInput = yInput * Math.abs(yInput);
-		xInput = xInput * Math.abs(xInput);
+		int y = yInput * Math.abs(yInput);
+		int x = xInput * Math.abs(xInput);
 
 		// Simons algorithm
-		double leftMotorOutput = yInput + xInput;
-		double rightMotorOutput = yInput - xInput;
+		double leftMotorOutput = y + x;
+		double rightMotorOutput = y - x;
 
+		// Truncate values
 		leftMotorOutput = truncateMotorOutput(leftMotorOutput);
 		rightMotorOutput = truncateMotorOutput(rightMotorOutput);
 
+		// Set left motor outputs
 		leftMaster.set(leftMotorOutput);
-		rightMaster.set(rightMotorOutput);
 		leftFollower.set(leftMotorOutput);
+		
+		// Set right motor outputs
+		rightMaster.set(rightMotorOutput);
 		rightFollower.set(rightMotorOutput);
 
 	}
